@@ -13,6 +13,9 @@ interface SqlAccountRepository extends Repository<AccountSnapshot,Integer> {
     public Optional<AccountSnapshot> findById(Integer id) ;
 
     public List<AccountSnapshot> findAll();
+
+    public boolean existsById(Integer id);
+    public boolean delete(AccountSnapshot entity);
 }
 
 @org.springframework.stereotype.Repository
@@ -39,5 +42,15 @@ class AccountRepositoryImpl implements AccountRepository{
         return repository.findAll().stream()
                 .map(Account::restore)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public boolean delete(Account entity) {
+        return repository.delete(entity.getSnapshot());
     }
 }

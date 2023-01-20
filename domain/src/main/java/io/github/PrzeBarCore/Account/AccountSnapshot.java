@@ -1,34 +1,42 @@
 package io.github.PrzeBarCore.Account;
 
-import java.math.BigDecimal;
+import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
+import io.github.PrzeBarCore.ValueObjects.NameString;
+import io.github.PrzeBarCore.ValueObjects.SimpleCurrency;
+
 import java.util.List;
 
 class AccountSnapshot {
     private int id;
-    private String name;
-    private BigDecimal balance;
-    private List<TransactionSnapshot> doneTransactions;
+    private NameString name;
+    private MonetaryAmount balance;
+    private SimpleCurrency currency;
+    private List<Integer> doneTransactionIds;
 
-    AccountSnapshot(int id, String name, BigDecimal balance, List<TransactionSnapshot> doneTransactions) {
+    protected AccountSnapshot(){}
+
+    AccountSnapshot(int id, NameString name, MonetaryAmount balance, SimpleCurrency currency, List<Integer> doneTransactionIds) {
         this.id=id;
         this.name = name;
         this.balance = balance;
-        this.doneTransactions = doneTransactions;
+        this.currency=currency;
+        this.doneTransactionIds = doneTransactionIds;
     }
 
     int getId() {
         return id;
     }
-
-    String getName() {
+    NameString getName() {
         return name;
     }
-
-    BigDecimal getBalance() {
+    MonetaryAmount getBalance() {
         return balance;
     }
-
-    List<TransactionSnapshot> getDoneTransactions() {
-        return doneTransactions;
+    SimpleCurrency getCurrency() {
+        return currency;
     }
+    List<Integer> getDoneTransactionIds() {
+        return doneTransactionIds;
+    }
+
 }

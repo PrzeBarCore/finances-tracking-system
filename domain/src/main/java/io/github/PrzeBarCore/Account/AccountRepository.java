@@ -7,4 +7,6 @@ interface AccountRepository {
     Account save(Account entity);
     Optional<Account> findById(Integer id);
     List<Account> findAll();
+    boolean existsById(Integer id);
+    boolean delete(Account entity);
 }

@@ -5,6 +5,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 class AccountConfiguration {
+    AccountConfiguration() {
+    }
+
     @Bean
     AccountFacade accountFacade(final AccountRepository accountRepository){
         return new AccountFacade(accountRepository);

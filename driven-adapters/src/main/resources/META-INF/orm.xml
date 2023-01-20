@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+    <description>JPA Mapping file </description>
+    
+    <entity class="io.github.PrzeBarCore.Account.AccountSnapshot" access="FIELD">
+        <table name="accounts"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column nullable="false"/>
+            </basic>
+            <basic name="balance">
+                <column nullable="false"/>
+            </basic>
+            <basic name="currency">
+                <column nullable="false"/>
+            </basic>
+            <one-to-many name="doneTransactions" mapped-by="account"/>
+        </attributes>
+    </entity>
+
+
+    <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">
+        <table name="transactions"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="issuedOnDateTime"/>
+            <basic name="totalValue">
+                <column nullable="false"/>
+            </basic>
+            <basic name="transactionType">
+                <column nullable="false"/>
+            </basic>
+            <many-to-one name="transactionCategory">
+                <join-column name="category_id"/>
+            </many-to-one>
+            <many-to-one name="account">
+                <join-column name="account_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="io.github.PrzeBarCore.Transaction.TransactionCategorySnapshot" access="FIELD">
+        <table name="transaction_categories"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="name">
+                <column nullable="false"/>
+            </basic>
+        </attributes>
+    </entity>
+    
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.NameString">
+    <attributes>
+        <basic name="text"/>
+    </attributes>
+    </embeddable>
+
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.SimpleCurrency">
+    </embeddable>
+
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.MonetaryAmount">
+        <attributes>
+            <basic name="value"/>
+        </attributes>
+    </embeddable>
+
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.TransactionType">
+    </embeddable>
+
+
+</entity-mappings>
+

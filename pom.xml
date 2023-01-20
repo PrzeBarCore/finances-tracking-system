@@ -6,6 +6,10 @@
     <groupId>io.github.PrzeBarCore</groupId>
     <artifactId>finances-tracking-system</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <maven.compiler.source>18</maven.compiler.source>
+        <maven.compiler.target>18</maven.compiler.target>
+    </properties>
     <name>finances-tracking-system</name>
     <description>Parent module of application designed to manage finances</description>
 
