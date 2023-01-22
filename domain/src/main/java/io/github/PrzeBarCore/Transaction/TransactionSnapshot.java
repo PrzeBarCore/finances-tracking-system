@@ -14,7 +14,7 @@ class TransactionSnapshot {
     private Integer accountId;
 
     protected TransactionSnapshot(){}
-
+    
     TransactionSnapshot(final int id, final LocalDateTime issuedOnDateTime, final MonetaryAmount totalValue, final TransactionType transactionType, final TransactionCategorySnapshot transactionCategory, final Integer accountId) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
