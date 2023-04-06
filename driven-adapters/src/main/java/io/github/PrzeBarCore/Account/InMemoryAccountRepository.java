@@ -13,20 +13,25 @@ class InMemoryAccountRepository implements AccountRepository {
     public Account save(Account entity) {
         if(null!=entity){
             Integer id=entity.getSnapshot().getId();
-            if(map.containsKey(id)){
+            if(id==0){
+                entity= Account.restore(
+                        new AccountSnapshot(map.size()+1,
+                                entity.getSnapshot().getName(),
+                                entity.getSnapshot().getBalance(),
+                                entity.getSnapshot().getCurrency()
+                        ));
+                map.put(map.size()+1, entity);
+            } else {
                 map.remove(id);
+                map.put(id,entity);
             }
-            map.put(id,entity);
         }
         return entity;
     }
 
     @Override
     public Optional<Account> findById(Integer id) {
-        if(map.containsKey(id))
-            return Optional.of(map.get(id));
-        else
-            return Optional.of(null);
+            return Optional.ofNullable(map.get(id));
     }
 
     @Override
@@ -37,7 +42,7 @@ class InMemoryAccountRepository implements AccountRepository {
     @Override
     public boolean delete(Account entity) {
         if(map.contains(entity)){
-            map.remove(entity);
+            map.remove(entity.getSnapshot().getId());
             return true;
         }
         return false;

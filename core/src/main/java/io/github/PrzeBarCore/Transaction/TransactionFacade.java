@@ -25,6 +25,12 @@ public class TransactionFacade {
 
     }
 
+    public TransactionDto find(final int id){
+        return transactionRepository.find(id)
+                .map(transaction -> TransactionFactory.createTransactionFromSnapshot(transaction.getSnapshot()))
+                .orElseGet(null);
+    }
+
     private TransactionSnapshot transactionSnapshotFromDto(TransactionDto transactionDto){
         if(null!=transactionDto){
             return new TransactionSnapshot(transactionDto.getId(),

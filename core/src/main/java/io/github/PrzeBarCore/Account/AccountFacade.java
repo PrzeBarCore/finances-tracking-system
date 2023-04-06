@@ -13,9 +13,16 @@ class AccountFacade {
         this.accountRepository = accountRepository;
     }
 
-    public void add(AccountDto accountDto) {
+    public Optional<AccountDto> add(AccountDto accountDto) {
         if(!accountRepository.existsById(accountDto.getId()))
-         accountRepository.save(Account.restore(snapshotFromDto(accountDto)));
+            return save(accountDto);
+        return Optional.empty();
+    }
+
+    public Optional<AccountDto> updateAccount(AccountDto accountDto) {
+        if(accountRepository.existsById(accountDto.getId()))
+            return save(accountDto);
+        return Optional.empty();
     }
 
     public List<AccountDto> findAll(){
@@ -35,15 +42,16 @@ class AccountFacade {
         return false;
     }
 
+    private Optional<AccountDto>save(AccountDto accountDto){
+        return Optional.ofNullable(DtoFromSnapshot(accountRepository.save(Account.restore(snapshotFromDto(accountDto))).getSnapshot()));
+    }
 
-        //TODO na razie bez tranzakcji
+    //TODO na razie bez tranzakcji
     private AccountSnapshot snapshotFromDto(AccountDto accountDto){
-        return new AccountSnapshot(accountDto.getId(),accountDto.getName(), accountDto.getBalance(), accountDto.getCurrency(), null);
+        return new AccountSnapshot(accountDto.getId(),accountDto.getName(), accountDto.getBalance(), accountDto.getCurrency());
     }
-    //bez transakcjii i id
+    //bez transakcjii
     private AccountDto DtoFromSnapshot(AccountSnapshot accountSnapshot){
-        return AccountDto.builder().withAccountName(accountSnapshot.getName()).withBalance(accountSnapshot.getBalance()).withCurrency(accountSnapshot.getCurrency()).build();
+        return AccountDto.builder().withId(accountSnapshot.getId()).withAccountName(accountSnapshot.getName()).withBalance(accountSnapshot.getBalance()).withCurrency(accountSnapshot.getCurrency()).build();
     }
-
-
 }

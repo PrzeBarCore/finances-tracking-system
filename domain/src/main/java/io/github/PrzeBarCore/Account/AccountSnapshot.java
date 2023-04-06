@@ -11,16 +11,14 @@ class AccountSnapshot {
     private NameString name;
     private MonetaryAmount balance;
     private SimpleCurrency currency;
-    private List<Integer> doneTransactionIds;
 
     protected AccountSnapshot(){}
 
-    AccountSnapshot(int id, NameString name, MonetaryAmount balance, SimpleCurrency currency, List<Integer> doneTransactionIds) {
+    AccountSnapshot(int id, NameString name, MonetaryAmount balance, SimpleCurrency currency) {
         this.id=id;
         this.name = name;
         this.balance = balance;
         this.currency=currency;
-        this.doneTransactionIds = doneTransactionIds;
     }
 
     int getId() {
@@ -32,11 +30,5 @@ class AccountSnapshot {
     MonetaryAmount getBalance() {
         return balance;
     }
-    SimpleCurrency getCurrency() {
-        return currency;
-    }
-    List<Integer> getDoneTransactionIds() {
-        return doneTransactionIds;
-    }
-
+    SimpleCurrency getCurrency() { return currency; }
 }

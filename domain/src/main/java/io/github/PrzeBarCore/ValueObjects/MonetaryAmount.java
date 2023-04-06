@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public class MonetaryAmount {
     private BigDecimal value;
-
+    protected MonetaryAmount(){};
     public static MonetaryAmount of(BigDecimal value){
         return new MonetaryAmount(value);}
     public static MonetaryAmount zero(){

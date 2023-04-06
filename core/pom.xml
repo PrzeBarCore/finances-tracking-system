@@ -13,9 +13,13 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>core</name>
     <description>Core module of application designed to manage finances</description>
+
     <properties>
         <java.version>17</java.version>
+        <groovy.version>3.0.15</groovy.version>
+        <spock.version>2.3-groovy-4.0</spock.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.github.PrzeBarCore</groupId>
@@ -31,38 +35,60 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
-            <version>1.0-groovy-2.4</version>
+            <version>2.0-groovy-3.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>org.apache.groovy</groupId>
             <artifactId>groovy-all</artifactId>
-            <version>2.4.7</version>
+            <version>4.0.8</version>
+            <type>pom</type>
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <build>
 
+    <build>
+        <testSourceDirectory>src/test/groovy</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>18</source>
+                    <target>18</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
-                <version>1.5</version>
+                <version>2.1.0</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
+                            <goal>addTestSources</goal>
+                            <goal>compileTests</goal>
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M7</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                        <include>**/*Spec.java</include>
+                    </includes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

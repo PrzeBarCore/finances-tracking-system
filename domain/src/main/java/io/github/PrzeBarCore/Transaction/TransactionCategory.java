@@ -6,7 +6,8 @@ class TransactionCategory {
     static TransactionCategory restore(TransactionCategorySnapshot transactionCategorySnapshot){
         return new TransactionCategory(transactionCategorySnapshot.getId(),
                 transactionCategorySnapshot.getName(),
-                TransactionCategory.restore(transactionCategorySnapshot.getParentCategory()),
+                null !=transactionCategorySnapshot.getParentCategory() ?
+                        TransactionCategory.restore(transactionCategorySnapshot.getParentCategory()) :null,
                 transactionCategorySnapshot.getDependencyLevel());
     }
 
@@ -24,7 +25,7 @@ class TransactionCategory {
     }
 
     TransactionCategorySnapshot getSnapshot(){
-        return new TransactionCategorySnapshot(this.id, this.name, this.parentCategory.getSnapshot(), this.dependencyLevel);
+        return new TransactionCategorySnapshot(this.id, this.name, null == this.parentCategory ? null : this.parentCategory.getSnapshot(), this.dependencyLevel);
     }
 
     void updateParentCategory(TransactionCategory newParentCategory){

@@ -11,16 +11,19 @@
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="name">
-                <column nullable="false"/>
-            </basic>
-            <basic name="balance">
-                <column nullable="false"/>
-            </basic>
             <basic name="currency">
                 <column nullable="false"/>
             </basic>
-            <one-to-many name="doneTransactions" mapped-by="account"/>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="balance">
+                <attribute-override name="value">
+                    <column name="balance" nullable="false"/>
+                </attribute-override>
+            </embedded>
         </attributes>
     </entity>
 
@@ -38,17 +41,17 @@
             <basic name="transactionType">
                 <column nullable="false"/>
             </basic>
+            <basic name="accountId">
+                <column nullable="false"/>
+            </basic>
             <many-to-one name="transactionCategory">
                 <join-column name="category_id"/>
-            </many-to-one>
-            <many-to-one name="account">
-                <join-column name="account_id"/>
             </many-to-one>
         </attributes>
     </entity>
 
     <entity class="io.github.PrzeBarCore.Transaction.TransactionCategorySnapshot" access="FIELD">
-        <table name="transaction_categories"/>
+        <table name="transactionCategories"/>
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
@@ -56,6 +59,12 @@
             <basic name="name">
                 <column nullable="false"/>
             </basic>
+            <basic name="dependencyLevel">
+                <column nullable="false"/>
+            </basic>
+            <one-to-one name="parentCategory">
+                <join-column name="transactionCategory_id"/>
+            </one-to-one>
         </attributes>
     </entity>
     
@@ -66,6 +75,11 @@
     </embeddable>
 
     <embeddable class="io.github.PrzeBarCore.ValueObjects.SimpleCurrency">
+        <attributes>
+            <basic name="currency">
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
     </embeddable>
 
     <embeddable class="io.github.PrzeBarCore.ValueObjects.MonetaryAmount">
@@ -75,6 +89,11 @@
     </embeddable>
 
     <embeddable class="io.github.PrzeBarCore.ValueObjects.TransactionType">
+        <attributes>
+            <basic name="type">
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
     </embeddable>
 
 

@@ -5,7 +5,7 @@ import io.github.PrzeBarCore.ValueObjects.NameString;
 import io.github.PrzeBarCore.ValueObjects.SimpleCurrency;
 
 public class AccountDto {
-    private int id;
+    private Integer id;
     private NameString name;
     private MonetaryAmount balance;
     private SimpleCurrency currency;
@@ -29,6 +29,22 @@ public class AccountDto {
         return currency;
     }
 
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object dto) {
+        if(dto instanceof AccountDto){
+            return ((AccountDto) dto).id==this.id
+                    && ((AccountDto) dto).currency == this.currency
+                    && ((AccountDto) dto).balance == this.balance
+                    && ((AccountDto) dto).name.equals(this.name);
+        } else
+            return false;
+    }
+
     public static class Builder{
         private int id;
         private NameString name;
@@ -37,6 +53,10 @@ public class AccountDto {
 
         private Builder(){};
 
+        public Builder withId(int id) {
+            this.id=id;
+            return this;
+        }
         public Builder withAccountName(NameString name) {
             this.name=name;
             return this;
@@ -60,5 +80,7 @@ public class AccountDto {
             builtDto.currency=this.currency;
             return builtDto;
         }
+
     }
+
 }

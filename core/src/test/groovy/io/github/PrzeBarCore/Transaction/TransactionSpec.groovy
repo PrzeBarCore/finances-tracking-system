@@ -3,20 +3,23 @@ package io.github.PrzeBarCore.Transaction
 import io.github.PrzeBarCore.Transaction.Dto.TransactionCategoryDto
 import io.github.PrzeBarCore.Transaction.Dto.TransactionDto
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount
+import io.github.PrzeBarCore.ValueObjects.NameString
 import io.github.PrzeBarCore.ValueObjects.TransactionType
+import spock.lang.Specification
 
 import java.time.LocalDateTime
 
-class TransactionSpec {
+class TransactionSpec extends Specification {
 
-    TransactionFacade facade=new TransactionFacade(new InMemoryTransactionRepository());
-    private int exampleAccountId=1;
-    private var parentCategory=createCategory(1,"School", 0, null);
-    private var childCategory=createCategory(2,"Pencils", 1, parentCategory);
+    def dt= LocalDateTime.now()
+    def facade=new TransactionFacade(new InMemoryTransactionRepository());
+    int exampleAccountId=1;
+    def parentCategory=createCategory(1,"School", 0, null);
+    def childCategory=createCategory(2,"Pencils", 1, parentCategory);
 
-    private var firstTransaction=createTransaction(1,exampleAccountId,LocalDateTime.now().minusWeeks(1),MonetaryAmount.of(BigDecimal.valueOf(200)), childCategory,TransactionType.OUTCOME);
-    private var secondTransaction=createTransaction(2,exampleAccountId,LocalDateTime.now(),MonetaryAmount.of(BigDecimal.valueOf(100)), childCategory,TransactionType.OUTCOME);
-    private var thirdTransaction=createTransaction(1,exampleAccountId+1,LocalDateTime.now().minusWeeks(1),MonetaryAmount.of(BigDecimal.valueOf(200)), childCategory,TransactionType.OUTCOME);
+    def firstTransaction=createTransaction(1,exampleAccountId,dt,MonetaryAmount.of(200.0g), childCategory,TransactionType.OUTCOME);
+    def secondTransaction=createTransaction(2,exampleAccountId, dt,MonetaryAmount.of(100.0g), childCategory,TransactionType.OUTCOME);
+    def thirdTransaction=createTransaction(3 ,exampleAccountId+1,dt,MonetaryAmount.of(200.0g), childCategory,TransactionType.OUTCOME);
 
 
     def "should get a transaction"() {
@@ -44,7 +47,7 @@ class TransactionSpec {
 
     private TransactionCategoryDto createCategory(int id, String name, int dependencyLevel, TransactionCategoryDto parentCategory){
         return TransactionCategoryDto.builder().withId(id)
-                .withName(name)
+                .withName(NameString.of(name))
                 .withDependencyLevel(dependencyLevel)
                 .withParentCategory(parentCategory)
                 .build();
