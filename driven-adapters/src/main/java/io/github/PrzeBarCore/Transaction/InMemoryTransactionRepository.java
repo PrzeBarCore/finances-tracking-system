@@ -35,7 +35,7 @@ class InMemoryTransactionRepository implements TransactionRepository {
     }
 
     @Override
-    public List<Transaction> findTransactionsByAccountIdOrderByIssuedondatetime(int id) {
+    public List<Transaction> findTransactionsByAccountIdOrderByIssuedOnDateTime(int id) {
        return map.values().stream()
                 .filter(c -> c.getSnapshot().getAccountId()==id)
                 .sorted(byIssuedOnDateTime).collect(Collectors.toList());

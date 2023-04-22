@@ -6,10 +6,12 @@ import java.util.Optional;
 interface TransactionRepository {
 
     boolean existsTransactionById(int id);
-
-    Optional<Transaction> find(int id);
-
+    Optional<Transaction> findTransactionOfIncomeType(int id);
+    Optional<Transaction> findTransactionOfOutcomeType(int id);
+    Optional<Transaction> findTransactionOfReceiptType(int id);
+    Optional<Transaction> findTransactionOfTakenLoanType(int id);
+    Optional<Transaction> findTransactionOfGivenLoanType(int id);
+    Optional<Transaction> findTransactionOfInnerTransferType(int id);
     Transaction saveTransaction(Transaction transaction);
-
-    List<Transaction> findTransactionsByAccountIdOrderByIssuedondatetime(int id);
+    List<Transaction> findTransactionsByAccountIdOrderByIssuedOnDateTime(int id);
 }

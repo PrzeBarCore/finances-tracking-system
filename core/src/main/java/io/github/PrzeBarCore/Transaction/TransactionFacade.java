@@ -19,15 +19,15 @@ public class TransactionFacade {
     }
 
     public List<TransactionDto> findTransactionsByAccountId(final int id) {
-        return transactionRepository.findTransactionsByAccountIdOrderByIssuedondatetime(id).stream()
-                .map(transaction -> TransactionFactory.createTransactionFromSnapshot(transaction.getSnapshot()))
+        return transactionRepository.findTransactionsByAccountIdOrderByIssuedOnDateTime(id).stream()
+                .map(transaction -> TransactionSnapshotFactory.createTransactionFromSnapshot(transaction.getSnapshot()))
                 .collect(Collectors.toList());
 
     }
 
     public TransactionDto find(final int id){
         return transactionRepository.find(id)
-                .map(transaction -> TransactionFactory.createTransactionFromSnapshot(transaction.getSnapshot()))
+                .map(transaction -> TransactionSnapshotFactory.createTransactionFromSnapshot(transaction.getSnapshot()))
                 .orElseGet(null);
     }
 
