@@ -4,7 +4,8 @@
                  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
                  version="1.0">
     <description>JPA Mapping file </description>
-    
+
+
     <entity class="io.github.PrzeBarCore.Account.AccountSnapshot" access="FIELD">
         <table name="accounts"/>
         <attributes>
@@ -24,34 +25,32 @@
                     <column name="balance" nullable="false"/>
                 </attribute-override>
             </embedded>
+
         </attributes>
     </entity>
 
 
-    <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">
-        <table name="transactions"/>
+    <entity class="io.github.PrzeBarCore.Product.Product" access="FIELD">
+        <table name="products"/>
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="issuedOnDateTime"/>
-            <basic name="totalValue">
+            <basic name="company">
                 <column nullable="false"/>
             </basic>
-            <basic name="transactionType">
+            <basic name="quantity">
                 <column nullable="false"/>
             </basic>
-            <basic name="accountId">
+            <basic name="unit">
                 <column nullable="false"/>
             </basic>
-            <many-to-one name="transactionCategory">
-                <join-column name="category_id"/>
-            </many-to-one>
         </attributes>
     </entity>
 
+
     <entity class="io.github.PrzeBarCore.Transaction.TransactionCategorySnapshot" access="FIELD">
-        <table name="transactionCategories"/>
+        <table name="transaction_categories"/>
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
@@ -63,15 +62,103 @@
                 <column nullable="false"/>
             </basic>
             <one-to-one name="parentCategory">
-                <join-column name="transactionCategory_id"/>
+                <join-column name="parent_category_id"/>
             </one-to-one>
+            <embedded name="transactionType">
+                <attribute-override name="type">
+                    <column name="transactionType" nullable="true"/>
+                </attribute-override>
+            </embedded>
         </attributes>
     </entity>
+
+
+    <entity class="io.github.PrzeBarCore.Receipt.ReceiptSnapshot" access="FIELD">
+        <table name ="receipts"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="issuedOnDateTime"/>
+            <basic name="isContainingListOfItems"/>
+            <one-to-many name="items">
+                <join-column name="receipt_id"/>
+            </one-to-many>
+            <embedded name="totalValue">
+                <attribute-override name="value">
+                    <column name="totalValue" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+    <entity class="io.github.PrzeBarCore.Receipt.ReceiptItemSnapshot" access="FIELD">
+        <table name ="receipt_items"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="quantity"/>
+            <basic name="productId"/>
+            <basic name="productCategoryId"/>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="regularPrice">
+                <attribute-override name="value">
+                    <column name="regularPrice" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="discount">
+                <attribute-override name="value">
+                    <column name="discount" nullable="true"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+
+
+<!--    <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">-->
+<!--        <table name="transactions"/>-->
+<!--        <attributes>-->
+<!--            <id name="id">-->
+<!--                <generated-value strategy="IDENTITY"/>-->
+<!--            </id>-->
+<!--            <basic name="issuedOnDateTime"/>-->
+<!--            <basic name="totalValue">-->
+<!--                <column nullable="false"/>-->
+<!--            </basic>-->
+<!--            <basic name="transactionType">-->
+<!--                <column nullable="false"/>-->
+<!--            </basic>-->
+<!--            <basic name="accountId">-->
+<!--                <column nullable="false"/>-->
+<!--            </basic>-->
+<!--            <many-to-one name="transactionCategory">-->
+<!--                <join-column name="category_id"/>-->
+<!--            </many-to-one>-->
+<!--        </attributes>-->
+<!--    </entity>-->
+
+
+
+
     
     <embeddable class="io.github.PrzeBarCore.ValueObjects.NameString">
     <attributes>
         <basic name="text"/>
     </attributes>
+    </embeddable>
+
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.Company">
+        <attributes>
+            <basic name="name"/>
+        </attributes>
     </embeddable>
 
     <embeddable class="io.github.PrzeBarCore.ValueObjects.SimpleCurrency">
@@ -95,7 +182,6 @@
             </basic>
         </attributes>
     </embeddable>
-
-
+    
 </entity-mappings>
 

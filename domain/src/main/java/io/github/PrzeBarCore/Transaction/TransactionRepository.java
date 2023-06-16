@@ -1,5 +1,6 @@
 package io.github.PrzeBarCore.Transaction;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +15,6 @@ interface TransactionRepository {
     Optional<Transaction> findTransactionOfInnerTransferType(int id);
     Transaction saveTransaction(Transaction transaction);
     List<Transaction> findTransactionsByAccountIdOrderByIssuedOnDateTime(int id);
+//temporary
+    Optional<Transaction> find(int id);
 }
