@@ -1,0 +1,69 @@
+<div class="card my-5">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #receiptForm="ngForm">
+      <div class="form-group">
+        <label for="datetime-local">Date</label>
+        <input
+          type="date"
+          [(ngModel)]="receipt.issuedOnDate"
+          class="form-control"
+          id="date"
+        />
+      </div>
+      <div *ngFor="let item of receipt.listOfItems; let i = index">
+        <input
+          type="text"
+          [(ngModel)]="item.name"
+          (ngModelChange)="item.name = $event"
+          class="form-control"
+          id="name"
+          name="name"
+        />
+        <input
+          type="number"
+          [(ngModel)]="receipt.listOfItems[i].quantity"
+          class="form-control"
+          id="quantity"
+          name="quantity"
+        />
+        <input
+          type="number"
+          [(ngModel)]="receipt.listOfItems[i].regularPrice"
+          class="form-control"
+          id="regularPrice"
+          name="regularPrice"
+        />
+        <input
+          type="number"
+          [(ngModel)]="receipt.listOfItems[i].discount"
+          class="form-control"
+          id="discount"
+          name="discount"
+        />
+        <input
+          type="number"
+          [(ngModel)]="receipt.listOfItems[i].productCategoryId"
+          class="form-control"
+          id="productCategoryId"
+          name="productCategoryId"
+        />
+        <input
+          type="number"
+          [(ngModel)]="receipt.listOfItems[i].productId"
+          class="form-control"
+          id="productId"
+          name="productId"
+        />
+      </div>
+
+      <button (click)="addItem()" type="button" class="btn btn-info">
+        Add new item
+      </button>
+      <button type="submit" class="btn btn-info">Submit</button>
+    </form>
+  </div>
+</div>
+
+issuedOnDate: Date; totalValue: number; isContainingListOfItems: boolean;
+listOfItems: ReceiptItem[]; name: string, quantity: number, regularPrice:
+number, discount: number, productCategoryId: number, productId: number
