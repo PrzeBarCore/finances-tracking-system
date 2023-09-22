@@ -1,11 +1,12 @@
 package io.github.PrzeBarCore.Receipt;
 
-import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
+import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class ReceiptDto {
     private LocalDateTime issuedOnDateTime;
@@ -54,15 +55,15 @@ public class ReceiptDto {
 
     public static class DtoItem{
         private NameString name;
-        private Integer productId;
+        private Optional<ProductDto> product;
         private Double quantity;
         private BigDecimal regularPrice;
         private BigDecimal discount;
         private Integer productCategoryId;
 
-        public DtoItem(NameString name, Integer productId, Double quantity, BigDecimal regularPrice, BigDecimal discount, Integer productCategoryId) {
+        public DtoItem(NameString name, Optional<ProductDto> product, Double quantity, BigDecimal regularPrice, BigDecimal discount, Integer productCategoryId) {
             this.name = name;
-            this.productId = productId;
+            this.product = product;
             this.quantity = quantity;
             this.regularPrice = regularPrice;
             this.discount = discount;
@@ -77,12 +78,12 @@ public class ReceiptDto {
             this.name = name;
         }
 
-        public Integer getProductId() {
-            return productId;
+        public Optional<ProductDto> getProduct() {
+            return product;
         }
 
-        public void setProductId(Integer productId) {
-            this.productId = productId;
+        public void setProduct(Optional<ProductDto> product) {
+            this.product = product;
         }
 
         public Double getQuantity() {

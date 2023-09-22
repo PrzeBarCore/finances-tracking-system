@@ -7,6 +7,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { ReceiptFormComponent } from './receipt-form/receipt-form.component';
 import { ReceiptListComponent } from './receipt-list/receipt-list.component';
 import { ReceiptService } from './service/receipt-service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ReceiptFormComponent, ReceiptListComponent],
@@ -16,6 +17,7 @@ import { ReceiptService } from './service/receipt-service';
     HttpClientModule,
     CommonModule,
     AppRoutingModule,
+    ReactiveFormsModule,
   ],
   providers: [ReceiptService],
 })

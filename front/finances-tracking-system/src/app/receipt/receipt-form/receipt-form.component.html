@@ -1,69 +1,112 @@
-<div class="card my-5">
+<div class="card">
   <div class="card-body">
-    <form (ngSubmit)="onSubmit()" #receiptForm="ngForm">
+    <form [formGroup]="receiptForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="datetime-local">Date</label>
+        <label for="issued-on-date">Issued in date: </label>
         <input
+          id="issued-on-date"
           type="date"
-          [(ngModel)]="receipt.issuedOnDate"
-          class="form-control"
-          id="date"
+          formControlName="issuedOnDate"
+          required
         />
       </div>
-      <div *ngFor="let item of receipt.listOfItems; let i = index">
-        <input
-          type="text"
-          [(ngModel)]="item.name"
-          (ngModelChange)="item.name = $event"
-          class="form-control"
-          id="name"
-          name="name"
-        />
-        <input
-          type="number"
-          [(ngModel)]="receipt.listOfItems[i].quantity"
-          class="form-control"
-          id="quantity"
-          name="quantity"
-        />
-        <input
-          type="number"
-          [(ngModel)]="receipt.listOfItems[i].regularPrice"
-          class="form-control"
-          id="regularPrice"
-          name="regularPrice"
-        />
-        <input
-          type="number"
-          [(ngModel)]="receipt.listOfItems[i].discount"
-          class="form-control"
-          id="discount"
-          name="discount"
-        />
-        <input
-          type="number"
-          [(ngModel)]="receipt.listOfItems[i].productCategoryId"
-          class="form-control"
-          id="productCategoryId"
-          name="productCategoryId"
-        />
-        <input
-          type="number"
-          [(ngModel)]="receipt.listOfItems[i].productId"
-          class="form-control"
-          id="productId"
-          name="productId"
-        />
+      <div formArrayName="items">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col" class="">Regular Price</th>
+              <th scope="col" class="">Discount</th>
+              <th scope="col" class="">Product Category</th>
+              <th scope="col" class="">Product</th>
+              <th scope="col" class=""></th>
+              <th scope="col" class=""></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let item of items.controls;
+                let i = index;
+                last as isLast;
+                first as isFirst
+              "
+              formGroupName="{{ i }}"
+            >
+              <td>
+                <input
+                  class="form-control"
+                  id="name-{{ i }}"
+                  type="text"
+                  formControlName="name"
+                />
+              </td>
+              <td>
+                <input
+                  id="quantity-{{ i }}"
+                  type="number"
+                  formControlName="quantity"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  id="regular-price-{{ i }}"
+                  type="number"
+                  formControlName="regularPrice"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  id="discount-{{ i }}"
+                  type="number"
+                  formControlName="discount"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  id="product-category-{{ i }}"
+                  type="number"
+                  formControlName="productCategoryId"
+                />
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  id="product-{{ i }}"
+                  type="number"
+                  formControlName="productId"
+                />
+              </td>
+              <td>
+                <button
+                  *ngIf="!isFirst || items.length > 1"
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="removeItem(i)"
+                >
+                  -
+                </button>
+              </td>
+              <td>
+                <button
+                  *ngIf="isLast"
+                  type="button"
+                  class="btn btn-info"
+                  (click)="addItem()"
+                >
+                  +
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <button (click)="addItem()" type="button" class="btn btn-info">
-        Add new item
-      </button>
       <button type="submit" class="btn btn-info">Submit</button>
     </form>
   </div>
 </div>
-
-issuedOnDate: Date; totalValue: number; isContainingListOfItems: boolean;
-listOfItems: ReceiptItem[]; name: string, quantity: number, regularPrice:
-number, discount: number, productCategoryId: number, productId: number

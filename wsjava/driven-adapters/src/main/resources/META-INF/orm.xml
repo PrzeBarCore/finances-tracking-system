@@ -29,26 +29,6 @@
         </attributes>
     </entity>
 
-
-    <entity class="io.github.PrzeBarCore.Product.Product" access="FIELD">
-        <table name="products"/>
-        <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <basic name="company">
-                <column nullable="false"/>
-            </basic>
-            <basic name="quantity">
-                <column nullable="false"/>
-            </basic>
-            <basic name="unit">
-                <column nullable="false"/>
-            </basic>
-        </attributes>
-    </entity>
-
-
     <entity class="io.github.PrzeBarCore.Transaction.TransactionCategorySnapshot" access="FIELD">
         <table name="transaction_categories"/>
         <attributes>
@@ -120,6 +100,27 @@
             <embedded name="discount">
                 <attribute-override name="value">
                     <column name="discount" nullable="true"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="io.github.PrzeBarCore.Product.ProductSnapshot" access="FIELD">
+        <table name ="products"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="quantity"/>
+            <basic name="unit"/>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="producer">
+                <attribute-override name="name">
+                    <column name="producer" nullable="false"/>
                 </attribute-override>
             </embedded>
         </attributes>
