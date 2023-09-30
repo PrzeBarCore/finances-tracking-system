@@ -11,27 +11,25 @@ class TransactionSnapshot {
     private LocalDateTime issuedOnDateTime;
     private MonetaryAmount totalValue;
     private TransactionType transactionType;
-    private TransactionCategorySnapshot transactionCategory;
+    private Integer transactionCategoryId;
     private Description description;
     private int targetAccountId;
     private int sourceAccountId;
-    private String borrowDescription;
     private LocalDateTime repaymentDate;
     private int receiptId;
 
     protected TransactionSnapshot(){}
     TransactionSnapshot(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, TransactionType transactionType,
-                                TransactionCategorySnapshot transactionCategory, Description description, Integer targetAccountId,
-                        Integer sourceAccountId, String borrowDescription, LocalDateTime repaymentDate, Integer receiptId) {
+                        Integer transactionCategoryId, Description description, Integer targetAccountId,
+                        Integer sourceAccountId, LocalDateTime repaymentDate, Integer receiptId) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
         this.transactionType = transactionType;
-        this.transactionCategory = transactionCategory;
+        this.transactionCategoryId = transactionCategoryId;
         this.description=description;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.borrowDescription=borrowDescription;
         this.repaymentDate=repaymentDate;
         this.receiptId=receiptId;
     }
@@ -52,8 +50,8 @@ class TransactionSnapshot {
         return transactionType;
     }
 
-    TransactionCategorySnapshot getTransactionCategory() {
-        return transactionCategory;
+    Integer getTransactionCategoryId() {
+        return transactionCategoryId;
     }
 
     Description getDescription() {
@@ -66,10 +64,6 @@ class TransactionSnapshot {
 
     int getSourceAccountId() {
         return sourceAccountId;
-    }
-
-    String getBorrowDescription() {
-        return borrowDescription;
     }
 
     LocalDateTime getRepaymentDate() {

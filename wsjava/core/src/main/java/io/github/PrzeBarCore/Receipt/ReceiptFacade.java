@@ -4,9 +4,7 @@ import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.ProductFacade;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -61,7 +59,7 @@ public class ReceiptFacade {
                                     item.getQuantity(),
                                     item.getRegularPrice().toBigDecimal(),
                                     item.getDiscount().toBigDecimal(),
-                                    item.getProductCategoryId()))
+                                    item.getCategoryId()))
                             .collect(toList()));
         }
 

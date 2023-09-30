@@ -1,10 +1,8 @@
 package io.github.PrzeBarCore.Receipt;
 
-import io.github.PrzeBarCore.ValueObjects.Company;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,7 +50,7 @@ class Receipt {
                     snapshot.getQuantity(),
                     snapshot.getRegularPrice(),
                     snapshot.getDiscount(),
-                    snapshot.getProductCategoryId());
+                    snapshot.getCategoryId());
         }
         private Integer id;
         private NameString name;
@@ -61,7 +59,7 @@ class Receipt {
         private MonetaryAmount regularPrice;
         private MonetaryAmount discount;
         //transactionCategory
-        private Integer productCategoryId;
+        private Integer categoryId;
 
          private ReceiptItemSnapshot getItemSnapshot(){
             return new ReceiptItemSnapshot(this.id,
@@ -70,17 +68,17 @@ class Receipt {
                     this.quantity,
                     this.regularPrice,
                     this.discount,
-                    this.productCategoryId);
+                    this.categoryId);
         }
 
-         private ReceiptItem(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer productCategoryId) {
+         private ReceiptItem(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer categoryId) {
              this.id = id;
              this.name = name;
              this.productId = productId;
              this.quantity = quantity;
              this.regularPrice = regularPrice;
              this.discount = discount;
-             this.productCategoryId = productCategoryId;
+             this.categoryId = categoryId;
          }
      }
 }

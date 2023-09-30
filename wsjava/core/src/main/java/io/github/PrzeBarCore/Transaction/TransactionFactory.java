@@ -1,27 +1,72 @@
 package io.github.PrzeBarCore.Transaction;
 
-import io.github.PrzeBarCore.Transaction.Dto.TransactionCategoryDto;
-import io.github.PrzeBarCore.Transaction.Dto.TransactionDto;
-
 public class TransactionFactory {
-//    public static TransactionDto createTransactionFromSnapshot(TransactionSnapshot transactionSnapshot){
-//        return TransactionDto.builder().withId(transactionSnapshot.getId())
-//                .withAccountId(transactionSnapshot.getAccountId())
-//                .withIssuedOnDateTime(transactionSnapshot.getIssuedOnDateTime())
-//                .withTotalValue(transactionSnapshot.getTotalValue())
-//                .withTransactionCategory(createCategoryFromSnapshot(transactionSnapshot.getTransactionCategory()))
-//                .withTransactionType(transactionSnapshot.getTransactionType())
-//                .build();
-//    }
-//
-//    public static TransactionCategoryDto createCategoryFromSnapshot(TransactionCategorySnapshot categorySnapshot){
-//        if(null!=categorySnapshot) {
-//            return TransactionCategoryDto.builder().withId(categorySnapshot.getId())
-//                    .withName(categorySnapshot.getName())
-//                    .withDependencyLevel(categorySnapshot.getDependencyLevel())
-//                    .withParentCategory(createCategoryFromSnapshot(categorySnapshot.getParentCategory()))
-//                    .build();
-//        }
-//        return null;
-//    }
+
+    static TransactionDto dtoFromSnapshot(TransactionSnapshot transactionSnapshot) {
+        if(null !=transactionSnapshot)
+        return TransactionDto.builder().withId(transactionSnapshot.getId())
+                .withIssuedOnDateTime(transactionSnapshot.getIssuedOnDateTime())
+                .withTotalValue(transactionSnapshot.getTotalValue())
+                .withTransactionCategoryId(transactionSnapshot.getTransactionCategoryId())
+                .withTransactionType(transactionSnapshot.getTransactionType())
+                .withDescription(transactionSnapshot.getDescription())
+                .withRepaymentDate(transactionSnapshot.getRepaymentDate())
+                .withSourceAccountId(transactionSnapshot.getSourceAccountId())
+                .withTargetAccountId(transactionSnapshot.getTargetAccountId())
+                .withReceiptId(transactionSnapshot.getReceiptId())
+                .build();
+        else
+            return null;
+    }
+
+    static TransactionSnapshot snapshotFromDto(TransactionDto transactionDto){
+        if(null!=transactionDto)
+        return new TransactionSnapshot(transactionDto.getId(),
+                transactionDto.getIssuedOnDateTime(),
+                transactionDto.getTotalValue(),
+                transactionDto.getTransactionType(),
+                transactionDto.getTransactionCategoryId(),
+                transactionDto.getDescription(),
+                transactionDto.getTargetAccountId(),
+                transactionDto.getSourceAccountId(), transactionDto.getRepaymentDate(),
+                transactionDto.getReceiptId() );
+        else
+            return null;
+    }
+
+    static Transaction restoreTransactionFromSnapshot(TransactionSnapshot transactionSnapshot){
+        Transaction transaction;
+        switch(transactionSnapshot.getTransactionType()){
+            case GIVEN_LOAN:
+                transaction = Transaction.Creator.createGivenLoanTransaction(transactionSnapshot);
+            break;
+            case TAKEN_LOAN:
+                transaction =Transaction.Creator.createTakenLoanTransaction(transactionSnapshot);
+                break;
+            case INCOME:
+                transaction =Transaction.Creator.createIncomeTransaction(transactionSnapshot);
+                break;
+            case OUTCOME:
+                transaction =Transaction.Creator.createOutcomeTransaction(transactionSnapshot);
+                break;
+            case RECEIPT:
+                transaction =Transaction.Creator.createReceiptTransaction(transactionSnapshot);
+                break;
+            case INNER_TRANSFER:
+                transaction =Transaction.Creator.createInnerTransferTransaction(transactionSnapshot);
+                break;
+            default:
+                transaction = null;
+        }
+
+        return transaction;
+    }
+
+    static Transaction restoreTransactionFromDto(TransactionDto transactionDto) {
+        return restoreTransactionFromSnapshot(snapshotFromDto(transactionDto));
+    }
+
+    static TransactionDto dtoFromTransaction(Transaction transaction) {
+        return dtoFromSnapshot(transaction.getSnapshot());
+    }
 }

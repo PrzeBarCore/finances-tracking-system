@@ -29,7 +29,7 @@
         </attributes>
     </entity>
 
-    <entity class="io.github.PrzeBarCore.Transaction.TransactionCategorySnapshot" access="FIELD">
+    <entity class="io.github.PrzeBarCore.Category.CategorySnapshot" access="FIELD">
         <table name="transaction_categories"/>
         <attributes>
             <id name="id">
@@ -44,9 +44,9 @@
             <one-to-one name="parentCategory">
                 <join-column name="parent_category_id"/>
             </one-to-one>
-            <embedded name="transactionType">
+            <embedded name="categoryType">
                 <attribute-override name="type">
-                    <column name="transaction_type" nullable="true"/>
+                    <column name="category_type" nullable="true"/>
                 </attribute-override>
             </embedded>
         </attributes>
@@ -113,6 +113,8 @@
             </id>
             <basic name="quantity"/>
             <basic name="unit"/>
+            <basic name="productCategoryId"/>
+            <basic name="defaultExpenseCategoryId"/>
             <embedded name="name">
                 <attribute-override name="text">
                     <column name="name" nullable="false"/>
@@ -182,6 +184,14 @@
     </embeddable>
 
     <embeddable class="io.github.PrzeBarCore.ValueObjects.TransactionType">
+        <attributes>
+            <basic name="type">
+                <enumerated>STRING</enumerated>
+            </basic>
+        </attributes>
+    </embeddable>
+
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.CategoryType">
         <attributes>
             <basic name="type">
                 <enumerated>STRING</enumerated>

@@ -4,7 +4,6 @@ import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
-
 import java.time.LocalDateTime;
 
 class Transaction {
@@ -12,7 +11,7 @@ class Transaction {
     private LocalDateTime issuedOnDateTime;
     private MonetaryAmount totalValue;
     private TransactionType transactionType;
-    private TransactionCategory transactionCategory;
+    private Integer transactionCategoryId;
     private Description description;
     private Integer targetAccountId;
     private Integer sourceAccountId;
@@ -21,27 +20,26 @@ class Transaction {
     private Integer receiptId;
 
     private Transaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, TransactionType transactionType,
-                        TransactionCategory transactionCategory, Description description, Integer targetAccountId,
+                        Integer transactionCategoryId, Description description, Integer targetAccountId,
                         Integer sourceAccountId, String borrowDescription, LocalDateTime repaymentDate, Integer receiptId) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
         this.transactionType = transactionType;
-        this.transactionCategory = transactionCategory;
+        this.transactionCategoryId = transactionCategoryId;
         this.description = description;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.borrowDescription = borrowDescription;
         this.repaymentDate = repaymentDate;
         this.receiptId = receiptId;
     }
 
     private Transaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue,
-                        TransactionCategory transactionCategory, Description description) {
+                        Integer transactionCategoryId, Description description) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
-        this.transactionCategory = transactionCategory;
+        this.transactionCategoryId = transactionCategoryId;
         this.description = description;
     }
 
@@ -50,11 +48,10 @@ class Transaction {
                 this.issuedOnDateTime,
                 this.totalValue,
                 this.transactionType,
-                this.transactionCategory.getSnapshot(),
+                this.transactionCategoryId,
                 this.description,
                 this.targetAccountId,
                 this.sourceAccountId,
-                this.borrowDescription,
                 this.repaymentDate,
                 this.receiptId);
     }
@@ -109,8 +106,7 @@ class Transaction {
         static Transaction createTakenLoanTransaction(TransactionSnapshot transactionSnapshot) {
             Transaction transaction = commonCreationPart(transactionSnapshot);
             transaction.setTransactionType(TransactionType.TAKEN_LOAN);
-            transaction.setTargetAccountId(transactionSnapshot.getTargetAccountId());
-            transaction.setBorrowDescription(transactionSnapshot.getBorrowDescription());
+            transaction.setTargetAccountId(transactionSnapshot.getTargetAccountId());;
             transaction.setRepaymentDate(transactionSnapshot.getRepaymentDate());
             return transaction;
         }
@@ -118,8 +114,7 @@ class Transaction {
         static Transaction createGivenLoanTransaction(TransactionSnapshot transactionSnapshot) {
             Transaction transaction = commonCreationPart(transactionSnapshot);
             transaction.setTransactionType(TransactionType.GIVEN_LOAN);
-            transaction.setSourceAccountId(transactionSnapshot.getSourceAccountId());
-            transaction.setBorrowDescription(transactionSnapshot.getBorrowDescription());
+            transaction.setSourceAccountId(transactionSnapshot.getSourceAccountId());;
             transaction.setRepaymentDate(transactionSnapshot.getRepaymentDate());
             return transaction;
         }
@@ -136,7 +131,7 @@ class Transaction {
             return new Transaction(transactionSnapshot.getId(),
                     transactionSnapshot.getIssuedOnDateTime(),
                     transactionSnapshot.getTotalValue(),
-                    TransactionCategory.restore(transactionSnapshot.getTransactionCategory()),
+                    transactionSnapshot.getTransactionCategoryId(),
                     transactionSnapshot.getDescription());
         }
     }

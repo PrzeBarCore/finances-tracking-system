@@ -1,13 +1,7 @@
 package io.github.PrzeBarCore.Transaction
 
-import io.github.PrzeBarCore.Transaction.Dto.TransactionCategoryDto
-import io.github.PrzeBarCore.Transaction.Dto.TransactionDto
-import io.github.PrzeBarCore.ValueObjects.MonetaryAmount
-import io.github.PrzeBarCore.ValueObjects.NameString
-import io.github.PrzeBarCore.ValueObjects.TransactionType
-import spock.lang.Specification
 
-import java.time.LocalDateTime
+import spock.lang.Specification
 
 class TransactionSpec extends Specification {
 //

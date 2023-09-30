@@ -10,7 +10,9 @@ class Product {
                 snapshot.getName(),
                 snapshot.getProducer(),
                 snapshot.getQuantity(),
-                snapshot.getUnit()
+                snapshot.getUnit(),
+                snapshot.getProductCategoryId(),
+                snapshot.getDefaultExpenseCategoryId()
         );
     }
     private Integer id;
@@ -18,17 +20,21 @@ class Product {
     private Company producer;
     private Double quantity;
     private String unit;
+    private Integer productCategoryId;
+    private Integer defaultExpenseCategoryId;
 
-    private Product(Integer id, NameString name, Company producer, Double quantity, String unit) {
+    private Product(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId, Integer defaultExpenseCategoryId) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
+        this.productCategoryId = productCategoryId;
+        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
     }
 
     ProductSnapshot getSnapshot(){
-        return new ProductSnapshot(this.id,this.name,this.producer,this.quantity,this.unit);
+        return new ProductSnapshot(this.id,this.name,this.producer,this.quantity,this.unit, this.productCategoryId, this.defaultExpenseCategoryId);
     }
 
 }

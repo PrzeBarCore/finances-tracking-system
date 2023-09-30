@@ -38,7 +38,9 @@ public class ProductFacade {
                 NameString.of(dto.getName()),
                 Company.of(dto.getProducer()),
                 dto.getQuantity(),
-                dto.getUnit());
+                dto.getUnit(),
+                dto.getProductCategoryId(),
+                dto.getDefaultExpenseCategoryId());
     }
 
     private ProductDto createFromSnapshot(ProductSnapshot snapshot){
@@ -46,7 +48,9 @@ public class ProductFacade {
                 snapshot.getName().getText(),
                 snapshot.getProducer().getText(),
                 snapshot.getQuantity(),
-                snapshot.getUnit());
+                snapshot.getUnit(),
+                snapshot.getProductCategoryId(),
+                snapshot.getDefaultExpenseCategoryId());
     }
 
 }

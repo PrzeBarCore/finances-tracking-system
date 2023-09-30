@@ -6,9 +6,9 @@ regular_price double NOT NULL,
 discount double,
 receipt_id int,
 product_id int,
-product_category_id int, --NOT NULL,
---FOREIGN KEY(receipt_id) REFERENCES receipts(id),
+category_id int, --NOT NULL,
+FOREIGN KEY(receipt_id) REFERENCES receipts(id),
 FOREIGN KEY(product_id) REFERENCES products(id),
-FOREIGN KEY(product_category_id) REFERENCES transaction_categories(id)
+FOREIGN KEY(category_id) REFERENCES categories(id)
 )
 

@@ -1,21 +1,22 @@
 package io.github.PrzeBarCore.Product;
 
-import io.github.PrzeBarCore.ValueObjects.Company;
-import io.github.PrzeBarCore.ValueObjects.NameString;
-
 public class ProductDto {
     private Integer id;
     private String name;
     private String producer;
     private Double quantity;
     private String unit;
+    private Integer productCategoryId;
+    private Integer defaultExpenseCategoryId;
 
-    public ProductDto(Integer id, String name, String producer, Double quantity, String unit) {
+    public ProductDto(Integer id, String name, String producer, Double quantity, String unit, Integer productCategoryId, Integer defaultExpenseCategoryId) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
+        this.productCategoryId = productCategoryId;
+        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
     }
 
     public Integer getId() {
@@ -56,5 +57,21 @@ public class ProductDto {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public Integer getProductCategoryId() {
+        return productCategoryId;
+    }
+
+    public void setProductCategoryId(final Integer productCategoryId) {
+        this.productCategoryId = productCategoryId;
+    }
+
+    public Integer getDefaultExpenseCategoryId() {
+        return defaultExpenseCategoryId;
+    }
+
+    public void setDefaultExpenseCategoryId(final Integer defaultExpenseCategoryId) {
+        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
     }
 }
