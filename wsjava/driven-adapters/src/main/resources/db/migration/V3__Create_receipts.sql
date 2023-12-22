@@ -1,6 +1,6 @@
-CREATE TABLE Receipts (
-id int not null PRIMARY KEY auto_increment,
-issued_on_date_time timestamp NOT NULL,
-total_value double NOT NULL,
-containing_list_of_items varchar(5) NOT NULL
+CREATE TABLE IF NOT EXISTS Receipts (
+id INTEGER PRIMARY KEY,
+issued_on_date_time TEXT NOT NULL,
+total_value REAL NOT NULL,
+containing_list_of_items TEXT NOT NULL
 )

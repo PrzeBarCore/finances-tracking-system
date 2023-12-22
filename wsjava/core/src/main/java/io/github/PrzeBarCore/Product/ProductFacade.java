@@ -9,14 +9,16 @@ import java.util.stream.Collectors;
 
 public class ProductFacade {
     private final ProductRepository repository;
+    private final ProductFactory factory;
 
-    ProductFacade(final ProductRepository repository) {
+    ProductFacade(final ProductRepository repository, final ProductFactory factory) {
         this.repository = repository;
+        this.factory= factory;
     }
 
     public Optional<ProductDto> findProduct(Integer id) {
         if(null !=id)
-            return repository.findById(id).map(product -> createFromSnapshot(product.getSnapshot()));
+            return repository.findById(id).map(factory::createDto);
         else
             return Optional.empty();
     }
@@ -24,33 +26,13 @@ public class ProductFacade {
     Set<ProductDto> findProductSet(NameString name, Company producer){
         return repository.findByNameContainingAndProducerContaining(name, producer )
                 .stream()
-                .map(product -> createFromSnapshot(product.getSnapshot()))
+                .map(factory::createDto)
                 .collect(Collectors.toSet());
     }
 
     public ProductDto createProduct(ProductDto productToCreate) {
-        return createFromSnapshot(repository.save(Product.restore(createFromDto(productToCreate))).getSnapshot());
+        return factory.createDto(repository.save(factory.createEntity(productToCreate)));
     }
 
-
-    private ProductSnapshot createFromDto(ProductDto dto){
-        return new ProductSnapshot(0,
-                NameString.of(dto.getName()),
-                Company.of(dto.getProducer()),
-                dto.getQuantity(),
-                dto.getUnit(),
-                dto.getProductCategoryId(),
-                dto.getDefaultExpenseCategoryId());
-    }
-
-    private ProductDto createFromSnapshot(ProductSnapshot snapshot){
-        return new ProductDto(snapshot.getId(),
-                snapshot.getName().getText(),
-                snapshot.getProducer().getText(),
-                snapshot.getQuantity(),
-                snapshot.getUnit(),
-                snapshot.getProductCategoryId(),
-                snapshot.getDefaultExpenseCategoryId());
-    }
 
 }

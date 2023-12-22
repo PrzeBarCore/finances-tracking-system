@@ -1,6 +1,6 @@
-CREATE TABLE Accounts (
-id int not null PRIMARY KEY auto_increment,
-name varchar(100) NOT NULL,
-balance double NOT NULL,
-currency varchar(3) NOT NULL
+CREATE TABLE IF NOT EXISTS Accounts (
+id INTEGER PRIMARY KEY,
+name TEXT NOT NULL,
+balance REAL NOT NULL,
+currency TEXT NOT NULL
 )

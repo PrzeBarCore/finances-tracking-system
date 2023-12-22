@@ -1,6 +1,6 @@
 package io.github.PrzeBarCore.Account
 
-import io.github.PrzeBarCore.Account.Dto.AccountDto
+
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount
 import io.github.PrzeBarCore.ValueObjects.NameString
 import io.github.PrzeBarCore.ValueObjects.SimpleCurrency
@@ -14,19 +14,19 @@ class AccountSpec extends Specification{
 
     def "should get an account"(){
         when: "new account is added"
-        accountFacade.add(wallet)
+        accountFacade.createAccount(wallet)
 
         then: "system has this account"
-        accountFacade.find(wallet.getId()).get() == wallet
+        accountFacade.findAccount(wallet.getId()).get() == wallet
     }
 
     def "should list accounts "(){
         given: "two accounts exist in the system"
-        accountFacade.add(wallet)
-        accountFacade.add(bankAccount)
+        accountFacade.createAccount(wallet)
+        accountFacade.createAccount(bankAccount)
 
         when: "we ask for all accounts"
-        List<AccountDto> resultList=accountFacade.findAll()
+        List<AccountDto> resultList=accountFacade.findAllAccounts()
         AccountDto wallet2=createAccountDto(1,NameString.of("Wallet"), MonetaryAmount.of(300), SimpleCurrency.PLN)
         AccountDto bankAccount2=createAccountDto(2,NameString.of("PKO BP"), MonetaryAmount.of(300), SimpleCurrency.PLN)
 
@@ -38,19 +38,19 @@ class AccountSpec extends Specification{
 
     def "should remove account from the system"(){
         given: "account exists in the system"
-        accountFacade.add(wallet)
+        accountFacade.createAccount(wallet)
 
         when: "we ask for removing account"
-        accountFacade.remove(wallet.getId())
+        accountFacade.removeAccount(wallet.getId())
 
         then: "account cannot be found in repository"
-        Optional<AccountDto> result= accountFacade.find(wallet.getId())
+        Optional<AccountDto> result= accountFacade.findAccount(wallet.getId())
         result.isEmpty()
     }
 
     def "should update data of account"(){
         given: "account exists in the system"
-        accountFacade.add(wallet);
+        accountFacade.createAccount(wallet);
 
         when: "we update update account data and save in repository"
         AccountDto changedWallet=createAccountDto(1,NameString.of("Changed name"), MonetaryAmount.of(400), SimpleCurrency.PLN)
@@ -64,7 +64,7 @@ class AccountSpec extends Specification{
 
     def "should return empty Optional for incorrect dto to update"(){
         given: "account exists in the system"
-        accountFacade.add(wallet);
+        accountFacade.createAccount(wallet);
 
         when: "we update update account data and save in repository"
         AccountDto changedWallet=createAccountDto(2,NameString.of("Changed name"), MonetaryAmount.of(400), SimpleCurrency.PLN)

@@ -1,4 +1,4 @@
-package io.github.PrzeBarCore.Account.Dto;
+package io.github.PrzeBarCore.Account;
 
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;

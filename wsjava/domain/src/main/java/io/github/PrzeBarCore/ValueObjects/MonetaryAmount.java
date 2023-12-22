@@ -26,12 +26,13 @@ public class MonetaryAmount {
     public int compareTo(MonetaryAmount valueToBeCompared){
         return this.value.compareTo(new BigDecimal(valueToBeCompared.toString()));
     }
-
+    public BigDecimal getValue() {
+        return value;
+    }
     @Override
     public String toString() {
         return value.toString();
     }
-
     public BigDecimal toBigDecimal(){
         return new BigDecimal(value.toString());
     }

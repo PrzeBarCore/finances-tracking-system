@@ -8,6 +8,12 @@ import { ReceiptFormComponent } from './receipt-form/receipt-form.component';
 import { ReceiptListComponent } from './receipt-list/receipt-list.component';
 import { ReceiptService } from './service/receipt-service';
 import { ReactiveFormsModule } from '@angular/forms';
+import {
+  FontAwesomeModule,
+  FaIconLibrary,
+} from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 @NgModule({
   declarations: [ReceiptFormComponent, ReceiptListComponent],
@@ -18,7 +24,12 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   providers: [ReceiptService],
 })
-export class ReceiptModule {}
+export class ReceiptModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, far);
+  }
+}

@@ -1,22 +1,26 @@
 package io.github.PrzeBarCore.Product;
 
+import io.github.PrzeBarCore.Category.CategoryDto;
+
+import java.util.Optional;
+
 public class ProductDto {
     private Integer id;
     private String name;
     private String producer;
     private Double quantity;
     private String unit;
-    private Integer productCategoryId;
-    private Integer defaultExpenseCategoryId;
+    private CategoryDto productCategory;
+    private Optional<CategoryDto> defaultExpenseCategory;
 
-    public ProductDto(Integer id, String name, String producer, Double quantity, String unit, Integer productCategoryId, Integer defaultExpenseCategoryId) {
+    public ProductDto(Integer id, String name, String producer, Double quantity, String unit, CategoryDto productCategory, Optional<CategoryDto> defaultExpenseCategory) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
-        this.productCategoryId = productCategoryId;
-        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
+        this.productCategory = productCategory;
+        this.defaultExpenseCategory = defaultExpenseCategory;
     }
 
     public Integer getId() {
@@ -59,19 +63,19 @@ public class ProductDto {
         this.unit = unit;
     }
 
-    public Integer getProductCategoryId() {
-        return productCategoryId;
+    public CategoryDto getProductCategory() {
+        return productCategory;
     }
 
-    public void setProductCategoryId(final Integer productCategoryId) {
-        this.productCategoryId = productCategoryId;
+    public void setProductCategory(final CategoryDto productCategory) {
+        this.productCategory = productCategory;
     }
 
-    public Integer getDefaultExpenseCategoryId() {
-        return defaultExpenseCategoryId;
+    public Optional<CategoryDto> getDefaultExpenseCategory() {
+        return defaultExpenseCategory;
     }
 
-    public void setDefaultExpenseCategoryId(final Integer defaultExpenseCategoryId) {
-        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
+    public void setDefaultExpenseCategory(final Optional<CategoryDto> defaultExpenseCategory) {
+        this.defaultExpenseCategory = defaultExpenseCategory;
     }
 }

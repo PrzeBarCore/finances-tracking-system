@@ -50,7 +50,7 @@ class Receipt {
                     snapshot.getQuantity(),
                     snapshot.getRegularPrice(),
                     snapshot.getDiscount(),
-                    snapshot.getCategoryId());
+                    snapshot.getExpenseCategoryId());
         }
         private Integer id;
         private NameString name;
@@ -58,8 +58,7 @@ class Receipt {
         private Double quantity;
         private MonetaryAmount regularPrice;
         private MonetaryAmount discount;
-        //transactionCategory
-        private Integer categoryId;
+        private Integer expenseCategoryId;
 
          private ReceiptItemSnapshot getItemSnapshot(){
             return new ReceiptItemSnapshot(this.id,
@@ -68,17 +67,17 @@ class Receipt {
                     this.quantity,
                     this.regularPrice,
                     this.discount,
-                    this.categoryId);
+                    this.expenseCategoryId);
         }
 
-         private ReceiptItem(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer categoryId) {
+         private ReceiptItem(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer expenseCategoryId) {
              this.id = id;
              this.name = name;
              this.productId = productId;
              this.quantity = quantity;
              this.regularPrice = regularPrice;
              this.discount = discount;
-             this.categoryId = categoryId;
+             this.expenseCategoryId = expenseCategoryId;
          }
      }
 }

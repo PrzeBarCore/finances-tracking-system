@@ -1,14 +1,14 @@
-CREATE TABLE Receipt_items (
-id int not null PRIMARY KEY auto_increment,
-name varchar(100) NOT NULL,
-quantity double NOT NULL,
-regular_price double NOT NULL,
-discount double,
-receipt_id int,
-product_id int,
-category_id int, --NOT NULL,
+CREATE TABLE IF NOT EXISTS Receipt_items (
+id INTEGER PRIMARY KEY,
+name TEXT NOT NULL,
+quantity REAL NOT NULL,
+regular_price REAL NOT NULL,
+discount REAL,
+receipt_id INTEGER NOT NULL,
+product_id INTEGER,
+expense_category_id INTEGER NOT NULL,
 FOREIGN KEY(receipt_id) REFERENCES receipts(id),
 FOREIGN KEY(product_id) REFERENCES products(id),
-FOREIGN KEY(category_id) REFERENCES categories(id)
+FOREIGN KEY(expense_category_id) REFERENCES categories(id)
 )
 

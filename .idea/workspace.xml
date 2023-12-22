@@ -5,7 +5,58 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8343cfb1-12ba-4ecc-a0a2-cc076bb8ffef" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V2__Create_categories.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/model/receipt-item.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/model/receipt-item.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/model/receipt.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/model/receipt.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt-form/receipt-form.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt-form/receipt-form.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt-form/receipt-form.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt-form/receipt-form.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/app/receipt/receipt.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front/finances-tracking-system/src/styles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/front/finances-tracking-system/src/styles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/AccountFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/AccountFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/AccountFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/AccountFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/Dto/AccountDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Account/AccountDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Category/CategoryDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Category/CategoryDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Category/CategoryFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Category/CategoryFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Product/ProductDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Product/ProductDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Product/ProductFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Product/ProductFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/main/java/io/github/PrzeBarCore/Transaction/TransactionFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/core/src/test/groovy/io/github/PrzeBarCore/Account/AccountSpec.groovy" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/core/src/test/groovy/io/github/PrzeBarCore/Account/AccountSpec.groovy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/CategorySnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Category/CategorySnapshot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Receipt/Receipt.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Receipt/Receipt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptItemSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptItemSnapshot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Transaction/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Transaction/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Transaction/TransactionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/Transaction/TransactionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/CategoryType.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/CategoryType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/MonetaryAmount.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/MonetaryAmount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/SimpleCurrency.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/domain/src/main/java/io/github/PrzeBarCore/ValueObjects/SimpleCurrency.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/META-INF/orm.xml" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/META-INF/orm.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V1__Initial_migration.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V1__Initial_migration.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V2__Create_transaction_categories.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V3__Create_receipts.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V3__Create_receipts.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V4__Create_products.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V4__Create_products.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V5__Create_receipt_items.sql" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driven-adapters/src/main/resources/db/migration/V5__Create_receipt_items.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Account/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Account/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Product/ProductConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Product/ProductConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Receipt/ReceiptConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Transaction/TransactionConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/wsjava/driving-adapters/src/main/java/io/github/PrzeBarCore/Transaction/TransactionConfiguration.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +65,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -29,13 +83,13 @@
     <option name="showLibraryContents" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/Dev/finances-tracking-system/wsjava/pom.xml"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Dev/finances-tracking-system/wsjava/pom.xml&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

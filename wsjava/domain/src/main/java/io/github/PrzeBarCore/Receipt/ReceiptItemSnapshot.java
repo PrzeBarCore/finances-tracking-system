@@ -10,17 +10,17 @@ class ReceiptItemSnapshot {
     private Double quantity;
     private MonetaryAmount regularPrice;
     private MonetaryAmount discount;
-    private Integer categoryId;
+    private Integer expenseCategoryId;
 
     ReceiptItemSnapshot(){}
-    ReceiptItemSnapshot(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer categoryId) {
+    ReceiptItemSnapshot(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer expenseCategoryId) {
         this.id = id;
         this.name = name;
         this.productId = productId;
         this.quantity = quantity;
         this.regularPrice = regularPrice;
         this.discount = discount;
-        this.categoryId = categoryId;
+        this.expenseCategoryId = expenseCategoryId;
     }
 
     Integer getId() {
@@ -47,7 +47,7 @@ class ReceiptItemSnapshot {
         return discount;
     }
 
-    Integer getCategoryId() {
-        return categoryId;
+    Integer getExpenseCategoryId() {
+        return expenseCategoryId;
     }
 }

@@ -1,5 +1,6 @@
 package io.github.PrzeBarCore.Receipt;
 
+import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReceiptDto {
+    private Integer id;
     private LocalDateTime issuedOnDateTime;
     private BigDecimal totalValue;
     private boolean isContainingListOfItems;
@@ -19,6 +21,14 @@ public class ReceiptDto {
         this.totalValue = totalValue;
         this.isContainingListOfItems = isContainingListOfItems;
         this.items = items;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public LocalDateTime getIssuedOnDateTime() {
@@ -59,15 +69,15 @@ public class ReceiptDto {
         private Double quantity;
         private BigDecimal regularPrice;
         private BigDecimal discount;
-        private Integer productCategoryId;
+        private CategoryDto expenseCategory;
 
-        public DtoItem(NameString name, Optional<ProductDto> product, Double quantity, BigDecimal regularPrice, BigDecimal discount, Integer productCategoryId) {
+        public DtoItem(NameString name, Optional<ProductDto> product, Double quantity, BigDecimal regularPrice, BigDecimal discount, CategoryDto expenseCategory) {
             this.name = name;
             this.product = product;
             this.quantity = quantity;
             this.regularPrice = regularPrice;
             this.discount = discount;
-            this.productCategoryId = productCategoryId;
+            this.expenseCategory = expenseCategory;
         }
 
         public NameString getName() {
@@ -110,12 +120,12 @@ public class ReceiptDto {
             this.discount = discount;
         }
 
-        public Integer getProductCategoryId() {
-            return productCategoryId;
+        public CategoryDto getExpenseCategory() {
+            return expenseCategory;
         }
 
-        public void setProductCategoryId(Integer productCategoryId) {
-            this.productCategoryId = productCategoryId;
+        public void setExpenseCategory(CategoryDto expenseCategory) {
+            this.expenseCategory = expenseCategory;
         }
     }
 }

@@ -1,10 +1,14 @@
 package io.github.PrzeBarCore.Transaction;
 
+import io.github.PrzeBarCore.Account.AccountDto;
+import io.github.PrzeBarCore.Category.CategoryDto;
+import io.github.PrzeBarCore.Receipt.ReceiptDto;
 import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class TransactionDto {
     private int id;
@@ -13,10 +17,10 @@ public class TransactionDto {
     private TransactionType transactionType;
     private Description description;
     private LocalDateTime repaymentDate;
-    private Integer transactionCategoryId;
-    private int targetAccountId;
-    private int sourceAccountId;
-    private int receiptId;
+    private Optional<CategoryDto> transactionCategory;
+    private Optional<AccountDto> targetAccount;
+    private Optional<AccountDto> sourceAccount;
+    private Optional<ReceiptDto> receipt;
 
     private TransactionDto(){}
 
@@ -41,28 +45,28 @@ public class TransactionDto {
         return transactionType;
     }
 
-    public Integer getTransactionCategoryId() {
-        return transactionCategoryId;
+    public Optional<CategoryDto> getTransactionCategory() {
+        return transactionCategory;
     }
 
     public Description getDescription() {
         return description;
     }
 
-    public int getTargetAccountId() {
-        return targetAccountId;
+    public Optional<AccountDto> getTargetAccount() {
+        return targetAccount;
     }
 
-    public int getSourceAccountId() {
-        return sourceAccountId;
+    public Optional<AccountDto> getSourceAccount() {
+        return sourceAccount;
     }
 
     public LocalDateTime getRepaymentDate() {
         return repaymentDate;
     }
 
-    public int getReceiptId() {
-        return receiptId;
+    public Optional<ReceiptDto> getReceipt() {
+        return receipt;
     }
 
     public static class Builder{
@@ -70,12 +74,12 @@ public class TransactionDto {
         private LocalDateTime issuedOnDateTime;
         private MonetaryAmount totalValue;
         private TransactionType transactionType;
-        private Integer transactionCategoryId;
         private Description description;
-        private int targetAccountId;
-        private int sourceAccountId;
         private LocalDateTime repaymentDate;
-        private int receiptId;
+        private Optional<CategoryDto> transactionCategory;
+        private Optional<AccountDto> targetAccount;
+        private Optional<AccountDto> sourceAccount;
+        private Optional<ReceiptDto> receipt;
 
         private Builder(){}
 
@@ -99,8 +103,8 @@ public class TransactionDto {
             return this;
         }
 
-        public Builder withTransactionCategoryId(Integer transactionCategoryId) {
-            this.transactionCategoryId = transactionCategoryId;
+        public Builder withTransactionCategory(Optional<CategoryDto> transactionCategory) {
+            this.transactionCategory = transactionCategory;
             return this;
         }
 
@@ -109,18 +113,18 @@ public class TransactionDto {
             return this;
         }
 
-        public Builder withTargetAccountId(Integer targetAccountId) {
-            this.targetAccountId = targetAccountId;
+        public Builder withTargetAccount(Optional<AccountDto> targetAccount) {
+            this.targetAccount = targetAccount;
             return this;
         }
 
-        public Builder withSourceAccountId(Integer sourceAccountId) {
-            this.sourceAccountId = sourceAccountId;
+        public Builder withSourceAccount(Optional<AccountDto> sourceAccountId) {
+            this.sourceAccount = sourceAccount;
             return this;
         }
 
-        public Builder withReceiptId(Integer receiptId) {
-            this.receiptId = receiptId;
+        public Builder withReceipt(Optional<ReceiptDto> receipt) {
+            this.receipt = receipt;
             return this;
         }
 
@@ -135,11 +139,11 @@ public class TransactionDto {
             dto.issuedOnDateTime=this.issuedOnDateTime;
             dto.totalValue=this.totalValue;
             dto.transactionType=this.transactionType;
-            dto.transactionCategoryId=this.transactionCategoryId;
+            dto.transactionCategory =this.transactionCategory;
             dto.description=this.description;
-            dto.sourceAccountId=this.sourceAccountId;
-            dto.targetAccountId=this.targetAccountId;
-            dto.receiptId=this.receiptId;
+            dto.sourceAccount =this.sourceAccount;
+            dto.targetAccount =this.targetAccount;
+            dto.receipt =this.receipt;
             dto.repaymentDate=this.repaymentDate;
             return dto;
         }

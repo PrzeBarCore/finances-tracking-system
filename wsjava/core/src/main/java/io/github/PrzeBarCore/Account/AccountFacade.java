@@ -1,57 +1,47 @@
 package io.github.PrzeBarCore.Account;
 
-import io.github.PrzeBarCore.Account.Dto.AccountDto;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-class AccountFacade {
-    private final AccountRepository accountRepository;
+public class AccountFacade {
+    private final AccountRepository repository;
 
-    AccountFacade(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    AccountFacade(AccountRepository repository) {
+        this.repository = repository;
     }
 
-    public Optional<AccountDto> add(AccountDto accountDto) {
-        if(!accountRepository.existsById(accountDto.getId()))
-            return save(accountDto);
-        return Optional.empty();
+    public AccountDto createAccount(AccountDto accountDto) {
+        if(!repository.existsById(accountDto.getId()))
+            return saveAccount(accountDto);
+        else
+            return accountDto;
     }
 
     public Optional<AccountDto> updateAccount(AccountDto accountDto) {
-        if(accountRepository.existsById(accountDto.getId()))
-            return save(accountDto);
+        if(repository.existsById(accountDto.getId()))
+            return Optional.of(saveAccount(accountDto));
         return Optional.empty();
     }
 
-    public List<AccountDto> findAll(){
-        return accountRepository.findAll().stream().map(account -> DtoFromSnapshot(account.getSnapshot())).collect(Collectors.toList());
+    public List<AccountDto> findAllAccounts(){
+        return repository.findAll().stream().map(AccountFactory::createDto).toList();
     }
 
-    public Optional<AccountDto> find(int id) {
-        return accountRepository.findById(id).flatMap(account -> Optional.of(DtoFromSnapshot(account.getSnapshot())));
+    public Optional<AccountDto> findAccount(int id) {
+        return repository.findById(id).map(AccountFactory::createDto);
     }
 
-    public boolean remove(int id) {
-        Optional<Account> result=accountRepository.findById(id);
+    public boolean removeAccount(int id) {
+        Optional<Account> result= repository.findById(id);
         if(result.isPresent()){
-            accountRepository.delete(result.get());
+            repository.delete(result.get());
             return true;
         }
         return false;
     }
 
-    private Optional<AccountDto>save(AccountDto accountDto){
-        return Optional.ofNullable(DtoFromSnapshot(accountRepository.save(Account.restore(snapshotFromDto(accountDto))).getSnapshot()));
+    private AccountDto saveAccount(AccountDto accountDto){
+        return AccountFactory.createDto(repository.save(AccountFactory.createEntity(accountDto)));
     }
 
-    //TODO na razie bez tranzakcji
-    private AccountSnapshot snapshotFromDto(AccountDto accountDto){
-        return new AccountSnapshot(accountDto.getId(),accountDto.getName(), accountDto.getBalance(), accountDto.getCurrency());
-    }
-    //bez transakcjii
-    private AccountDto DtoFromSnapshot(AccountSnapshot accountSnapshot){
-        return AccountDto.builder().withId(accountSnapshot.getId()).withAccountName(accountSnapshot.getName()).withBalance(accountSnapshot.getBalance()).withCurrency(accountSnapshot.getCurrency()).build();
-    }
 }

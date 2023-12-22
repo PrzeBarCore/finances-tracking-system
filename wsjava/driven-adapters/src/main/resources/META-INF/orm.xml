@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
-                 version="1.0">
-    <description>JPA Mapping file </description>
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd"
+                 version="2.1">
 
+
+    <description>JPA Mapping file </description>
 
     <entity class="io.github.PrzeBarCore.Account.AccountSnapshot" access="FIELD">
         <table name="accounts"/>
@@ -14,6 +15,7 @@
             </id>
             <basic name="currency">
                 <column nullable="false"/>
+                <enumerated>STRING</enumerated>
             </basic>
             <embedded name="name">
                 <attribute-override name="text">
@@ -25,28 +27,31 @@
                     <column name="balance" nullable="false"/>
                 </attribute-override>
             </embedded>
-
         </attributes>
     </entity>
 
     <entity class="io.github.PrzeBarCore.Category.CategorySnapshot" access="FIELD">
-        <table name="transaction_categories"/>
+        <table name="categories"/>
         <attributes>
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="name">
-                <column nullable="false"/>
+            <basic name="categoryType">
+                <column name="category_type" nullable="false"/>
+                <enumerated>STRING</enumerated>
             </basic>
-            <basic name="dependencyLevel">
-                <column name="dependency_level" nullable="false"/>
-            </basic>
-            <one-to-one name="parentCategory">
+            <many-to-one name="parentCategory">
                 <join-column name="parent_category_id"/>
-            </one-to-one>
-            <embedded name="categoryType">
-                <attribute-override name="type">
-                    <column name="category_type" nullable="true"/>
+            </many-to-one>
+            <one-to-many name="childCategories" fetch="EAGER">
+                <join-column name="parent_category_id" referenced-column-name="id"/>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name" nullable="false"/>
                 </attribute-override>
             </embedded>
         </attributes>
@@ -59,9 +64,11 @@
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="issuedOnDateTime"/>
+            <basic name="issuedOnDateTime">
+                <column nullable="false"/>
+            </basic>
             <basic name="isContainingListOfItems">
-                <column name="containing_list_of_items"/>
+                <column name="containing_list_of_items" nullable="false"/>
             </basic>
             <one-to-many name="items" fetch="EAGER">
                 <join-column name="receipt_id" referenced-column-name="id"/>
@@ -84,9 +91,16 @@
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="quantity"/>
+            <basic name="quantity">
+                <column nullable="false"/>
+            </basic>
             <basic name="productId"/>
-            <basic name="productCategoryId"/>
+            <basic name="receiptId">
+                <column nullable="false"/>
+            </basic>
+            <basic name="expenseCategoryId">
+                <column nullable="false"/>
+            </basic>
             <embedded name="name">
                 <attribute-override name="text">
                     <column name="name" nullable="false"/>
@@ -111,9 +125,15 @@
             <id name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
-            <basic name="quantity"/>
-            <basic name="unit"/>
-            <basic name="productCategoryId"/>
+            <basic name="quantity">
+                <column nullable="false"/>
+            </basic>
+            <basic name="unit">
+                <column nullable="false"/>
+            </basic>
+            <basic name="productCategoryId">
+                <column nullable="false"/>
+            </basic>
             <basic name="defaultExpenseCategoryId"/>
             <embedded name="name">
                 <attribute-override name="text">
@@ -128,35 +148,38 @@
         </attributes>
     </entity>
 
+    <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">
+        <table name="transactions"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="issuedOnDateTime">
+                <column nullable="false"/>
+            </basic>
+            <basic name="transactionCategoryId"/>
+            <basic name="targetAccountId"/>
+            <basic name="sourceAccountId"/>
+            <basic name="receiptId"/>
+            <basic name="repaymentDate"/>
+            <basic name="transactionType">
+                <column nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <embedded name="totalValue">
+                <attribute-override name="value">
+                    <column name="total_value" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="description">
+                <attribute-override name="text">
+                    <column name="description" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
 
-
-
-<!--    <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">-->
-<!--        <table name="transactions"/>-->
-<!--        <attributes>-->
-<!--            <id name="id">-->
-<!--                <generated-value strategy="IDENTITY"/>-->
-<!--            </id>-->
-<!--            <basic name="issuedOnDateTime"/>-->
-<!--            <basic name="totalValue">-->
-<!--                <column nullable="false"/>-->
-<!--            </basic>-->
-<!--            <basic name="transactionType">-->
-<!--                <column nullable="false"/>-->
-<!--            </basic>-->
-<!--            <basic name="accountId">-->
-<!--                <column nullable="false"/>-->
-<!--            </basic>-->
-<!--            <many-to-one name="transactionCategory">-->
-<!--                <join-column name="category_id"/>-->
-<!--            </many-to-one>-->
-<!--        </attributes>-->
-<!--    </entity>-->
-
-
-
-
-    
+<!--Value objects-->
     <embeddable class="io.github.PrzeBarCore.ValueObjects.NameString">
     <attributes>
         <basic name="text"/>
@@ -169,35 +192,16 @@
         </attributes>
     </embeddable>
 
-    <embeddable class="io.github.PrzeBarCore.ValueObjects.SimpleCurrency">
-        <attributes>
-            <basic name="currency">
-                <enumerated>STRING</enumerated>
-            </basic>
-        </attributes>
-    </embeddable>
-
     <embeddable class="io.github.PrzeBarCore.ValueObjects.MonetaryAmount" access="FIELD">
         <attributes>
             <basic name="value"/>
         </attributes>
     </embeddable>
 
-    <embeddable class="io.github.PrzeBarCore.ValueObjects.TransactionType">
+    <embeddable class="io.github.PrzeBarCore.ValueObjects.Description">
         <attributes>
-            <basic name="type">
-                <enumerated>STRING</enumerated>
-            </basic>
+            <basic name="text"/>
         </attributes>
     </embeddable>
-
-    <embeddable class="io.github.PrzeBarCore.ValueObjects.CategoryType">
-        <attributes>
-            <basic name="type">
-                <enumerated>STRING</enumerated>
-            </basic>
-        </attributes>
-    </embeddable>
-    
 </entity-mappings>
 

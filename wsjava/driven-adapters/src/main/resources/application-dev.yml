@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    database-platform: org.sqlite.hibernate.dialect.SQLiteDialect
+  datasource:
+    url: jdbc:sqlite:file::memory:?cache=shared
+    driver-class-name : org.sqlite.JDBC
+    username : admin
+    password : admin
+  h2:
+    console:
+      enabled: true
