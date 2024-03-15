@@ -1,5 +1,6 @@
 export class Category {
   public isEdited = false;
+  public isChecked = true;
   constructor(
     public id: number,
     public name: string,
@@ -15,6 +16,17 @@ export class CategoryType {
   public static readonly Account = 'ACCOUNT';
   public static readonly Receipt = 'RECEIPT';
   public static readonly Product = 'PRODUCT';
+
+  public static isStringCategoryType(stringToCheck: string) {
+    if (
+      stringToCheck == this.Transaction ||
+      stringToCheck == this.Account ||
+      stringToCheck == this.Receipt ||
+      stringToCheck == this.Product
+    )
+      return true;
+    return false;
+  }
 
   public static translateUrlParam(urlParam: string): string {
     let result = '';

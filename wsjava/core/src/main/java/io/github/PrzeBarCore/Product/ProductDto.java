@@ -10,17 +10,19 @@ public class ProductDto {
     private String producer;
     private Double quantity;
     private String unit;
+    private Double defaultPrice;
     private CategoryDto productCategory;
-    private Optional<CategoryDto> defaultExpenseCategory;
+    private CategoryDto defaultReceiptTransactionCategory;
 
-    public ProductDto(Integer id, String name, String producer, Double quantity, String unit, CategoryDto productCategory, Optional<CategoryDto> defaultExpenseCategory) {
+    public ProductDto(Integer id, String name, String producer, Double quantity, String unit, CategoryDto productCategory, Double defaultPrice, CategoryDto defaultReceiptTransactionCategory) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
         this.productCategory = productCategory;
-        this.defaultExpenseCategory = defaultExpenseCategory;
+        this.defaultPrice = defaultPrice;
+        this.defaultReceiptTransactionCategory = defaultReceiptTransactionCategory;
     }
 
     public Integer getId() {
@@ -71,11 +73,11 @@ public class ProductDto {
         this.productCategory = productCategory;
     }
 
-    public Optional<CategoryDto> getDefaultExpenseCategory() {
-        return defaultExpenseCategory;
-    }
+    public Double getDefaultPrice() { return defaultPrice;}
 
-    public void setDefaultExpenseCategory(final Optional<CategoryDto> defaultExpenseCategory) {
-        this.defaultExpenseCategory = defaultExpenseCategory;
-    }
+    public void setDefaultPrice(Double defaultPrice) { this.defaultPrice = defaultPrice; }
+
+    public CategoryDto getDefaultReceiptTransactionCategory() { return defaultReceiptTransactionCategory; }
+
+    public void setDefaultReceiptTransactionCategory(CategoryDto defaultReceiptTransactionCategory) {this.defaultReceiptTransactionCategory = defaultReceiptTransactionCategory;}
 }

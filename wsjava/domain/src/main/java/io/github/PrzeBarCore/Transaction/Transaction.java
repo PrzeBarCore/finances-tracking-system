@@ -14,11 +14,11 @@ class Transaction {
                 snapshot.getIssuedOnDateTime(),
                 snapshot.getTotalValue(),
                 snapshot.getTransactionType(),
-                snapshot.getTransactionCategoryId(),
                 snapshot.getDescription(),
+                snapshot.getRepaymentDate(),
+                snapshot.getTransactionCategoryId(),
                 snapshot.getTargetAccountId(),
                 snapshot.getSourceAccountId(),
-                snapshot.getRepaymentDate(),
                 snapshot.getReceiptId()
         );
     }
@@ -28,23 +28,23 @@ class Transaction {
     private TransactionType transactionType;
     private Integer transactionCategoryId;
     private Description description;
+    private LocalDateTime repaymentDate;
     private Integer targetAccountId;
     private Integer sourceAccountId;
-    private LocalDateTime repaymentDate;
     private Integer receiptId;
 
     private Transaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, TransactionType transactionType,
-                        Integer transactionCategoryId, Description description, Integer targetAccountId,
-                        Integer sourceAccountId, LocalDateTime repaymentDate, Integer receiptId) {
+                        Description description, LocalDateTime repaymentDate, Integer transactionCategoryId, Integer targetAccountId,
+                        Integer sourceAccountId, Integer receiptId) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
         this.transactionType = transactionType;
-        this.transactionCategoryId = transactionCategoryId;
         this.description = description;
+        this.repaymentDate = repaymentDate;
+        this.transactionCategoryId = transactionCategoryId;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.repaymentDate = repaymentDate;
         this.receiptId = receiptId;
     }
 
@@ -53,11 +53,11 @@ class Transaction {
                 this.issuedOnDateTime,
                 this.totalValue,
                 this.transactionType,
-                this.transactionCategoryId,
                 this.description,
+                this.repaymentDate,
+                this.transactionCategoryId,
                 this.targetAccountId,
                 this.sourceAccountId,
-                this.repaymentDate,
                 this.receiptId);
     }
 

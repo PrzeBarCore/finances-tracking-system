@@ -6,6 +6,12 @@ import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.Receipt.ReceiptDto;
 import io.github.PrzeBarCore.Receipt.ReceiptFacade;
+import io.github.PrzeBarCore.ValueObjects.Description;
+import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
+import io.github.PrzeBarCore.ValueObjects.TransactionType;
+
+import java.math.BigDecimal;
+import java.util.Optional;
 
 public class TransactionFactory {
 
@@ -29,17 +35,16 @@ public class TransactionFactory {
     }
      private TransactionDto dtoFromSnapshot(TransactionSnapshot transactionSnapshot) {
         if(null !=transactionSnapshot)
-        return TransactionDto.builder().withId(transactionSnapshot.getId())
-                .withIssuedOnDateTime(transactionSnapshot.getIssuedOnDateTime())
-                .withTotalValue(transactionSnapshot.getTotalValue())
-                .withTransactionCategory(categoryFacade.findCategoryById(transactionSnapshot.getTransactionCategoryId()))
-                .withTransactionType(transactionSnapshot.getTransactionType())
-                .withDescription(transactionSnapshot.getDescription())
-                .withRepaymentDate(transactionSnapshot.getRepaymentDate())
-                .withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()))
-                .withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()))
-                .withReceipt(receiptFacade.findReceipt(transactionSnapshot.getReceiptId()))
-                .build();
+        return new TransactionDto(transactionSnapshot.getId(),
+                transactionSnapshot.getIssuedOnDateTime(),
+                transactionSnapshot.getTotalValue().getValue().doubleValue(),
+                transactionSnapshot.getTransactionType().name(),
+                transactionSnapshot.getDescription().getText(),
+                transactionSnapshot.getRepaymentDate(),
+                transactionSnapshot.getTransactionCategoryId() != null ?categoryFacade.findCategoryById(transactionSnapshot.getTransactionCategoryId()) : Optional.empty(),
+                transactionSnapshot.getTargetAccountId() != null ? accountFacade.findAccount(transactionSnapshot.getTargetAccountId()) : Optional.empty(),
+                transactionSnapshot.getSourceAccountId() != null ? accountFacade.findAccount(transactionSnapshot.getSourceAccountId()) : Optional.empty(),
+                transactionSnapshot.getReceiptId() != null ? receiptFacade.findReceipt(transactionSnapshot.getReceiptId()) : Optional.empty());
         else
             return null;
     }
@@ -48,13 +53,13 @@ public class TransactionFactory {
         if(null!=transactionDto)
         return new TransactionSnapshot(transactionDto.getId(),
                 transactionDto.getIssuedOnDateTime(),
-                transactionDto.getTotalValue(),
-                transactionDto.getTransactionType(),
+                MonetaryAmount.of(BigDecimal.valueOf(transactionDto.getTotalValue())),
+                TransactionType.valueOf(transactionDto.getTransactionType()),
+                Description.of(transactionDto.getDescription()),
+                transactionDto.getRepaymentDate(),
                 transactionDto.getTransactionCategory().map(CategoryDto::getId).orElse(null),
-                transactionDto.getDescription(),
                 transactionDto.getTargetAccount().map(AccountDto::getId).orElse(null),
                 transactionDto.getSourceAccount().map(AccountDto::getId).orElse(null),
-                transactionDto.getRepaymentDate(),
                 transactionDto.getReceipt().map(ReceiptDto::getId).orElse(null));
         else
             return null;

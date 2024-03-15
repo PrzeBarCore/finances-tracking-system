@@ -1,6 +1,5 @@
 package io.github.PrzeBarCore.Product;
 
-import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.ValueObjects.Company;
 import io.github.PrzeBarCore.ValueObjects.NameString;
@@ -13,22 +12,24 @@ public class ProductFactory {
         this.categoryFacade = categoryFacade;
     }
 
-    ProductDto createDto(Product product){
+    public ProductDto createDto(Product product){
         return createDto(product.getSnapshot());
     }
 
-    Product createEntity(ProductDto dto){
+    public Product createEntity(ProductDto dto){
         return Product.restore(createSnapshot(dto));
     }
 
     private ProductSnapshot createSnapshot(ProductDto dto){
-        return new ProductSnapshot(0,
+        return new ProductSnapshot(dto.getId(),
                 NameString.of(dto.getName()),
                 Company.of(dto.getProducer()),
                 dto.getQuantity(),
                 dto.getUnit(),
-                dto.getProductCategory().getId(),
-                dto.getDefaultExpenseCategory().map(CategoryDto::getId).orElse(null));
+                dto.getProductCategory() == null ? null : dto.getProductCategory().getId(),
+                dto.getDefaultPrice(),
+                dto.getDefaultReceiptTransactionCategory() == null ? null : dto.getDefaultReceiptTransactionCategory().getId()
+                );
     }
 
     private ProductDto createDto(ProductSnapshot snapshot){
@@ -37,7 +38,10 @@ public class ProductFactory {
                 snapshot.getProducer().getText(),
                 snapshot.getQuantity(),
                 snapshot.getUnit(),
-                categoryFacade.findCategoryById(snapshot.getProductCategoryId()).orElseThrow(IllegalArgumentException::new),
-                categoryFacade.findCategoryById(snapshot.getDefaultExpenseCategoryId()));
+                snapshot.getProductCategoryId() == null ? null : categoryFacade.findCategoryById(snapshot.getProductCategoryId()).orElseThrow(IllegalArgumentException::new),
+                snapshot.getDefaultPrice(),
+                snapshot.getDefaultReceiptTransactionCategoryId() == null ? null : categoryFacade.findCategoryById(snapshot.getDefaultReceiptTransactionCategoryId()).orElseThrow(IllegalArgumentException::new)
+
+        );
     }
 }

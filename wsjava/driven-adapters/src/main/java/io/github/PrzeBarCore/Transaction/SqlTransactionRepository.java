@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 interface SqlTransactionRepository extends Repository<TransactionSnapshot, Integer> {
     boolean existsTransactionById(int id);
+    @Query(value ="SELECT * FROM transactions where source_account_id = :id OR target_account_id = :id", nativeQuery = true)
+    List<TransactionSnapshot> findTransactionsByAccountId(@Param(value = "id") int id);
     @Query(value ="SELECT * FROM transactions where transaction_type = 'INCOME' AND id = :id ", nativeQuery = true)
     Optional<TransactionSnapshot> findTransactionOfIncomeType(@Param(value = "id") int id);
     @Query(value ="SELECT * FROM transactions where transaction_type = 'OUTCOME' AND id = :id ", nativeQuery = true)
@@ -75,4 +77,8 @@ class TransactionRepositoryImpl implements TransactionRepository{
         return Transaction.restore(repository.save(transaction.getSnapshot()));
     }
 
+    @Override
+    public List<Transaction> findTransactionsByAccountId(int id) {
+        return repository.findTransactionsByAccountId(id).stream().map(Transaction::restore).toList();
+    }
 }

@@ -9,15 +9,15 @@ class ReceiptSnapshot {
     private Integer id;
     private LocalDateTime issuedOnDateTime;
     private MonetaryAmount totalValue;
-    private boolean isContainingListOfItems;
+    private MonetaryAmount totalDiscount;
     private List<ReceiptItemSnapshot> items;
 
     ReceiptSnapshot(){}
-    ReceiptSnapshot(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, boolean isContainingListOfItems, List<ReceiptItemSnapshot> items) {
+    ReceiptSnapshot(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, MonetaryAmount totalDiscount, List<ReceiptItemSnapshot> items) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
-        this.isContainingListOfItems = isContainingListOfItems;
+        this.totalDiscount = totalDiscount;
         this.items = items;
     }
 
@@ -33,9 +33,7 @@ class ReceiptSnapshot {
         return totalValue;
     }
 
-    boolean isContainingListOfItems() {
-        return isContainingListOfItems;
-    }
+    MonetaryAmount getTotalDiscount() { return totalDiscount; }
 
     List<ReceiptItemSnapshot> getItems() {
         return items;

@@ -12,7 +12,8 @@ class Product {
                 snapshot.getQuantity(),
                 snapshot.getUnit(),
                 snapshot.getProductCategoryId(),
-                snapshot.getDefaultExpenseCategoryId()
+                snapshot.getDefaultPrice(),
+                snapshot.getDefaultReceiptTransactionCategoryId()
         );
     }
     private Integer id;
@@ -21,20 +22,23 @@ class Product {
     private Double quantity;
     private String unit;
     private Integer productCategoryId;
-    private Integer defaultExpenseCategoryId;
+    private Double defaultPrice;
+    private Integer defaultReceiptTransactionCategoryId;
 
-    private Product(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId, Integer defaultExpenseCategoryId) {
+    private Product(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId, Double defaultPrice, Integer defaultReceiptTransactionCategory
+    ) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
         this.productCategoryId = productCategoryId;
-        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
+        this.defaultPrice = defaultPrice;
+        this.defaultReceiptTransactionCategoryId = defaultReceiptTransactionCategory;
     }
 
     ProductSnapshot getSnapshot(){
-        return new ProductSnapshot(this.id,this.name,this.producer,this.quantity,this.unit, this.productCategoryId, this.defaultExpenseCategoryId);
+        return new ProductSnapshot(this.id,this.name,this.producer,this.quantity,this.unit, this.productCategoryId, this.defaultPrice, this.defaultReceiptTransactionCategoryId);
     }
 
 }

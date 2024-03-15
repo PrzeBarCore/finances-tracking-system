@@ -10,17 +10,19 @@ class ProductSnapshot {
     private Double quantity;
     private String unit;
     private Integer productCategoryId;
-    private Integer defaultExpenseCategoryId;
+    private Double defaultPrice;
+    private Integer defaultReceiptTransactionCategoryId;
 
     ProductSnapshot(){}
-    ProductSnapshot(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId, Integer defaultExpenseCategoryId) {
+    ProductSnapshot(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId,  Double defaultPrice, Integer defaultReceiptTransactionCategoryId) {
         this.id = id;
         this.name = name;
         this.producer = producer;
         this.quantity = quantity;
         this.unit = unit;
         this.productCategoryId = productCategoryId;
-        this.defaultExpenseCategoryId = defaultExpenseCategoryId;
+        this.defaultPrice =defaultPrice;
+        this.defaultReceiptTransactionCategoryId = defaultReceiptTransactionCategoryId;
     }
 
     Integer getId() {
@@ -47,7 +49,11 @@ class ProductSnapshot {
         return productCategoryId;
     }
 
-    Integer getDefaultExpenseCategoryId(){
-        return defaultExpenseCategoryId;
+    Double getDefaultPrice() {
+        return defaultPrice;
+    }
+
+    Integer getDefaultReceiptTransactionCategoryId() {
+        return defaultReceiptTransactionCategoryId;
     }
 }

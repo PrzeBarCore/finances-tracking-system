@@ -1,0 +1,101 @@
+<div class="container">
+  <form (ngSubmit)="!productForm.invalid && saveForm()" #productForm="ngForm">
+    <div class="row mt-3">
+      <fieldset class="form-group col-auto">
+        <label for="name">Name: </label>
+        <input
+          id="name"
+          class="form-control"
+          name="name"
+          type="text"
+          [(ngModel)]="productInstance.name"
+        />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="producer">Producer: </label>
+        <input
+          id="producer"
+          class="form-control"
+          name="producer"
+          type="text"
+          [(ngModel)]="productInstance.producer"
+        />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="quantity">Quantity: </label>
+        <input
+          #category
+          id="quantity"
+          class="form-control"
+          name="quantity"
+          type="number"
+          [(ngModel)]="productInstance.quantity"
+        />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="unit">Unit: </label>
+        <select
+          id="unit"
+          class="form-control"
+          name="unit"
+          [(ngModel)]="productInstance.unit"
+        >
+          <option value=""></option>
+          <option *ngFor="let unit of unitList" value="{{ unit }}">
+            {{ unit }}
+          </option>
+        </select>
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="defaultPrice">Default Price: </label>
+        <input
+          #category
+          id="defaultPrice"
+          class="form-control"
+          name="defaultPrice"
+          type="number"
+          [(ngModel)]="productInstance.defaultPrice"
+        />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="productCategory">Category: </label>
+        <input
+          #productCategory
+          id="productCategory"
+          class="form-control"
+          name="productCategory"
+          type="text"
+          [ngModel]="productInstance.productCategory?.name"
+          (click)="productDialog.open()"
+        />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label for="receiptCategory">Default Transaction: </label>
+        <input
+          #receiptCategory
+          id="receiptCategory"
+          class="form-control"
+          name="receiptCategory"
+          type="text"
+          [ngModel]="productInstance.defaultReceiptTransactionCategory?.name"
+          (click)="receiptDialog.open()"
+        />
+      </fieldset>
+    </div>
+    <button class="btn btn-success" type="submit">Save</button>
+  </form>
+</div>
+<category-search-dialog
+  #productDialog
+  [initialCategory]="productInstance.productCategory"
+  [categoryType]="productCategoryType"
+  (selectedCategoryChanged)="productInstance.productCategory = $event"
+></category-search-dialog>
+<category-search-dialog
+  #receiptDialog
+  [initialCategory]="productInstance.defaultReceiptTransactionCategory"
+  [categoryType]="receiptCategoryType"
+  (selectedCategoryChanged)="
+    productInstance.defaultReceiptTransactionCategory = $event
+  "
+></category-search-dialog>

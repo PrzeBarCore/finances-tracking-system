@@ -23,6 +23,13 @@ public class ProductFacade {
             return Optional.empty();
     }
 
+    Set<ProductDto> findAll(){
+        return repository.findAll()
+                .stream()
+                .map(factory::createDto)
+                .collect(Collectors.toSet());
+    }
+
     Set<ProductDto> findProductSet(NameString name, Company producer){
         return repository.findByNameContainingAndProducerContaining(name, producer )
                 .stream()
@@ -35,4 +42,10 @@ public class ProductFacade {
     }
 
 
+    ProductDto updateProduct(Integer productId, ProductDto productToUpdate) {
+        findProduct(productId).ifPresentOrElse(product -> repository.save(factory.createEntity(productToUpdate)),
+                () -> {throw new IllegalArgumentException("Product with given id does not exist");}
+        );
+        return productToUpdate;
+    }
 }

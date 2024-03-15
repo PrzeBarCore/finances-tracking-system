@@ -4,6 +4,10 @@ import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.ProductFacade;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
+import io.github.PrzeBarCore.ValueObjects.NameString;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import static java.util.stream.Collectors.toList;
 
@@ -25,33 +29,38 @@ public class ReceiptFactory {
     }
 
     private ReceiptSnapshot createSnapshot(ReceiptDto dto){
-        return new ReceiptSnapshot(0,
+        return new ReceiptSnapshot(dto.getId(),
                 dto.getIssuedOnDateTime(),
-                MonetaryAmount.of(dto.getTotalValue()),
-                dto.isContainingListOfItems(),
+                MonetaryAmount.of(BigDecimal.valueOf(dto.getTotalValue())),
+                MonetaryAmount.of(BigDecimal.valueOf(dto.getTotalDiscount())),
                 dto.getItems().stream()
-                        .map(item -> new ReceiptItemSnapshot(0,
-                                item.getName(),
-                                item.getProduct().map(ProductDto::getId).orElse(null),
+                        .map(item -> new ReceiptItemSnapshot(item.getId(),
+                                NameString.of(item.getName()),
                                 item.getQuantity(),
-                                MonetaryAmount.of(item.getRegularPrice()),
-                                MonetaryAmount.of(item.getDiscount()),
+                                MonetaryAmount.of(BigDecimal.valueOf(item.getRegularPrice())),
+                                MonetaryAmount.of(BigDecimal.valueOf(item.getDiscount())),
+                                dto.getId(),
+                                item.getProduct().map(ProductDto::getId).orElse(null),
                                 item.getExpenseCategory().getId()))
                         .collect(toList()));
     }
 
+
     private ReceiptDto createDto(ReceiptSnapshot snapshot){
-        return new ReceiptDto(snapshot.getIssuedOnDateTime(),
-                snapshot.getTotalValue().toBigDecimal(),
-                snapshot.isContainingListOfItems(),
+        return new ReceiptDto(
+                snapshot.getId(),
+                snapshot.getIssuedOnDateTime(),
+                snapshot.getTotalValue().toBigDecimal().doubleValue(),
+                snapshot.getTotalDiscount().toBigDecimal().doubleValue(),
                 snapshot.getItems().stream()
-                        .map(item -> new ReceiptDto.DtoItem(item.getName(),
-                                productFacade.findProduct(item.getProductId()),
+                        .map(item -> new ReceiptDto.DtoItem(item.getId(),
+                                item.getName().getText(),
                                 item.getQuantity(),
-                                item.getRegularPrice().toBigDecimal(),
-                                item.getDiscount().toBigDecimal(),
+                                item.getRegularPrice().toBigDecimal().doubleValue(),
+                                item.getDiscount().toBigDecimal().doubleValue(),
+                                snapshot.getId(),
+                                productFacade.findProduct(item.getProductId()),
                                 categoryFacade.findCategoryById(item.getExpenseCategoryId()).orElseThrow(IllegalArgumentException::new)))
                         .collect(toList()));
     }
-
 }

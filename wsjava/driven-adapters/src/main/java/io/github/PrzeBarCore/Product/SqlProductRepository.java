@@ -13,6 +13,7 @@ interface SqlProductRepository extends Repository<ProductSnapshot, Integer> {
     Optional<ProductSnapshot> findById(Integer id);
     @Query(value = "SELECT * FROM Products p WHERE p.name LIKE %:name% AND p.producer LIKE %:producer%", nativeQuery = true)
     Set<ProductSnapshot> findByNameContainingAndProducerContaining(@Param("name") String name, @Param("producer") String producer);
+    Set<ProductSnapshot> findAll();
     boolean existsById(Integer id);
     boolean delete(ProductSnapshot entity);
 }
@@ -35,6 +36,12 @@ class ProductRepositoryImpl implements ProductRepository{
     @Override
     public Set<Product> findByNameContainingAndProducerContaining(NameString name, Company producer) {
         return repository.findByNameContainingAndProducerContaining(name.getText(),producer.getText()).stream()
+                .map(Product::restore)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Product> findAll() {
+        return repository.findAll().stream()
                 .map(Product::restore)
                 .collect(Collectors.toSet());
     }

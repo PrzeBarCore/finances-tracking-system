@@ -1,86 +1,70 @@
 package io.github.PrzeBarCore.Account;
 
+import io.github.PrzeBarCore.Transaction.TransactionDto;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 import io.github.PrzeBarCore.ValueObjects.SimpleCurrency;
 
+import java.util.List;
+
 public class AccountDto {
     private Integer id;
-    private NameString name;
-    private MonetaryAmount balance;
-    private SimpleCurrency currency;
-    public static Builder builder() {
-        return new Builder();
+    private String name;
+    private Double balance;
+    private String currency;
+    List<TransactionDto> transactionList = null;
+
+    AccountDto(){};
+
+    public AccountDto(Integer id, String name, Double balance, String currency) {
+        this.id = id;
+        this.name = name;
+        this.balance = balance;
+        this.currency = currency;
+    }
+
+    public AccountDto(Integer id, String name, Double balance, String currency, List<TransactionDto> transactionDto){
+        this(id, name,balance,currency);
+        this.transactionList = transactionDto;
     }
 
     public int getId() {
         return this.id;
     }
 
-    public NameString getName() {
+    public String getName() {
         return name;
     }
 
-    public MonetaryAmount getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public SimpleCurrency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    @Override
-    public int hashCode() {
-        return this.id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    @Override
-    public boolean equals(Object dto) {
-        if(dto instanceof AccountDto){
-            return ((AccountDto) dto).id==this.id
-                    && ((AccountDto) dto).currency == this.currency
-                    && ((AccountDto) dto).balance == this.balance
-                    && ((AccountDto) dto).name.equals(this.name);
-        } else
-            return false;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static class Builder{
-        private int id;
-        private NameString name;
-        private MonetaryAmount balance;
-        private SimpleCurrency currency;
-
-        private Builder(){};
-
-        public Builder withId(int id) {
-            this.id=id;
-            return this;
-        }
-        public Builder withAccountName(NameString name) {
-            this.name=name;
-            return this;
-        }
-
-        public Builder withBalance(MonetaryAmount monetaryAmount) {
-            this.balance=monetaryAmount;
-            return this;
-        }
-
-        public Builder withCurrency(SimpleCurrency simpleCurrency) {
-            this.currency=simpleCurrency;
-            return this;
-        }
-
-        public AccountDto build() {
-            var builtDto=new AccountDto();
-            builtDto.id=this.id;
-            builtDto.name=this.name;
-            builtDto.balance=this.balance;
-            builtDto.currency=this.currency;
-            return builtDto;
-        }
-
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public List<TransactionDto> getTransactionList() {
+        return transactionList;
+    }
+
+    public void setTransactionList(List<TransactionDto> transactionList) {
+        this.transactionList = transactionList;
+    }
 }

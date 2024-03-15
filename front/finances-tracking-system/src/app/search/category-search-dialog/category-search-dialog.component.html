@@ -1,0 +1,17 @@
+<search-dialog #searchDialog>
+  <fieldset class="form-group col-auto">
+    <label for="categoryName">Name</label>
+    <input
+      #categoryName
+      class="form-control"
+      name="categoryName"
+      type="text"
+      (input)="this.nameFilterChanged(categoryName.value)"
+    />
+  </fieldset>
+  <data-grid
+    [dataSource]="this.displayedData"
+    [(selectedRow)]="this.currentlySelectedCategory"
+  ></data-grid>
+  <button class="btn btn-success" (click)="clearFilter(categoryName)" (click)="saveSelectedCategory()">Save</button>
+</search-dialog>

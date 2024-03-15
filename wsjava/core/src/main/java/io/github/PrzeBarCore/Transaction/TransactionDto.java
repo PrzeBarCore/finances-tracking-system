@@ -11,23 +11,31 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class TransactionDto {
-    private int id;
+    private Integer id;
     private LocalDateTime issuedOnDateTime;
-    private MonetaryAmount totalValue;
-    private TransactionType transactionType;
-    private Description description;
+    private Double totalValue;
+    private String transactionType;
+    private String description;
     private LocalDateTime repaymentDate;
     private Optional<CategoryDto> transactionCategory;
     private Optional<AccountDto> targetAccount;
     private Optional<AccountDto> sourceAccount;
     private Optional<ReceiptDto> receipt;
 
-    private TransactionDto(){}
+     TransactionDto(){}
 
-    public static Builder builder(){
-        return new Builder();
+    public TransactionDto(Integer id, LocalDateTime issuedOnDateTime, Double totalValue, String transactionType, String description, LocalDateTime repaymentDate, Optional<CategoryDto> transactionCategory, Optional<AccountDto> targetAccount, Optional<AccountDto> sourceAccount, Optional<ReceiptDto> receipt) {
+        this.id = id;
+        this.issuedOnDateTime = issuedOnDateTime;
+        this.totalValue = totalValue;
+        this.transactionType = transactionType;
+        this.description = description;
+        this.repaymentDate = repaymentDate;
+        this.transactionCategory = transactionCategory;
+        this.targetAccount = targetAccount;
+        this.sourceAccount = sourceAccount;
+        this.receipt = receipt;
     }
-
 
     public int getId() {
         return id;
@@ -37,21 +45,18 @@ public class TransactionDto {
         return issuedOnDateTime;
     }
 
-    public MonetaryAmount getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public TransactionType getTransactionType() {
+    public String getTransactionType() {
         return transactionType;
     }
 
-    public Optional<CategoryDto> getTransactionCategory() {
-        return transactionCategory;
-    }
+    public String getDescription() { return description; }
 
-    public Description getDescription() {
-        return description;
-    }
+    public LocalDateTime getRepaymentDate() { return repaymentDate; }
+    public Optional<CategoryDto> getTransactionCategory() { return transactionCategory; }
 
     public Optional<AccountDto> getTargetAccount() {
         return targetAccount;
@@ -61,91 +66,47 @@ public class TransactionDto {
         return sourceAccount;
     }
 
-    public LocalDateTime getRepaymentDate() {
-        return repaymentDate;
-    }
-
     public Optional<ReceiptDto> getReceipt() {
         return receipt;
     }
 
-    public static class Builder{
-        private int id;
-        private LocalDateTime issuedOnDateTime;
-        private MonetaryAmount totalValue;
-        private TransactionType transactionType;
-        private Description description;
-        private LocalDateTime repaymentDate;
-        private Optional<CategoryDto> transactionCategory;
-        private Optional<AccountDto> targetAccount;
-        private Optional<AccountDto> sourceAccount;
-        private Optional<ReceiptDto> receipt;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-        private Builder(){}
+    public void setIssuedOnDateTime(LocalDateTime issuedOnDateTime) {
+        this.issuedOnDateTime = issuedOnDateTime;
+    }
 
-        public Builder withId(int id){
-            this.id=id;
-            return this;
-        }
+    public void setTotalValue(Double totalValue) {
+        this.totalValue = totalValue;
+    }
 
-        public Builder withIssuedOnDateTime(LocalDateTime issuedOnDateTime) {
-            this.issuedOnDateTime = issuedOnDateTime;
-            return this;
-        }
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 
-        public Builder withTotalValue(MonetaryAmount totalValue) {
-            this.totalValue = totalValue;
-            return this;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public Builder withTransactionType(TransactionType transactionType) {
-            this.transactionType = transactionType;
-            return this;
-        }
+    public void setRepaymentDate(LocalDateTime repaymentDate) {
+        this.repaymentDate = repaymentDate;
+    }
 
-        public Builder withTransactionCategory(Optional<CategoryDto> transactionCategory) {
-            this.transactionCategory = transactionCategory;
-            return this;
-        }
+    public void setTransactionCategory(Optional<CategoryDto> transactionCategory) {
+        this.transactionCategory = transactionCategory;
+    }
 
-        public Builder withDescription(Description description) {
-            this.description = description;
-            return this;
-        }
+    public void setTargetAccount(Optional<AccountDto> targetAccount) {
+        this.targetAccount = targetAccount;
+    }
 
-        public Builder withTargetAccount(Optional<AccountDto> targetAccount) {
-            this.targetAccount = targetAccount;
-            return this;
-        }
+    public void setSourceAccount(Optional<AccountDto> sourceAccount) {
+        this.sourceAccount = sourceAccount;
+    }
 
-        public Builder withSourceAccount(Optional<AccountDto> sourceAccountId) {
-            this.sourceAccount = sourceAccount;
-            return this;
-        }
-
-        public Builder withReceipt(Optional<ReceiptDto> receipt) {
-            this.receipt = receipt;
-            return this;
-        }
-
-        public Builder withRepaymentDate(LocalDateTime repaymentDate) {
-            this.repaymentDate = repaymentDate;
-            return this;
-        }
-
-        public TransactionDto build(){
-            var dto=new TransactionDto();
-            dto.id=this.id;
-            dto.issuedOnDateTime=this.issuedOnDateTime;
-            dto.totalValue=this.totalValue;
-            dto.transactionType=this.transactionType;
-            dto.transactionCategory =this.transactionCategory;
-            dto.description=this.description;
-            dto.sourceAccount =this.sourceAccount;
-            dto.targetAccount =this.targetAccount;
-            dto.receipt =this.receipt;
-            dto.repaymentDate=this.repaymentDate;
-            return dto;
-        }
+    public void setReceipt(Optional<ReceiptDto> receipt) {
+        this.receipt = receipt;
     }
 }

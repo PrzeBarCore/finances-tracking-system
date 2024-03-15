@@ -17,7 +17,7 @@ export class ReceiptService {
     return this.http.get<Receipt>(this.receiptsUrl);
   }
 
-  public saveReceipt(receipt: Receipt): Observable<Receipt> {
-    return this.http.post<Receipt>(this.receiptsUrl, receipt);
+  public saveReceipt(receipt: Receipt) {
+    return this.http.post(this.receiptsUrl, receipt, { observe: 'response' });
   }
 }

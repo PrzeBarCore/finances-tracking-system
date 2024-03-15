@@ -1,0 +1,43 @@
+<div class="container">
+  <h2>{{ accountInstance.name }}</h2>
+  <h3>
+    Current balance: {{ accountInstance.balance }}
+    {{ accountInstance.currency }}
+  </h3>
+  <table class="table">
+    <thead>
+      <th>Date</th>
+      <th>Value</th>
+      <th>Type</th>
+      <th>Category</th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of accountInstance.transactionList">
+        <td>{{ transaction.issuedOnDateTime | date }}</td>
+        <td class="value" [class.outcome]="transaction.totalValue < 0">
+          {{ transaction.totalValue | currency : "PLN " }}
+        </td>
+        <td>
+          {{
+            normalizeTransactionType(transaction.transactionType) | titlecase
+          }}
+        </td>
+        <td>{{ transaction.transactionCategory }}</td>
+        <td><button class="btn btn-danger">x</button></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <button
+      class="col text-center btn btn-info"
+      (click)="transactionTypeDialog.open()"
+    >
+      Add New Transaction
+    </button>
+  </div>
+  <transaction-type-search-dialog
+    #transactionTypeDialog
+    (selectedTypeChanged)="addNewTransaction($event)"
+  ></transaction-type-search-dialog>
+</div>

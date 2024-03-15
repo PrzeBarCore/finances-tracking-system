@@ -1,0 +1,31 @@
+<search-dialog #productSearchDialog>
+  <fieldset class="form-group col-auto">
+    <label for="productName">Name</label>
+    <input
+      #productName
+      class="form-control"
+      name="productName"
+      type="text"
+      (input)="this.filterChanged()"
+    />
+    <label for="producer">Producer</label>
+    <input
+      #producer
+      class="form-control"
+      name="producer"
+      type="text"
+      (input)="this.filterChanged()"
+    />
+  </fieldset>
+  <data-grid
+    [dataSource]="this.displayedData"
+    [(selectedRow)]="this.currentlySelectedProduct"
+  ></data-grid>
+  <button
+    class="btn btn-success"
+    (click)="clearFilter()"
+    (click)="saveSelectedProduct()"
+  >
+    Save
+  </button>
+</search-dialog>

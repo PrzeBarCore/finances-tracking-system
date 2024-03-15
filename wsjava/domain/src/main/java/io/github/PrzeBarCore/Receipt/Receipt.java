@@ -4,6 +4,7 @@ import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,23 +13,31 @@ class Receipt {
         return new Receipt(snapshot.getId(),
                 snapshot.getIssuedOnDateTime(),
                 snapshot.getTotalValue(),
-                snapshot.isContainingListOfItems(),
+                snapshot.getTotalDiscount(),
                 snapshot.getItems()
                         .stream()
                         .map(ReceiptItem::restore)
                         .collect(Collectors.toList()));
     }
+
+    static Receipt restoreWithoutItems(ReceiptSnapshot snapshot) {
+        return new Receipt(snapshot.getId(),
+                snapshot.getIssuedOnDateTime(),
+                snapshot.getTotalValue(),
+                snapshot.getTotalDiscount(),
+                new ArrayList<>());
+    }
     private Integer id;
     private LocalDateTime issuedOnDateTime;
     private MonetaryAmount totalValue;
-    private boolean isContainingListOfItems;
+    private MonetaryAmount totalDiscount;
     private List<ReceiptItem> items;
 
-    private Receipt(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, boolean isContainingListOfItems, List<ReceiptItem> items) {
+    private Receipt(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue,MonetaryAmount totalDiscount, List<ReceiptItem> items) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
-        this.isContainingListOfItems = isContainingListOfItems;
+        this.totalDiscount = totalDiscount;
         this.items = items;
     }
 
@@ -36,7 +45,7 @@ class Receipt {
         return new ReceiptSnapshot(this.id,
                 this.issuedOnDateTime,
                 this.totalValue,
-                this.isContainingListOfItems,
+                this.totalDiscount,
                 this.items.stream()
                         .map(ReceiptItem::getItemSnapshot)
                         .collect(Collectors.toList()));
@@ -46,37 +55,42 @@ class Receipt {
         static private ReceiptItem restore(ReceiptItemSnapshot snapshot){
             return new ReceiptItem(snapshot.getId(),
                     snapshot.getName(),
-                    snapshot.getProductId(),
                     snapshot.getQuantity(),
                     snapshot.getRegularPrice(),
                     snapshot.getDiscount(),
+                    snapshot.getReceiptId(),
+                    snapshot.getProductId(),
                     snapshot.getExpenseCategoryId());
         }
+
         private Integer id;
         private NameString name;
-        private Integer productId;
         private Double quantity;
         private MonetaryAmount regularPrice;
         private MonetaryAmount discount;
+        private Integer receiptId;
+        private Integer productId;
         private Integer expenseCategoryId;
 
          private ReceiptItemSnapshot getItemSnapshot(){
             return new ReceiptItemSnapshot(this.id,
                     this.name,
-                    this.productId,
                     this.quantity,
                     this.regularPrice,
                     this.discount,
+                    this.receiptId,
+                    this.productId,
                     this.expenseCategoryId);
         }
 
-         private ReceiptItem(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer expenseCategoryId) {
+         private ReceiptItem(Integer id, NameString name, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer receiptId, Integer productId, Integer expenseCategoryId) {
              this.id = id;
              this.name = name;
-             this.productId = productId;
              this.quantity = quantity;
              this.regularPrice = regularPrice;
              this.discount = discount;
+             this.receiptId = receiptId;
+             this.productId = productId;
              this.expenseCategoryId = expenseCategoryId;
          }
      }

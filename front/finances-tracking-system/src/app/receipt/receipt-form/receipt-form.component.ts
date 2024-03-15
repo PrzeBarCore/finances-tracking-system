@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Receipt, ReceiptItem } from '../model/receipt';
 import { HtmlTagDefinition } from '@angular/compiler';
+import { Account } from 'src/app/account/model/account';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AccountService } from 'src/app/account/service/account.service';
+import { Category, CategoryType } from 'src/app/category/model/category';
+import { Product } from 'src/app/product/model/product';
+import { ReceiptService } from '../service/receipt.service';
 
 @Component({
   selector: 'app-receipt-form',
@@ -8,24 +14,79 @@ import { HtmlTagDefinition } from '@angular/compiler';
   styleUrls: ['./receipt-form.component.scss'],
   exportAs: 'receiptForm',
 })
-export class ReceiptFormComponent {
+export class ReceiptFormComponent implements AfterViewInit {
+  receiptCategoryType = CategoryType.Receipt;
+  openedFromAccountComponent = false;
+
+  accountList: Account[] = [];
+  account: Account = new Account(0, '', 0, '', []);
+
   receiptItems: ReceiptItem[] = [
-    new ReceiptItem('Banany', 4, 5, 0, -1, -1, false),
-    new ReceiptItem('Czekolada Wedel', 5, 2, 0, -1, -1, false),
-    new ReceiptItem('Małpka', 15, 1, 0, -1, -1, false),
+    new ReceiptItem(
+      -1,
+      '',
+      1,
+      0,
+      0,
+      new Category(-1, '', '', [], null, false),
+      new Product(-1, '', '', 0, '', 0, null, null)
+    ),
   ];
-  receipt: Receipt = new Receipt(0, new Date(), 0.0, 0.0, this.receiptItems);
+  receipt: Receipt = new Receipt(
+    -1,
+    this.account,
+    new Date(),
+    0.0,
+    0.0,
+    this.receiptItems
+  );
+  currentlyEditedItem: ReceiptItem = this.receiptItems[0];
+
   isAnyItemEdited = true;
 
-  ngOnInit() {
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private accountService: AccountService,
+    private receiptService: ReceiptService,
+    private router: Router
+  ) {
+    accountService.getAccounts().subscribe((response) => {
+      this.accountList = response;
+      if (activatedRoute.snapshot.paramMap.get('aid')) {
+        let foundAccount = this.accountList.find(
+          (account) =>
+            account.id.toString() ==
+            activatedRoute.snapshot.paramMap.get('aid')!
+        );
+        if (foundAccount != null) {
+          this.account = foundAccount;
+          this.openedFromAccountComponent = true;
+        }
+      }
+    });
+  }
+  ngAfterViewInit(): void {
     this.calculateTotalValue();
+    this.toggleEdition(0);
   }
 
+  saveReceipt() {
+    this.receipt.sourceAccount = this.account;
+    this.receiptService.saveReceipt(this.receipt).subscribe((response) => {
+      if (response.status == 200) {
+        if (this.openedFromAccountComponent)
+          this.router.navigate(['/accounts/details/' + this.account.id]);
+        else this.router.navigate(['/receipts/']);
+      }
+    });
+  }
+
+  //Data Maniupulation
   removeItem(indexOfReceipt: number) {
-    if (this.receipt.listOfItems[indexOfReceipt].isEdited) {
+    if (this.receipt.items[indexOfReceipt].isEdited) {
       this.toggleEdition(indexOfReceipt);
     }
-    this.receipt.listOfItems.splice(indexOfReceipt, 1);
+    this.receipt.items.splice(indexOfReceipt, 1);
     this.calculateTotalValue();
   }
 
@@ -35,20 +96,34 @@ export class ReceiptFormComponent {
   }
 
   addItem() {
-    this.receipt.listOfItems.push(
-      new ReceiptItem('', 1, 0.0, 0.0, -1, -1, true)
+    let newItem = new ReceiptItem(
+      -1,
+      '',
+      1,
+      0,
+      0,
+      new Category(0, '', '', [], null, false),
+      new Product(0, '', '', 0, '', 0, null, null)
     );
+    newItem.isEdited = true;
+    this.receipt.items.push(newItem);
+    this.currentlyEditedItem = newItem;
     this.setButtonsState(false);
   }
 
-  saveReceipt() {}
+  categoryForItemSelected(newCategory: Category) {
+    this.currentlyEditedItem.category = newCategory;
+  }
 
-  toggleEdition(indexOfReceipt: number) {
-    let isEdited = this.receipt.listOfItems[indexOfReceipt].isEdited;
-    this.isAnyItemEdited = this.receipt.listOfItems[indexOfReceipt].isEdited =
-      !isEdited;
-
-    this.updateLayout(indexOfReceipt, isEdited);
+  productForItemSelected(newProduct: Product) {
+    if (this.currentlyEditedItem.name == '')
+      this.currentlyEditedItem.name = newProduct.name;
+    if (this.currentlyEditedItem.regularPrice == 0)
+      this.currentlyEditedItem.regularPrice = newProduct.defaultPrice;
+    if (newProduct.defaultReceiptTransactionCategory != null)
+      this.currentlyEditedItem.category =
+        newProduct.defaultReceiptTransactionCategory;
+    this.currentlyEditedItem.product = newProduct;
   }
 
   calculateTotalValue() {
@@ -61,6 +136,18 @@ export class ReceiptFormComponent {
 
     this.receipt.totalValue = totalValue;
     this.receipt.totalDiscount = totalDiscount;
+  }
+
+  //Layout methods
+  toggleEdition(indexOfReceipt: number) {
+    let isEdited = this.receipt.items[indexOfReceipt].isEdited;
+    if (isEdited) {
+      this.currentlyEditedItem = this.receipt.items[indexOfReceipt];
+    }
+    this.isAnyItemEdited = this.receipt.items[indexOfReceipt].isEdited =
+      !isEdited;
+
+    this.updateLayout(indexOfReceipt, isEdited);
   }
 
   updateLayout(indexOfReceipt: number, isEdited: boolean) {
@@ -84,7 +171,9 @@ export class ReceiptFormComponent {
   }
 
   setButtonsState(state: boolean) {
-    let buttons = <HTMLCollection>document.getElementsByClassName('btn');
+    let buttons = <HTMLCollection>(
+      document.getElementsByClassName('receipt-btn')
+    );
     for (let index = 0; index < buttons.length; index++) {
       const element = <HTMLButtonElement>buttons[index];
       if (!element.classList.contains('edited')) {

@@ -9,14 +9,30 @@
         <input
           class="form-control"
           type="date"
-          name="issuedOnDate"
-          [ngModel]="receipt.issuedOnDate | date : 'yyyy-MM-dd'"
-          (ngModelChange)="receipt.issuedOnDate = $event"
+          name="issuedOnDateTime"
+          [ngModel]="receipt.issuedOnDateTime | date : 'yyyy-MM-dd'"
+          (ngModelChange)="receipt.issuedOnDateTime = $event"
         />
       </fieldset>
       <fieldset class="form-group col-auto">
         <label>Shop</label>
         <input class="form-control" type="text" name="shop" />
+      </fieldset>
+      <fieldset class="form-group col-auto">
+        <label>Source Account</label>
+        <select
+          class="form-control"
+          type="text"
+          name="account"
+          [(ngModel)]="account"
+        >
+          <option
+            *ngFor="let accountOption of accountList"
+            value="{{ accountOption }}"
+          >
+            {{ accountOption.name }}
+          </option>
+        </select>
       </fieldset>
     </div>
     <table class="table table-striped">
@@ -25,14 +41,12 @@
         <th style="width: 10%">Quantity</th>
         <th style="width: 10%">Price</th>
         <th style="width: 10%">Discount</th>
-        <th style="width: 15%">Product Category</th>
+        <th style="width: 15%">Expense Category</th>
         <th style="width: 15%">Product</th>
         <th style="width: 15%"></th>
       </thead>
       <tbody class="table-group-divider">
-        <tr
-          *ngFor="let item of receipt.listOfItems; let indexOfelement = index"
-        >
+        <tr *ngFor="let item of receipt.items; let indexOfelement = index">
           <td>
             <p *ngIf="!item.isEdited">{{ item.name }}</p>
             <input
@@ -74,43 +88,45 @@
             />
           </td>
           <td>
-            <p *ngIf="!item.isEdited">{{ item.productCategoryId }}</p>
+            <p *ngIf="!item.isEdited">{{ item.category.name }}</p>
             <input
               *ngIf="item.isEdited"
               type="text"
-              [(ngModel)]="item.productCategoryId"
+              [ngModel]="item.category.name"
               name="productCategoryId"
               class="form-control"
+              (click)="categoryDialog.open()"
             />
           </td>
           <td>
-            <p *ngIf="!item.isEdited">{{ item.productId }}</p>
+            <p *ngIf="!item.isEdited">{{ item.product.name }}</p>
             <input
               *ngIf="item.isEdited"
               type="text"
-              [(ngModel)]="item.productId"
+              [ngModel]="item.product.name"
               name="productId"
               class="form-control"
+              (click)="productDialog.open()"
             />
           </td>
           <td name="buttons">
             <button
               *ngIf="!item.isEdited"
-              class="mr-1 btn btn-warning rounded-circle"
+              class="receipt-btn mr-1 btn btn-warning rounded-circle"
               (click)="toggleEdition(indexOfelement)"
             >
               <fa-icon [icon]="['far', 'pen-to-square']"></fa-icon>
             </button>
             <button
               *ngIf="item.isEdited"
-              class="mr-1 btn btn-success rounded-circle"
+              class="receipt-btn mr-1 btn btn-success rounded-circle"
               (click)="saveItem(indexOfelement)"
             >
               <fa-icon [icon]="['fas', 'check']"></fa-icon>
             </button>
             <button
-              *ngIf="this.receipt.listOfItems.length > 1"
-              class="btn btn-danger rounded-circle"
+              *ngIf="this.receipt.items.length > 1"
+              class="receipt-btn btn btn-danger rounded-circle"
               (click)="removeItem(indexOfelement)"
             >
               <fa-icon [icon]="['fas', 'eraser']"></fa-icon>
@@ -119,13 +135,28 @@
         </tr>
       </tbody>
     </table>
-    <button class="btn btn-primary fill" (click)="addItem()">Add Item</button>
+    <button class="receipt-btn btn btn-primary fill" (click)="addItem()">
+      Add Item
+    </button>
     <div class="mt-5 container row">
       <p class="col">Total value: {{ receipt.totalValue }}</p>
       <p class="col">Total Discount: {{ receipt.totalDiscount }}</p>
     </div>
     <input class="form-control mb-5 mt-5" type="file" id="formFile" />
 
-    <button type="submit" class="btn btn-success">Save changes</button>
+    <button type="submit" class="receipt-btn btn btn-success">
+      Save changes
+    </button>
   </form>
 </div>
+<category-search-dialog
+  #categoryDialog
+  [initialCategory]="currentlyEditedItem.category"
+  (selectedCategoryChanged)="categoryForItemSelected($event)"
+  [categoryType]="receiptCategoryType"
+></category-search-dialog>
+<product-search-dialog
+  #productDialog
+  (selectedProductChanged)="productForItemSelected($event)"
+>
+</product-search-dialog>

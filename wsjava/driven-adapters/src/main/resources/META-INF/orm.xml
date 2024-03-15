@@ -67,18 +67,17 @@
             <basic name="issuedOnDateTime">
                 <column nullable="false"/>
             </basic>
-            <basic name="isContainingListOfItems">
-                <column name="containing_list_of_items" nullable="false"/>
-            </basic>
-            <one-to-many name="items" fetch="EAGER">
-                <join-column name="receipt_id" referenced-column-name="id"/>
-                <cascade>
-                    <cascade-all/>
-                </cascade>
+            <one-to-many name="items" mapped-by="receiptId">
+                <cascade><cascade-all/></cascade>
             </one-to-many>
             <embedded name="totalValue">
                 <attribute-override name="value">
                     <column name="total_value" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="totalDiscount">
+                <attribute-override name="value">
+                    <column name="total_discount" nullable="false"/>
                 </attribute-override>
             </embedded>
         </attributes>
@@ -88,27 +87,27 @@
     <entity class="io.github.PrzeBarCore.Receipt.ReceiptItemSnapshot" access="FIELD">
         <table name ="receipt_items"/>
         <attributes>
-            <id name="id">
+            <id  name="id">
                 <generated-value strategy="IDENTITY"/>
             </id>
             <basic name="quantity">
                 <column nullable="false"/>
             </basic>
-            <basic name="productId"/>
             <basic name="receiptId">
-                <column nullable="false"/>
+                <column name="receipt_id" nullable="true"/>
             </basic>
+            <basic name="productId"/>
             <basic name="expenseCategoryId">
-                <column nullable="false"/>
+                <column nullable="true"/>
             </basic>
             <embedded name="name">
                 <attribute-override name="text">
-                    <column name="name" nullable="false"/>
+                    <column name="name"/>
                 </attribute-override>
             </embedded>
             <embedded name="regularPrice">
                 <attribute-override name="value">
-                    <column name="regular_price" nullable="false"/>
+                    <column name="regular_price" nullable="true"/>
                 </attribute-override>
             </embedded>
             <embedded name="discount">
@@ -134,7 +133,12 @@
             <basic name="productCategoryId">
                 <column nullable="false"/>
             </basic>
-            <basic name="defaultExpenseCategoryId"/>
+            <basic name="defaultPrice">
+                <column nullable="false"/>
+            </basic>
+            <basic name="defaultReceiptTransactionCategoryId">
+                <column name="transaction_category_id " nullable="false"/>
+            </basic>
             <embedded name="name">
                 <attribute-override name="text">
                     <column name="name" nullable="false"/>
@@ -157,15 +161,15 @@
             <basic name="issuedOnDateTime">
                 <column nullable="false"/>
             </basic>
-            <basic name="transactionCategoryId"/>
-            <basic name="targetAccountId"/>
-            <basic name="sourceAccountId"/>
-            <basic name="receiptId"/>
-            <basic name="repaymentDate"/>
             <basic name="transactionType">
                 <column nullable="false"/>
                 <enumerated>STRING</enumerated>
             </basic>
+            <basic name="repaymentDate"/>
+            <basic name="transactionCategoryId"/>
+            <basic name="targetAccountId"/>
+            <basic name="sourceAccountId"/>
+            <basic name="receiptId"/>
             <embedded name="totalValue">
                 <attribute-override name="value">
                     <column name="total_value" nullable="false"/>

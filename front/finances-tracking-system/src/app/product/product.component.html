@@ -1,1 +1,48 @@
-<p>product works!</p>
+<div class="text-center">
+  <div class="row justify-content-start">
+    <div class="col-4">
+      <app-category-tree
+        (messageEvent)="receiveMessage($event)"
+        [isReadOnly]="true"
+        [categories]="categories"
+      ></app-category-tree>
+    </div>
+    <div class="col-8">
+      <table class="table">
+        <thead>
+          <th>Product name</th>
+          <th>Producer</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Category</th>
+          <th></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of displayedProducts">
+            <td>{{ product.name }}</td>
+            <td>{{ product.producer }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.unit }}</td>
+            <td>{{ product.productCategory?.name }}</td>
+            <td>
+              <button
+                class="btn btn-warning"
+                type="button"
+                (click)="navigateToComponentForm(product.id)"
+              >
+                <fa-icon [icon]="['far', 'pen-to-square']"></fa-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button
+        class="btn mt-5 btn-info d-flex justify-content-start"
+        type="button"
+        (click)="navigateToComponentForm(-1)"
+      >
+        Add New Product
+      </button>
+    </div>
+  </div>
+</div>

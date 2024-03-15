@@ -1,0 +1,7 @@
+<search-dialog #transactionTypeSearchDialog>
+  <data-grid
+    [dataSource]="this.displayedData"
+    [(selectedRow)]="this.currentlySelectedType"
+  ></data-grid>
+  <button class="btn btn-success" (click)="saveSelectedType()">Save</button>
+</search-dialog>

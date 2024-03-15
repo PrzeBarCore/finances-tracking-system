@@ -6,20 +6,22 @@ import io.github.PrzeBarCore.ValueObjects.NameString;
 class ReceiptItemSnapshot {
     private Integer id;
     private NameString name;
-    private Integer productId;
     private Double quantity;
     private MonetaryAmount regularPrice;
     private MonetaryAmount discount;
+    private Integer receiptId;
+    private Integer productId;
     private Integer expenseCategoryId;
 
     ReceiptItemSnapshot(){}
-    ReceiptItemSnapshot(Integer id, NameString name, Integer productId, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer expenseCategoryId) {
+    ReceiptItemSnapshot(Integer id, NameString name, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer receiptId, Integer productId, Integer expenseCategoryId) {
         this.id = id;
         this.name = name;
-        this.productId = productId;
         this.quantity = quantity;
         this.regularPrice = regularPrice;
         this.discount = discount;
+        this.receiptId = receiptId;
+        this.productId = productId;
         this.expenseCategoryId = expenseCategoryId;
     }
 
@@ -31,9 +33,6 @@ class ReceiptItemSnapshot {
         return name;
     }
 
-    Integer getProductId() {
-        return productId;
-    }
 
     Double getQuantity() {
         return quantity;
@@ -45,6 +44,14 @@ class ReceiptItemSnapshot {
 
     MonetaryAmount getDiscount() {
         return discount;
+    }
+
+    Integer getReceiptId() {
+        return receiptId;
+    }
+
+    Integer getProductId() {
+        return productId;
     }
 
     Integer getExpenseCategoryId() {

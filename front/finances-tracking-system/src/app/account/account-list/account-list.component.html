@@ -1,0 +1,16 @@
+<div class="container">
+  <div
+    *ngFor="let account of accountList; index as i"
+    id="accountCard{{ i }}"
+    class="card row mt-3 accountCard"
+    (click)="openAccount(account.id)"
+  >
+    <h1 class="form-group col-auto">{{ account.name }}</h1>
+    <h4 class="form-group col-auto">
+      {{ account.balance }} {{ account.currency }}
+    </h4>
+  </div>
+  <button class="btn btn-info mt-3" (click)="openAccountForm()">
+    Add New Account
+  </button>
+</div>

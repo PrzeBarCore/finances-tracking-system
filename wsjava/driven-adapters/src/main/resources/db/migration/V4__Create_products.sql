@@ -4,10 +4,11 @@ name TEXT NOT NULL,
 producer TEXT NOT NULL,
 quantity REAL NOT NULL,
 unit TEXT NOT NULL,
+default_price REAL NOT NULL,
 product_category_id INTEGER NOT NULL,
-default_expense_product_category_id INTEGER,
+transaction_category_id INTEGER NOT NULL,
 FOREIGN KEY(product_category_id) REFERENCES categories(id),
-FOREIGN KEY(default_expense_product_category_id) REFERENCES categories(id)
+FOREIGN KEY(transaction_category_id) REFERENCES categories(id)
 )
 
 

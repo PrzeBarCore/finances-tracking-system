@@ -1,5 +1,11 @@
 package io.github.PrzeBarCore.Account;
 
+import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
+import io.github.PrzeBarCore.ValueObjects.NameString;
+import io.github.PrzeBarCore.ValueObjects.SimpleCurrency;
+
+import java.math.BigDecimal;
+
 public class AccountFactory {
     static AccountDto createDto(Account account){
         return createDto(account.getSnapshot());
@@ -8,10 +14,10 @@ public class AccountFactory {
         return Account.restore(createSnapshot(accountDto));
     }
     private static AccountSnapshot createSnapshot(AccountDto accountDto){
-        return new AccountSnapshot(accountDto.getId(),accountDto.getName(), accountDto.getBalance(), accountDto.getCurrency());
+        return new AccountSnapshot(accountDto.getId(), NameString.of(accountDto.getName()), MonetaryAmount.of(BigDecimal.valueOf(accountDto.getBalance())), SimpleCurrency.valueOf(accountDto.getCurrency()));
     }
     private static AccountDto createDto(AccountSnapshot accountSnapshot){
-        return AccountDto.builder().withId(accountSnapshot.getId()).withAccountName(accountSnapshot.getName()).withBalance(accountSnapshot.getBalance()).withCurrency(accountSnapshot.getCurrency()).build();
+        return new AccountDto(accountSnapshot.getId(), accountSnapshot.getName().getText(), accountSnapshot.getBalance().getValue().doubleValue(), accountSnapshot.getCurrency().name());
     }
 
 }

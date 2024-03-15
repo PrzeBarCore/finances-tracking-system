@@ -9,6 +9,7 @@ import java.util.Set;
 interface ProductRepository {
     Product save(Product entity);
     Optional<Product> findById(Integer id);
+    Set<Product> findAll();
     Set<Product> findByNameContainingAndProducerContaining(NameString name, Company producer);
     boolean existsById(Integer id);
     boolean delete(Product entity);

@@ -1,25 +1,27 @@
 package io.github.PrzeBarCore.Receipt;
 
+import io.github.PrzeBarCore.Account.AccountDto;
 import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Product.ProductDto;
-import io.github.PrzeBarCore.ValueObjects.NameString;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public class ReceiptDto {
     private Integer id;
+    private AccountDto sourceAccount;
     private LocalDateTime issuedOnDateTime;
-    private BigDecimal totalValue;
-    private boolean isContainingListOfItems;
+    private Double totalValue;
+    private Double totalDiscount;
     private List<DtoItem> items;
 
-    public ReceiptDto(LocalDateTime issuedOnDateTime, BigDecimal totalValue, boolean isContainingListOfItems, List<DtoItem> items) {
+    ReceiptDto(){};
+    public ReceiptDto(Integer id, LocalDateTime issuedOnDateTime, Double totalValue, Double totalDiscount, List<DtoItem> items) {
+        this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
-        this.isContainingListOfItems = isContainingListOfItems;
+        this.totalDiscount = totalDiscount;
         this.items = items;
     }
 
@@ -39,20 +41,20 @@ public class ReceiptDto {
         this.issuedOnDateTime = issuedOnDateTime;
     }
 
-    public BigDecimal getTotalValue() {
+    public Double getTotalValue() {
         return totalValue;
     }
 
-    public void setTotalValue(BigDecimal totalValue) {
+    public void setTotalValue(Double totalValue) {
         this.totalValue = totalValue;
     }
 
-    public boolean isContainingListOfItems() {
-        return isContainingListOfItems;
+    public Double getTotalDiscount() {
+        return totalDiscount;
     }
 
-    public void setContainingListOfItems(boolean containingListOfItems) {
-        isContainingListOfItems = containingListOfItems;
+    public void setTotalDiscount(Double totalDiscount) {
+        this.totalDiscount = totalDiscount;
     }
 
     public List<DtoItem> getItems() {
@@ -61,30 +63,49 @@ public class ReceiptDto {
 
     public void setItems(List<DtoItem> items) {
         this.items = items;
+
+    }
+    public AccountDto getSourceAccount() {
+        return sourceAccount;
+    }
+
+    public void setSourceAccount(AccountDto sourceAccount) {
+        this.sourceAccount = sourceAccount;
     }
 
     public static class DtoItem{
-        private NameString name;
-        private Optional<ProductDto> product;
+        private Integer id;
+        private String name;
         private Double quantity;
-        private BigDecimal regularPrice;
-        private BigDecimal discount;
-        private CategoryDto expenseCategory;
+        private Double regularPrice;
+        private Double discount;
+        private Integer receiptId;
+        private Optional<ProductDto> product;
+        private CategoryDto category;
 
-        public DtoItem(NameString name, Optional<ProductDto> product, Double quantity, BigDecimal regularPrice, BigDecimal discount, CategoryDto expenseCategory) {
+        public DtoItem(Integer id, String name, Double quantity, Double regularPrice, Double discount, Integer receiptId, Optional<ProductDto> product, CategoryDto category) {
+            this.id = id;
             this.name = name;
-            this.product = product;
             this.quantity = quantity;
             this.regularPrice = regularPrice;
             this.discount = discount;
-            this.expenseCategory = expenseCategory;
+            this.receiptId = receiptId;
+            this.product = product;
+            this.category = category;
+        }
+        public Integer getId() {
+            return id;
         }
 
-        public NameString getName() {
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getName() {
             return name;
         }
 
-        public void setName(NameString name) {
+        public void setName(String name) {
             this.name = name;
         }
 
@@ -104,28 +125,40 @@ public class ReceiptDto {
             this.quantity = quantity;
         }
 
-        public BigDecimal getRegularPrice() {
+        public Double getRegularPrice() {
             return regularPrice;
         }
 
-        public void setRegularPrice(BigDecimal regularPrice) {
+        public void setRegularPrice(Double regularPrice) {
             this.regularPrice = regularPrice;
         }
 
-        public BigDecimal getDiscount() {
+        public Double getDiscount() {
             return discount;
         }
 
-        public void setDiscount(BigDecimal discount) {
+        public void setDiscount(Double discount) {
             this.discount = discount;
         }
 
         public CategoryDto getExpenseCategory() {
-            return expenseCategory;
+            return category;
         }
 
-        public void setExpenseCategory(CategoryDto expenseCategory) {
-            this.expenseCategory = expenseCategory;
+        public void setExpenseCategory(CategoryDto category) {
+            this.category = category;
+        }
+
+        public Integer getReceiptId() {
+            return receiptId;
+        }
+
+        public void setReceiptId(Integer receiptId) {
+            this.receiptId = receiptId;
         }
     }
+
+
+
+
 }

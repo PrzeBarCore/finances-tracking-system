@@ -1,0 +1,21 @@
+<table class="table table-hover">
+  <thead>
+    <th></th>
+    <th *ngFor="let header of headerList">{{ header | titlecase }}</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of dataSource; index as id" (click)="rowClicked(id)">
+      <td>
+        <input
+          #checkboxes
+          id="checkbox{{ hashKey }}{{ id }}"
+          type="checkbox"
+          (click)="rowClicked(id)"
+        />
+      </td>
+      <td *ngFor="let cell of row | keyvalue : originalOrder">
+        {{ cell.value }}
+      </td>
+    </tr>
+  </tbody>
+</table>

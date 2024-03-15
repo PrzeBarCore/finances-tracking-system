@@ -6,6 +6,7 @@ import java.util.Optional;
 interface TransactionRepository {
 
     boolean existsTransactionById(int id);
+    List<Transaction> findTransactionsByAccountId(int id);
     Optional<Transaction> findTransactionOfIncomeType(int id);
     Optional<Transaction> findTransactionOfOutcomeType(int id);
     Optional<Transaction> findTransactionOfReceiptType(int id);

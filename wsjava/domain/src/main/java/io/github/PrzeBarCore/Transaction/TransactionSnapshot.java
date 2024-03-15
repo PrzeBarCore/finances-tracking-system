@@ -7,34 +7,34 @@ import io.github.PrzeBarCore.ValueObjects.TransactionType;
 import java.time.LocalDateTime;
 
 class TransactionSnapshot {
-    private int id;
+    private Integer id;
     private LocalDateTime issuedOnDateTime;
     private MonetaryAmount totalValue;
     private TransactionType transactionType;
-    private Integer transactionCategoryId;
     private Description description;
-    private int targetAccountId;
-    private int sourceAccountId;
     private LocalDateTime repaymentDate;
-    private int receiptId;
+    private Integer transactionCategoryId;
+    private Integer targetAccountId;
+    private Integer sourceAccountId;
+    private Integer receiptId;
 
     protected TransactionSnapshot(){}
     TransactionSnapshot(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, TransactionType transactionType,
-                        Integer transactionCategoryId, Description description, Integer targetAccountId,
-                        Integer sourceAccountId, LocalDateTime repaymentDate, Integer receiptId) {
+                        Description description, LocalDateTime repaymentDate, Integer transactionCategoryId, Integer targetAccountId,
+                        Integer sourceAccountId, Integer receiptId) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
         this.transactionType = transactionType;
-        this.transactionCategoryId = transactionCategoryId;
         this.description=description;
+        this.repaymentDate=repaymentDate;
+        this.transactionCategoryId = transactionCategoryId;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.repaymentDate=repaymentDate;
         this.receiptId=receiptId;
     }
 
-    int getId() {
+    Integer getId() {
         return id;
     }
 
@@ -58,11 +58,11 @@ class TransactionSnapshot {
         return description;
     }
 
-    int getTargetAccountId() {
+    Integer getTargetAccountId() {
         return targetAccountId;
     }
 
-    int getSourceAccountId() {
+    Integer getSourceAccountId() {
         return sourceAccountId;
     }
 
@@ -70,7 +70,7 @@ class TransactionSnapshot {
         return repaymentDate;
     }
 
-    int getReceiptId() {
+    Integer getReceiptId() {
         return receiptId;
     }
 }

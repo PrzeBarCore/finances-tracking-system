@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "/receipts")
+@CrossOrigin(origins = {"http://localhost:4200/"})
 class ReceiptController {
     private final ReceiptFacade facade;
     private static final Logger logger = LoggerFactory.getLogger(ReceiptController.class);
@@ -23,6 +24,7 @@ class ReceiptController {
         Optional<ReceiptDto> receipt =facade.findReceipt(id);
         return receipt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().body(null));
     }
+
 
     @PostMapping
     ResponseEntity<ReceiptDto> createReceipt(@RequestBody ReceiptDto receiptToCreate){
