@@ -11,6 +11,9 @@ import { CategoryDataService } from '../services/category-data.service';
   styleUrls: ['./category-form.component.scss'],
 })
 export class CategoryFormComponent {
+  setAccount(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   categoryList = [
     CategoryType.Account,
     CategoryType.Product,
@@ -22,6 +25,7 @@ export class CategoryFormComponent {
   dataSource = new MatTreeNestedDataSource<Category>();
   categoriesToSelect: Category[] = [];
   categoryInstance: Category = new Category(
+    
     -1,
     '',
     CategoryType.translateUrlParam(this.activatedRoute.snapshot.params['type']),
@@ -34,10 +38,7 @@ export class CategoryFormComponent {
     private router: Router,
     private dataService: CategoryDataService
   ) {
-    console.log(this.categoryInstance.categoryType);
     this.dataSource.data = this.categoryInstance.childCategories;
-  }
-  ngOnInit() {
     this.dataService
       .getAllCategoriesOfType(this.categoryInstance.categoryType)
       .subscribe((response) => {

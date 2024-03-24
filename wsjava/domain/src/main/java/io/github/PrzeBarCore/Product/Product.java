@@ -1,7 +1,9 @@
 package io.github.PrzeBarCore.Product;
 
 import io.github.PrzeBarCore.ValueObjects.Company;
+import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
+import io.github.PrzeBarCore.ValueObjects.Unit;
 
 class Product {
     static Product restore(ProductSnapshot snapshot){
@@ -20,12 +22,12 @@ class Product {
     private NameString name;
     private Company producer;
     private Double quantity;
-    private String unit;
+    private Unit unit;
     private Integer productCategoryId;
-    private Double defaultPrice;
+    private MonetaryAmount defaultPrice;
     private Integer defaultReceiptTransactionCategoryId;
 
-    private Product(Integer id, NameString name, Company producer, Double quantity, String unit, Integer productCategoryId, Double defaultPrice, Integer defaultReceiptTransactionCategory
+    private Product(Integer id, NameString name, Company producer, Double quantity, Unit unit, Integer productCategoryId, MonetaryAmount defaultPrice, Integer defaultReceiptTransactionCategory
     ) {
         this.id = id;
         this.name = name;

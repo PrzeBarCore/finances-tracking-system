@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Product } from 'src/app/product/model/product';
-import { SearchDialogComponent } from '../search-dialog.component';
+import { DialogComponent, DialogType } from '../dialog.component';
 import { ProductDataService } from 'src/app/product/services/product-data.service';
 
 @Component({
@@ -19,7 +19,8 @@ export class ProductSearchDialogComponent {
   @Input() initialProduct: Product | null = null;
   @Output() selectedProductChanged = new EventEmitter<Product>();
   @ViewChild('productSearchDialog', { static: true })
-  dialog!: SearchDialogComponent;
+  dialog!: DialogComponent;
+  dialogType: DialogType = DialogType.SEARCH;
   @ViewChild('productName', { static: true })
   productName!: ElementRef;
   @ViewChild('producer', { static: true })

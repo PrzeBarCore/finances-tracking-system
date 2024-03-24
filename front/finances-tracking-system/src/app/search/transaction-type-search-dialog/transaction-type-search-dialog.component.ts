@@ -5,7 +5,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { SearchDialogComponent } from '../search-dialog.component';
+import { DialogComponent, DialogType } from '../dialog.component';
 import { CommonDataService } from 'src/app/common/services/common-data.service';
 import { Transaction } from 'src/app/common/model/transaction';
 
@@ -17,7 +17,8 @@ import { Transaction } from 'src/app/common/model/transaction';
 export class TransactionTypeSearchDialogComponent implements AfterViewInit {
   @Output() selectedTypeChanged = new EventEmitter<string>();
   @ViewChild('transactionTypeSearchDialog', { static: true })
-  dialog!: SearchDialogComponent;
+  dialog!: DialogComponent;
+  dialogType: DialogType = DialogType.SEARCH;
 
   data: string[] = [];
   displayedData: {}[] = [];

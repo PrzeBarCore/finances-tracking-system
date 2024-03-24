@@ -1,19 +1,11 @@
 package io.github.PrzeBarCore.Receipt;
 
-import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.CategoryFacade;
-import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.ProductFacade;
-import io.github.PrzeBarCore.Transaction.TransactionDto;
+import io.github.PrzeBarCore.Transaction.ReceiptTypeSimpleTransactionDto;
 import io.github.PrzeBarCore.Transaction.TransactionFacade;
-import io.github.PrzeBarCore.Transaction.TransactionFactory;
-import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
-import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
-import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 public class ReceiptFacade {
     private final ReceiptRepository repository;
@@ -34,34 +26,23 @@ public class ReceiptFacade {
         return repository.findById(id).map(receiptFactory::createDto);
     }
 
-    public ReceiptDto  createReceipt(ReceiptDto receiptToCreate) {
-//        for(ReceiptDto.DtoItem item : receiptToCreate.getItems()){
-//            if(item.getProduct().isPresent()) {
-//                ProductDto product = item.getProduct().get();
-//                if (null!=product.getId() && product.getId() == 0) {
-//                    item.setProduct(Optional.of(productFacade.createProduct(product)));
-//                }
-//            }
-//            CategoryDto expenseCategory = item.getExpenseCategory();
-//            if(null == expenseCategory)
-//                throw new IllegalArgumentException("Expense category should not be null");
-//            if(null != expenseCategory.getId() && expenseCategory.getId() == 0){
-//                //item.setExpenseCategory(categoryFacade.createCategory(expenseCategory));
-//            }
-//        }
-        ReceiptDto createdReceipt = receiptFactory.createDto(repository.save(receiptFactory.createEntity(receiptToCreate)));
-        this.transactionFacade.addTransaction(new TransactionDto(0,
-                createdReceipt.getIssuedOnDateTime(),
-                createdReceipt.getTotalValue(),
-                TransactionType.RECEIPT.toString(),
-                "",
-                null,
-                Optional.empty(),
-                Optional.empty(),
-                Optional.of(receiptToCreate.getSourceAccount()),
-                Optional.of(createdReceipt)
-        ));
-                return createdReceipt;
+    public Optional<ReceiptDto> findReceiptWithTransaction(Integer id) {
+        return repository.findByRelatedTransactionId(id).map(receiptFactory::createDto);
     }
 
+    public boolean  createReceipt(ReceiptDto receiptToCreate) {
+        receiptToCreate.setRelatedTransaction((ReceiptTypeSimpleTransactionDto) transactionFacade.addTransaction(receiptToCreate.getRelatedTransaction()));
+        ReceiptDto createdReceipt = receiptFactory.createDto(repository.save(receiptFactory.createEntity(receiptToCreate)));
+        createdReceipt.getRelatedTransaction().setReceiptId(createdReceipt.getId());
+        transactionFacade.updateTransaction(createdReceipt.getRelatedTransaction());
+        return true;
+    }
+
+    public boolean deleteReceipt(Integer receiptId) {
+        if(repository.existsReceiptById(receiptId)){
+            repository.deleteReceiptById(receiptId);
+            return true;
+        }
+        return false;
+    }
 }

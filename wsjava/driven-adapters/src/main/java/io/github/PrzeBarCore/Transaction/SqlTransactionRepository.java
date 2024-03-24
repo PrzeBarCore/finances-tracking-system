@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 interface SqlTransactionRepository extends Repository<TransactionSnapshot, Integer> {
     boolean existsTransactionById(int id);
+    Optional<TransactionSnapshot> findTransactionById(int id);
     @Query(value ="SELECT * FROM transactions where source_account_id = :id OR target_account_id = :id", nativeQuery = true)
     List<TransactionSnapshot> findTransactionsByAccountId(@Param(value = "id") int id);
     @Query(value ="SELECT * FROM transactions where transaction_type = 'INCOME' AND id = :id ", nativeQuery = true)
@@ -25,6 +26,7 @@ interface SqlTransactionRepository extends Repository<TransactionSnapshot, Integ
     @Query(value ="SELECT * FROM transactions where transaction_type = 'INNER_TRANSFER' AND id = :id ", nativeQuery = true)
     Optional<TransactionSnapshot> findTransactionOfInnerTransferType(@Param(value = "id") int id);
     TransactionSnapshot save(TransactionSnapshot transaction);
+    boolean deleteTransactionById(Integer id);
 
 }
 
@@ -40,6 +42,11 @@ class TransactionRepositoryImpl implements TransactionRepository{
     @Override
     public boolean existsTransactionById(int id) {
         return repository.existsTransactionById(id);
+    }
+
+    @Override
+    public Optional<Transaction> findTransactionById(int id) {
+        return repository.findTransactionById(id).map(Transaction::restore);
     }
 
     @Override
@@ -75,6 +82,11 @@ class TransactionRepositoryImpl implements TransactionRepository{
     @Override
     public Transaction save(Transaction transaction) {
         return Transaction.restore(repository.save(transaction.getSnapshot()));
+    }
+
+    @Override
+    public boolean deleteTransactionById(Integer id) {
+        return repository.deleteTransactionById(id);
     }
 
     @Override

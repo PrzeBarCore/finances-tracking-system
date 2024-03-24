@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SearchDialogComponent } from './search-dialog.component';
+import { DialogComponent } from './dialog.component';
 import { CategoryModule } from '../category/category.module';
 import { CategorySearchDialogComponent } from './category-search-dialog/category-search-dialog.component';
 import { DataGridComponent } from '../common/data-grid/data-grid.component';
@@ -9,7 +9,7 @@ import { ProductSearchDialogComponent } from './product-search-dialog/product-se
 
 @NgModule({
   declarations: [
-    SearchDialogComponent,
+    DialogComponent,
     CategorySearchDialogComponent,
     TransactionTypeSearchDialogComponent,
     ProductSearchDialogComponent,
@@ -20,6 +20,7 @@ import { ProductSearchDialogComponent } from './product-search-dialog/product-se
     CategorySearchDialogComponent,
     TransactionTypeSearchDialogComponent,
     ProductSearchDialogComponent,
+    DialogComponent,
   ],
 })
 export class SearchModule {}

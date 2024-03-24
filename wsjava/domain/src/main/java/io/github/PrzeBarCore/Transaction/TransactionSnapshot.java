@@ -31,7 +31,7 @@ class TransactionSnapshot {
         this.transactionCategoryId = transactionCategoryId;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.receiptId=receiptId;
+        this.receiptId = receiptId;
     }
 
     Integer getId() {
@@ -70,7 +70,5 @@ class TransactionSnapshot {
         return repaymentDate;
     }
 
-    Integer getReceiptId() {
-        return receiptId;
-    }
+    Integer getReceiptId() {return this.receiptId;}
 }

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchDialogComponent } from './search-dialog.component';
+import { SearchDialogComponent } from './dialog.component';
 
 describe('SearchDialogComponent', () => {
   let component: SearchDialogComponent;
@@ -8,7 +8,7 @@ describe('SearchDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [SearchDialogComponent]
+      declarations: [SearchDialogComponent],
     });
     fixture = TestBed.createComponent(SearchDialogComponent);
     component = fixture.componentInstance;

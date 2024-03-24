@@ -4,16 +4,19 @@
     Current balance: {{ accountInstance.balance }}
     {{ accountInstance.currency }}
   </h3>
-  <table class="table">
+  <table class="table table-hover">
     <thead>
       <th>Date</th>
       <th>Value</th>
       <th>Type</th>
-      <th>Category</th>
       <th></th>
     </thead>
     <tbody>
-      <tr *ngFor="let transaction of accountInstance.transactionList">
+      <tr
+        class="account-transaction-row"
+        *ngFor="let transaction of accountInstance.transactionList"
+        (click)="navigateToTransaction(transaction)"
+      >
         <td>{{ transaction.issuedOnDateTime | date }}</td>
         <td class="value" [class.outcome]="transaction.totalValue < 0">
           {{ transaction.totalValue | currency : "PLN " }}
@@ -23,8 +26,14 @@
             normalizeTransactionType(transaction.transactionType) | titlecase
           }}
         </td>
-        <td>{{ transaction.transactionCategory }}</td>
-        <td><button class="btn btn-danger">x</button></td>
+        <td>
+          <button
+            class="btn btn-danger"
+            (click)="openDialog(transaction); $event.stopPropagation()"
+          >
+            x
+          </button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -40,4 +49,10 @@
     #transactionTypeDialog
     (selectedTypeChanged)="addNewTransaction($event)"
   ></transaction-type-search-dialog>
+  <custom-dialog
+    #warnningDialog
+    [dialogType]="dialogType"
+    confirmButtonClicked="deleteTransaction()"
+    textContent="Do you want to delete the Transaction?"
+  ></custom-dialog>
 </div>

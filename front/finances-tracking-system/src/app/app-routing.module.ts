@@ -9,11 +9,12 @@ import { ProductFormComponent } from './product/product-form/product-form.compon
 import { AccountListComponent } from './account/account-list/account-list.component';
 import { AccountComponent } from './account/account.component';
 import { AccountFormComponent } from './account/account-form/account-form.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 const routes: Routes = [
   { path: 'accounts', component: AccountListComponent },
   { path: 'accounts/:id', component: AccountFormComponent },
-  { path: 'accounts/details/:id', component: AccountComponent },
+  { path: 'accounts/:id/details', component: AccountComponent },
   { path: 'receipts', component: ReceiptListComponent },
   { path: 'receipts/:id', component: ReceiptFormComponent },
   { path: 'categories', component: CategoryComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'categories/:type/:id', component: CategoryFormComponent },
   { path: 'products', component: ProductComponent },
   { path: 'products/:id', component: ProductFormComponent },
+  { path: 'transactions/:id', component: TransactionComponent },
 ];
 
 @NgModule({

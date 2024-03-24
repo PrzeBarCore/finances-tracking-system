@@ -31,7 +31,7 @@ public class CategoryFacade {
     public boolean existsCategory(CategoryDto category){
         boolean result = false;
         result = repository.existsById(category.getId());
-        result |=repository.existsByNameAndCategoryType(NameString.of(category.getName()), category.getCategoryType());
+        result |=repository.existsByNameAndCategoryType(category.getName(), category.getCategoryType());
         return result;
     }
     //TODO what should system do when category already exists?

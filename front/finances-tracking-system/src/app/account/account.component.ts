@@ -3,22 +3,29 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { AccountService } from './service/account.service';
 import { Account } from './model/account';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction } from '../common/model/transaction';
+import { DialogComponent, DialogType } from '../search/dialog.component';
+import { TransactionService } from '../transaction/service/transaction.service';
 
 @Component({
   selector: 'account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss'],
 })
-export class AccountComponent {
+export class AccountComponent implements AfterViewInit {
   accountInstance: Account = new Account(0, '', 0, '', []);
+  @ViewChild('warnningDialog', { static: true })
+  dialog!: DialogComponent;
+  dialogType: DialogType = DialogType.WARRNING;
 
   constructor(
     private accountService: AccountService,
+    private transactionService: TransactionService,
     private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
@@ -28,13 +35,32 @@ export class AccountComponent {
         this.accountInstance = response;
       });
   }
+  ngAfterViewInit(): void {
+    this.dialog.close();
+  }
 
   addNewTransaction(transactionType: string) {
     if (transactionType == 'RECEIPT')
       this.router.navigate(['/receipts/-1', { aid: this.accountInstance.id }]);
   }
 
-  normalizeTransactionType(type : string){
+  openDialog(transaction: Transaction) {
+    this.dialog.open();
+    this.dialog.confirmButtonClicked.subscribe((result) => {
+      if (result)
+        this.transactionService.deleteTransaction(transaction.id).subscribe();
+      else console.log('noe');
+    });
+  }
+  deleteTransaction() {}
+
+  normalizeTransactionType(type: string) {
     return Transaction.getNormalizedTransactionType(type);
+  }
+
+  navigateToTransaction(transaction: Transaction) {
+    if (transaction.transactionType == 'RECEIPT')
+      this.router.navigate(['/receipts/', transaction.receiptId]);
+    else this.router.navigate(['/transactions/', transaction.id]);
   }
 }

@@ -1,7 +1,7 @@
-<search-dialog #transactionTypeSearchDialog>
+<custom-dialog #transactionTypeSearchDialog [dialogType]="dialogType">
   <data-grid
     [dataSource]="this.displayedData"
     [(selectedRow)]="this.currentlySelectedType"
   ></data-grid>
   <button class="btn btn-success" (click)="saveSelectedType()">Save</button>
-</search-dialog>
+</custom-dialog>

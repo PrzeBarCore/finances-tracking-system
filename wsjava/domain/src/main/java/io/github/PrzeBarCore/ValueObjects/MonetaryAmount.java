@@ -7,6 +7,8 @@ public class MonetaryAmount {
     protected MonetaryAmount(){};
     public static MonetaryAmount of(BigDecimal value){
         return new MonetaryAmount(value);}
+    public static MonetaryAmount of(Double value){
+        return MonetaryAmount.of(BigDecimal.valueOf((value)));}
     public static MonetaryAmount zero(){
         return new MonetaryAmount(BigDecimal.ZERO);
     }
@@ -35,6 +37,9 @@ public class MonetaryAmount {
     }
     public BigDecimal toBigDecimal(){
         return new BigDecimal(value.toString());
+    }
+    public Double toDouble(){
+        return value.doubleValue();
     }
     private MonetaryAmount(BigDecimal value){
         this.value=value;

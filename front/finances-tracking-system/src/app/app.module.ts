@@ -15,8 +15,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ProductModule } from './product/product.module';
 import { SearchModule } from './search/search.module';
 import { AccountModule } from './account/account.module';
+import { TransactionComponent } from './transaction/transaction.component';
 @NgModule({
-  declarations: [AppComponent, MenuComponent],
+  declarations: [AppComponent, MenuComponent, TransactionComponent],
   imports: [
     AccountModule,
     ReceiptModule,

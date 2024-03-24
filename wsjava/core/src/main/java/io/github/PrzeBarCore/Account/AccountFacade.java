@@ -2,9 +2,9 @@ package io.github.PrzeBarCore.Account;
 
 import io.github.PrzeBarCore.Transaction.TransactionFacade;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class AccountFacade {
     private final AccountRepository repository;
@@ -39,11 +39,7 @@ public class AccountFacade {
     public Optional<AccountDto> findAccountWithTransactions(int id) {
         Optional<AccountDto> foundAccount = repository.findById(id).map(AccountFactory::createDto);
         foundAccount.ifPresent(accountDto -> accountDto.setTransactionList(
-                transactionFacade.findTransactionsWithAccountId(accountDto.getId()).stream()
-                        .map(transaction -> {if(transaction.getSourceAccount().isPresent() && transaction.getSourceAccount().get().getId() == id)
-                            transaction.setTotalValue(-transaction.getTotalValue());
-                            return transaction;
-                        }).collect(Collectors.toList())));
+                new ArrayList<>(transactionFacade.findTransactionsWithAccountId(accountDto.getId()))));
         return foundAccount;
     }
 

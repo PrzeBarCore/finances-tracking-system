@@ -1,4 +1,4 @@
-<search-dialog #searchDialog>
+<custom-dialog [dialogType]="dialogType" #searchDialog>
   <fieldset class="form-group col-auto">
     <label for="categoryName">Name</label>
     <input
@@ -13,5 +13,11 @@
     [dataSource]="this.displayedData"
     [(selectedRow)]="this.currentlySelectedCategory"
   ></data-grid>
-  <button class="btn btn-success" (click)="clearFilter(categoryName)" (click)="saveSelectedCategory()">Save</button>
-</search-dialog>
+  <button
+    class="btn btn-success"
+    (click)="clearFilter(categoryName)"
+    (click)="saveSelectedCategory()"
+  >
+    Save
+  </button>
+</custom-dialog>

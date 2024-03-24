@@ -2,6 +2,7 @@ package io.github.PrzeBarCore.Product;
 
 import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.ValueObjects.Company;
+import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
 public class ProductFactory {
@@ -22,8 +23,8 @@ public class ProductFactory {
 
     private ProductSnapshot createSnapshot(ProductDto dto){
         return new ProductSnapshot(dto.getId(),
-                NameString.of(dto.getName()),
-                Company.of(dto.getProducer()),
+                dto.getName(),
+                dto.getProducer(),
                 dto.getQuantity(),
                 dto.getUnit(),
                 dto.getProductCategory() == null ? null : dto.getProductCategory().getId(),
@@ -34,8 +35,8 @@ public class ProductFactory {
 
     private ProductDto createDto(ProductSnapshot snapshot){
         return new ProductDto(snapshot.getId(),
-                snapshot.getName().getText(),
-                snapshot.getProducer().getText(),
+                snapshot.getName(),
+                snapshot.getProducer(),
                 snapshot.getQuantity(),
                 snapshot.getUnit(),
                 snapshot.getProductCategoryId() == null ? null : categoryFacade.findCategoryById(snapshot.getProductCategoryId()).orElseThrow(IllegalArgumentException::new),

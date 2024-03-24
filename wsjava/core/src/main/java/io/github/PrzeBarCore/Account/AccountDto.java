@@ -1,70 +1,66 @@
 package io.github.PrzeBarCore.Account;
 
-import io.github.PrzeBarCore.Transaction.TransactionDto;
+import io.github.PrzeBarCore.Transaction.SimpleTransactionDto;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
-import io.github.PrzeBarCore.ValueObjects.SimpleCurrency;
 
 import java.util.List;
 
-public class AccountDto {
-    private Integer id;
-    private String name;
-    private Double balance;
+public class AccountDto extends SimpleAccountDto{
+    private MonetaryAmount balance;
     private String currency;
-    List<TransactionDto> transactionList = null;
+    List<SimpleTransactionDto> transactionList = null;
 
     AccountDto(){};
 
-    public AccountDto(Integer id, String name, Double balance, String currency) {
-        this.id = id;
-        this.name = name;
+    public AccountDto(Integer id, NameString name, MonetaryAmount balance, String currency) {
+        super(id,name);
         this.balance = balance;
         this.currency = currency;
     }
 
-    public AccountDto(Integer id, String name, Double balance, String currency, List<TransactionDto> transactionDto){
+    AccountDto(Integer id, NameString name, MonetaryAmount balance, String currency, List<SimpleTransactionDto> simpleTransactionDto){
         this(id, name,balance,currency);
-        this.transactionList = transactionDto;
+        this.transactionList = simpleTransactionDto;
     }
 
     public int getId() {
-        return this.id;
+        return super.getId();
     }
 
-    public String getName() {
-        return name;
+    NameString getName() {
+        return super.getName();
     }
 
-    public Double getBalance() {
+    MonetaryAmount getBalance() {
         return balance;
     }
 
-    public String getCurrency() {
+    String getCurrency() {
         return currency;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    void setId(Integer id) {
+        super.setId(id);
     }
 
-    public void setName(String name) {
-        this.name = name;
+    void setName(NameString name) {
+        super.setName(name);
     }
 
-    public void setBalance(Double balance) {
+    void setBalance(MonetaryAmount balance) {
         this.balance = balance;
     }
 
-    public void setCurrency(String currency) {
+    void setCurrency(String currency) {
         this.currency = currency;
     }
 
-    public List<TransactionDto> getTransactionList() {
+    List<SimpleTransactionDto> getTransactionList() {
         return transactionList;
     }
 
-    public void setTransactionList(List<TransactionDto> transactionList) {
+    void setTransactionList(List<SimpleTransactionDto> transactionList) {
         this.transactionList = transactionList;
     }
 }

@@ -16,6 +16,13 @@ public class ProductFacade {
         this.factory= factory;
     }
 
+    public Optional<SimpleProductDto> findSimpleProduct(Integer id) {
+        if(null !=id)
+            return repository.findById(id).map(factory::createDto);
+        else
+            return Optional.empty();
+    }
+
     public Optional<ProductDto> findProduct(Integer id) {
         if(null !=id)
             return repository.findById(id).map(factory::createDto);

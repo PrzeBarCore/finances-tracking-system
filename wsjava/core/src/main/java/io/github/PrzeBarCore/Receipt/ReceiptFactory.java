@@ -3,22 +3,22 @@ package io.github.PrzeBarCore.Receipt;
 import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.ProductFacade;
-import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
-import io.github.PrzeBarCore.ValueObjects.NameString;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
+import io.github.PrzeBarCore.Product.SimpleProductDto;
+import io.github.PrzeBarCore.Transaction.ReceiptTypeSimpleTransactionDto;
+import io.github.PrzeBarCore.Transaction.TransactionFacade;
+import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import static java.util.stream.Collectors.toList;
 
 public class ReceiptFactory {
-
     private final ProductFacade productFacade;
     private final CategoryFacade categoryFacade;
+    private final TransactionFacade transactionFacade;
 
-    ReceiptFactory(final ProductFacade productFacade, final CategoryFacade categoryFacade) {
+    ReceiptFactory(final ProductFacade productFacade, final CategoryFacade categoryFacade,final TransactionFacade transactionFacade) {
         this.productFacade = productFacade;
         this.categoryFacade = categoryFacade;
+        this.transactionFacade = transactionFacade;
     }
 
     ReceiptDto createDto(Receipt receipt){
@@ -30,17 +30,15 @@ public class ReceiptFactory {
 
     private ReceiptSnapshot createSnapshot(ReceiptDto dto){
         return new ReceiptSnapshot(dto.getId(),
-                dto.getIssuedOnDateTime(),
-                MonetaryAmount.of(BigDecimal.valueOf(dto.getTotalValue())),
-                MonetaryAmount.of(BigDecimal.valueOf(dto.getTotalDiscount())),
+                dto.getTotalDiscount(),
+                dto.getRelatedTransaction().getId(),
                 dto.getItems().stream()
                         .map(item -> new ReceiptItemSnapshot(item.getId(),
-                                NameString.of(item.getName()),
+                                item.getName(),
                                 item.getQuantity(),
-                                MonetaryAmount.of(BigDecimal.valueOf(item.getRegularPrice())),
-                                MonetaryAmount.of(BigDecimal.valueOf(item.getDiscount())),
-                                dto.getId(),
-                                item.getProduct().map(ProductDto::getId).orElse(null),
+                                item.getRegularPrice(),
+                                item.getDiscount(),
+                                item.getProduct().map(SimpleProductDto::getId).orElse(null),
                                 item.getExpenseCategory().getId()))
                         .collect(toList()));
     }
@@ -49,17 +47,15 @@ public class ReceiptFactory {
     private ReceiptDto createDto(ReceiptSnapshot snapshot){
         return new ReceiptDto(
                 snapshot.getId(),
-                snapshot.getIssuedOnDateTime(),
-                snapshot.getTotalValue().toBigDecimal().doubleValue(),
-                snapshot.getTotalDiscount().toBigDecimal().doubleValue(),
+                snapshot.getTotalDiscount(),
+                (ReceiptTypeSimpleTransactionDto) transactionFacade.findTransaction(snapshot.getRelatedTransactionId()).orElseThrow(IllegalArgumentException::new),
                 snapshot.getItems().stream()
                         .map(item -> new ReceiptDto.DtoItem(item.getId(),
-                                item.getName().getText(),
+                                item.getName(),
                                 item.getQuantity(),
-                                item.getRegularPrice().toBigDecimal().doubleValue(),
-                                item.getDiscount().toBigDecimal().doubleValue(),
-                                snapshot.getId(),
-                                productFacade.findProduct(item.getProductId()),
+                                item.getRegularPrice(),
+                                item.getDiscount(),
+                                productFacade.findSimpleProduct(item.getProductId()),
                                 categoryFacade.findCategoryById(item.getExpenseCategoryId()).orElseThrow(IllegalArgumentException::new)))
                         .collect(toList()));
     }

@@ -14,7 +14,10 @@ export class ReceiptService {
   }
 
   public findReceipt(id: number): Observable<Receipt> {
-    return this.http.get<Receipt>(this.receiptsUrl);
+    return this.http.get<Receipt>(this.receiptsUrl + `/${id}`);
+  }
+  public findReceiptWithTransactionId(id: number): Observable<Receipt> {
+    return this.http.get<Receipt>(this.receiptsUrl + `/transaction/${id}`);
   }
 
   public saveReceipt(receipt: Receipt) {

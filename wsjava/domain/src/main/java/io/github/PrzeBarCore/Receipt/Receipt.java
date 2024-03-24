@@ -11,41 +11,29 @@ import java.util.stream.Collectors;
 class Receipt {
     static Receipt restore(ReceiptSnapshot snapshot) {
         return new Receipt(snapshot.getId(),
-                snapshot.getIssuedOnDateTime(),
-                snapshot.getTotalValue(),
                 snapshot.getTotalDiscount(),
+                snapshot.getRelatedTransactionId(),
                 snapshot.getItems()
                         .stream()
                         .map(ReceiptItem::restore)
                         .collect(Collectors.toList()));
     }
-
-    static Receipt restoreWithoutItems(ReceiptSnapshot snapshot) {
-        return new Receipt(snapshot.getId(),
-                snapshot.getIssuedOnDateTime(),
-                snapshot.getTotalValue(),
-                snapshot.getTotalDiscount(),
-                new ArrayList<>());
-    }
     private Integer id;
-    private LocalDateTime issuedOnDateTime;
-    private MonetaryAmount totalValue;
     private MonetaryAmount totalDiscount;
+    private Integer relatedTransactionId;
     private List<ReceiptItem> items;
 
-    private Receipt(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue,MonetaryAmount totalDiscount, List<ReceiptItem> items) {
+    private Receipt(Integer id, MonetaryAmount totalDiscount,Integer relatedTransactionId, List<ReceiptItem> items) {
         this.id = id;
-        this.issuedOnDateTime = issuedOnDateTime;
-        this.totalValue = totalValue;
         this.totalDiscount = totalDiscount;
+        this.relatedTransactionId = relatedTransactionId;
         this.items = items;
     }
 
     ReceiptSnapshot getSnapshot(){
         return new ReceiptSnapshot(this.id,
-                this.issuedOnDateTime,
-                this.totalValue,
                 this.totalDiscount,
+                this.relatedTransactionId,
                 this.items.stream()
                         .map(ReceiptItem::getItemSnapshot)
                         .collect(Collectors.toList()));
@@ -58,7 +46,6 @@ class Receipt {
                     snapshot.getQuantity(),
                     snapshot.getRegularPrice(),
                     snapshot.getDiscount(),
-                    snapshot.getReceiptId(),
                     snapshot.getProductId(),
                     snapshot.getExpenseCategoryId());
         }
@@ -68,7 +55,6 @@ class Receipt {
         private Double quantity;
         private MonetaryAmount regularPrice;
         private MonetaryAmount discount;
-        private Integer receiptId;
         private Integer productId;
         private Integer expenseCategoryId;
 
@@ -78,18 +64,16 @@ class Receipt {
                     this.quantity,
                     this.regularPrice,
                     this.discount,
-                    this.receiptId,
                     this.productId,
                     this.expenseCategoryId);
         }
 
-         private ReceiptItem(Integer id, NameString name, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer receiptId, Integer productId, Integer expenseCategoryId) {
+         private ReceiptItem(Integer id, NameString name, Double quantity, MonetaryAmount regularPrice, MonetaryAmount discount, Integer productId, Integer expenseCategoryId) {
              this.id = id;
              this.name = name;
              this.quantity = quantity;
              this.regularPrice = regularPrice;
              this.discount = discount;
-             this.receiptId = receiptId;
              this.productId = productId;
              this.expenseCategoryId = expenseCategoryId;
          }

@@ -7,17 +7,15 @@ import java.util.List;
 
 class ReceiptSnapshot {
     private Integer id;
-    private LocalDateTime issuedOnDateTime;
-    private MonetaryAmount totalValue;
     private MonetaryAmount totalDiscount;
+    private Integer relatedTransactionId;
     private List<ReceiptItemSnapshot> items;
 
     ReceiptSnapshot(){}
-    ReceiptSnapshot(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, MonetaryAmount totalDiscount, List<ReceiptItemSnapshot> items) {
+    ReceiptSnapshot(Integer id, MonetaryAmount totalDiscount, Integer relatedTransactionId, List<ReceiptItemSnapshot> items) {
         this.id = id;
-        this.issuedOnDateTime = issuedOnDateTime;
-        this.totalValue = totalValue;
         this.totalDiscount = totalDiscount;
+        this.relatedTransactionId = relatedTransactionId;
         this.items = items;
     }
 
@@ -25,15 +23,9 @@ class ReceiptSnapshot {
         return id;
     }
 
-    LocalDateTime getIssuedOnDateTime() {
-        return issuedOnDateTime;
-    }
-
-    MonetaryAmount getTotalValue() {
-        return totalValue;
-    }
-
     MonetaryAmount getTotalDiscount() { return totalDiscount; }
+
+    Integer getRelatedTransactionId() { return relatedTransactionId; }
 
     List<ReceiptItemSnapshot> getItems() {
         return items;

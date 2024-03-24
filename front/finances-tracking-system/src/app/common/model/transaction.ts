@@ -12,7 +12,7 @@ export class Transaction {
   public transactionCategory: Category | null = null;
   public targetAccount: Account | null = null;
   public sourceAccount: Account | null = null;
-  public receipt: Receipt | null = null;
+  public receiptId: number = 0;
   constructor(
     id: number,
     issuedOnDateTime: Date,
@@ -23,7 +23,7 @@ export class Transaction {
     transactionCategory: Category | null,
     targetAccount: Account | null,
     sourceAccount: Account | null,
-    receipt: Receipt | null
+    receiptId: number
   ) {
     this.id = id;
     this.issuedOnDateTime = issuedOnDateTime;
@@ -34,7 +34,7 @@ export class Transaction {
     this.transactionCategory = transactionCategory;
     this.targetAccount = targetAccount;
     this.sourceAccount = sourceAccount;
-    this.receipt = receipt;
+    this.receiptId = receiptId;
   }
 
   public static getNormalizedTransactionType(transactionType: string): string {

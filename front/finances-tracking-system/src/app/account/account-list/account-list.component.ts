@@ -17,7 +17,7 @@ export class AccountListComponent {
   }
 
   openAccount(accountId: number) {
-    this.router.navigate(['/accounts/details', accountId]);
+    this.router.navigate([`/accounts/${accountId}/details`]);
   }
 
   openAccountForm() {

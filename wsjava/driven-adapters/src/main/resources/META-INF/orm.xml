@@ -57,101 +57,6 @@
         </attributes>
     </entity>
 
-
-    <entity class="io.github.PrzeBarCore.Receipt.ReceiptSnapshot" access="FIELD">
-        <table name ="receipts"/>
-        <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <basic name="issuedOnDateTime">
-                <column nullable="false"/>
-            </basic>
-            <one-to-many name="items" mapped-by="receiptId">
-                <cascade><cascade-all/></cascade>
-            </one-to-many>
-            <embedded name="totalValue">
-                <attribute-override name="value">
-                    <column name="total_value" nullable="false"/>
-                </attribute-override>
-            </embedded>
-            <embedded name="totalDiscount">
-                <attribute-override name="value">
-                    <column name="total_discount" nullable="false"/>
-                </attribute-override>
-            </embedded>
-        </attributes>
-    </entity>
-
-
-    <entity class="io.github.PrzeBarCore.Receipt.ReceiptItemSnapshot" access="FIELD">
-        <table name ="receipt_items"/>
-        <attributes>
-            <id  name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <basic name="quantity">
-                <column nullable="false"/>
-            </basic>
-            <basic name="receiptId">
-                <column name="receipt_id" nullable="true"/>
-            </basic>
-            <basic name="productId"/>
-            <basic name="expenseCategoryId">
-                <column nullable="true"/>
-            </basic>
-            <embedded name="name">
-                <attribute-override name="text">
-                    <column name="name"/>
-                </attribute-override>
-            </embedded>
-            <embedded name="regularPrice">
-                <attribute-override name="value">
-                    <column name="regular_price" nullable="true"/>
-                </attribute-override>
-            </embedded>
-            <embedded name="discount">
-                <attribute-override name="value">
-                    <column name="discount" nullable="true"/>
-                </attribute-override>
-            </embedded>
-        </attributes>
-    </entity>
-
-    <entity class="io.github.PrzeBarCore.Product.ProductSnapshot" access="FIELD">
-        <table name ="products"/>
-        <attributes>
-            <id name="id">
-                <generated-value strategy="IDENTITY"/>
-            </id>
-            <basic name="quantity">
-                <column nullable="false"/>
-            </basic>
-            <basic name="unit">
-                <column nullable="false"/>
-            </basic>
-            <basic name="productCategoryId">
-                <column nullable="false"/>
-            </basic>
-            <basic name="defaultPrice">
-                <column nullable="false"/>
-            </basic>
-            <basic name="defaultReceiptTransactionCategoryId">
-                <column name="transaction_category_id " nullable="false"/>
-            </basic>
-            <embedded name="name">
-                <attribute-override name="text">
-                    <column name="name" nullable="false"/>
-                </attribute-override>
-            </embedded>
-            <embedded name="producer">
-                <attribute-override name="name">
-                    <column name="producer" nullable="false"/>
-                </attribute-override>
-            </embedded>
-        </attributes>
-    </entity>
-
     <entity class="io.github.PrzeBarCore.Transaction.TransactionSnapshot" access="FIELD">
         <table name="transactions"/>
         <attributes>
@@ -178,6 +83,96 @@
             <embedded name="description">
                 <attribute-override name="text">
                     <column name="description" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="io.github.PrzeBarCore.Product.ProductSnapshot" access="FIELD">
+        <table name ="products"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="quantity">
+                <column nullable="false"/>
+            </basic>
+            <basic name="unit">
+                <column nullable="false"/>
+                <enumerated>STRING</enumerated>
+            </basic>
+            <basic name="productCategoryId">
+                <column nullable="false"/>
+            </basic>
+            <basic name="defaultReceiptTransactionCategoryId">
+                <column name="transaction_category_id " nullable="false"/>
+            </basic>
+            <embedded name="defaultPrice">
+                <attribute-override name="value">
+                    <column name="default_price" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name" nullable="false"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="producer">
+                <attribute-override name="name">
+                    <column name="producer" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+    <entity class="io.github.PrzeBarCore.Receipt.ReceiptSnapshot" access="FIELD">
+        <table name ="receipts"/>
+        <attributes>
+            <id name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="relatedTransactionId">
+                <column name="transaction_id" nullable="false"/>
+            </basic>
+            <one-to-many name="items" fetch="LAZY" orphan-removal="true">
+                <join-column name="receipt_id"></join-column>
+                <cascade><cascade-persist/><cascade-merge/></cascade>
+            </one-to-many>
+            <embedded name="totalDiscount">
+                <attribute-override name="value">
+                    <column name="total_discount" nullable="false"/>
+                </attribute-override>
+            </embedded>
+        </attributes>
+    </entity>
+
+
+    <entity class="io.github.PrzeBarCore.Receipt.ReceiptItemSnapshot" access="FIELD">
+        <table name ="receipt_items"/>
+        <attributes>
+            <id  name="id">
+                <generated-value strategy="IDENTITY"/>
+            </id>
+            <basic name="quantity">
+                <column nullable="false"/>
+            </basic>
+            <basic name="productId"/>
+            <basic name="expenseCategoryId">
+                <column nullable="true"/>
+            </basic>
+            <embedded name="name">
+                <attribute-override name="text">
+                    <column name="name"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="regularPrice">
+                <attribute-override name="value">
+                    <column name="regular_price" nullable="true"/>
+                </attribute-override>
+            </embedded>
+            <embedded name="discount">
+                <attribute-override name="value">
+                    <column name="discount" nullable="true"/>
                 </attribute-override>
             </embedded>
         </attributes>

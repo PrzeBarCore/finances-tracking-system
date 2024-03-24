@@ -31,7 +31,7 @@ class TransactionSpec extends Specification {
 //        facade.addTransaction(thirdTransaction)
 //
 //        when: "we ask for transactions for specific account id"
-//        List<TransactionDto> result=facade.findTransactionsByAccountId(exampleAccountId)
+//        List<SimpleTransactionDto> result=facade.findTransactionsByAccountId(exampleAccountId)
 //
 //        then: "we get list containing added "
 //        result.contains(firstTransaction)
@@ -47,8 +47,8 @@ class TransactionSpec extends Specification {
 //                .build();
 //    }
 //
-//    private TransactionDto createTransaction(int id, int accountId, LocalDateTime date,  MonetaryAmount value, TransactionCategoryDto category, TransactionType type){
-//        return TransactionDto.builder().withId(id)
+//    private SimpleTransactionDto createTransaction(int id, int accountId, LocalDateTime date,  MonetaryAmount value, TransactionCategoryDto category, TransactionType type){
+//        return SimpleTransactionDto.builder().withId(id)
 //        .withAccountId(accountId)
 //        .withIssuedOnDateTime(date)
 //        .withTotalValue(value)

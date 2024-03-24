@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Lazy;
 @Configuration
 class ReceiptConfiguration {
     @Bean
-    ReceiptFactory receiptFactory(final ProductFacade productFacade, final CategoryFacade categoryFacade){
-        return new ReceiptFactory(productFacade,categoryFacade);
+    ReceiptFactory receiptFactory(final ProductFacade productFacade, final CategoryFacade categoryFacade, @Lazy final TransactionFacade transactionFacade){
+        return new ReceiptFactory(productFacade, categoryFacade, transactionFacade);
     }
     @Bean
     ReceiptFacade receiptFacade(final ReceiptRepository repository, final ReceiptFactory receiptFactory, final ProductFacade productFacade, final CategoryFacade categoryFacade, @Lazy final TransactionFacade transactionFacade){

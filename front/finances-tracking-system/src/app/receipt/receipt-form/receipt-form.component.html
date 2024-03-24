@@ -10,8 +10,8 @@
           class="form-control"
           type="date"
           name="issuedOnDateTime"
-          [ngModel]="receipt.issuedOnDateTime | date : 'yyyy-MM-dd'"
-          (ngModelChange)="receipt.issuedOnDateTime = $event"
+          [ngModel]="receipt.transaction.issuedOnDateTime | date : 'yyyy-MM-dd'"
+          (ngModelChange)="receipt.transaction.issuedOnDateTime = $event"
         />
       </fieldset>
       <fieldset class="form-group col-auto">
@@ -21,14 +21,14 @@
       <fieldset class="form-group col-auto">
         <label>Source Account</label>
         <select
+        #accountSelection
           class="form-control"
-          type="text"
           name="account"
-          [(ngModel)]="account"
+          [(ngModel)]="receipt.transaction.sourceAccount"
         >
           <option
             *ngFor="let accountOption of accountList"
-            value="{{ accountOption }}"
+            [ngValue]="accountOption"
           >
             {{ accountOption.name }}
           </option>
@@ -139,7 +139,7 @@
       Add Item
     </button>
     <div class="mt-5 container row">
-      <p class="col">Total value: {{ receipt.totalValue }}</p>
+      <p class="col">Total value: {{ receipt.transaction.totalValue }}</p>
       <p class="col">Total Discount: {{ receipt.totalDiscount }}</p>
     </div>
     <input class="form-control mb-5 mt-5" type="file" id="formFile" />

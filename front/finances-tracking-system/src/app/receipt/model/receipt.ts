@@ -1,14 +1,12 @@
-import { Account } from 'src/app/account/model/account';
 import { Category } from 'src/app/category/model/category';
+import { ReceiptTransaction } from 'src/app/common/model/receiptTransaction';
 import { Product } from 'src/app/product/model/product';
 
 export class Receipt {
   constructor(
     public id: number,
-    public sourceAccount: Account,
-    public issuedOnDateTime: Date,
-    public totalValue: number,
     public totalDiscount: number,
+    public transaction: ReceiptTransaction,
     public items: ReceiptItem[]
   ) {}
 }

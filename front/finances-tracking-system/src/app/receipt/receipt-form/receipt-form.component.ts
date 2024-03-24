@@ -1,12 +1,18 @@
-import { AfterViewInit, Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { Receipt, ReceiptItem } from '../model/receipt';
-import { HtmlTagDefinition } from '@angular/compiler';
-import { Account } from 'src/app/account/model/account';
+import { SimpleAccount } from 'src/app/account/model/account';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccountService } from 'src/app/account/service/account.service';
 import { Category, CategoryType } from 'src/app/category/model/category';
 import { Product } from 'src/app/product/model/product';
 import { ReceiptService } from '../service/receipt.service';
+import { ReceiptTransaction } from 'src/app/common/model/receiptTransaction';
 
 @Component({
   selector: 'app-receipt-form',
@@ -15,32 +21,29 @@ import { ReceiptService } from '../service/receipt.service';
   exportAs: 'receiptForm',
 })
 export class ReceiptFormComponent implements AfterViewInit {
+  @ViewChild('accountSelection', { static: true })
+  accountSelect!: HTMLSelectElement;
   receiptCategoryType = CategoryType.Receipt;
-  openedFromAccountComponent = false;
 
-  accountList: Account[] = [];
-  account: Account = new Account(0, '', 0, '', []);
+  accountList: SimpleAccount[] = [];
 
-  receiptItems: ReceiptItem[] = [
-    new ReceiptItem(
-      -1,
-      '',
-      1,
-      0,
-      0,
-      new Category(-1, '', '', [], null, false),
-      new Product(-1, '', '', 0, '', 0, null, null)
-    ),
-  ];
   receipt: Receipt = new Receipt(
     -1,
-    this.account,
-    new Date(),
     0.0,
-    0.0,
-    this.receiptItems
+    new ReceiptTransaction(-1, new Date(), 0.0, new SimpleAccount(-1, ''), -1),
+    [
+      new ReceiptItem(
+        -1,
+        '',
+        1,
+        0,
+        0,
+        new Category(-1, '', '', [], null, false),
+        new Product(-1, '', '', 0, '', 0, null, null)
+      ),
+    ]
   );
-  currentlyEditedItem: ReceiptItem = this.receiptItems[0];
+  currentlyEditedItem: ReceiptItem = this.receipt.items[0];
 
   isAnyItemEdited = true;
 
@@ -50,6 +53,14 @@ export class ReceiptFormComponent implements AfterViewInit {
     private receiptService: ReceiptService,
     private router: Router
   ) {
+    let passedReceiptId = activatedRoute.snapshot.paramMap.get('id');
+    if (passedReceiptId != null && passedReceiptId != '-1') {
+      receiptService
+        .findReceipt(Number.parseInt(passedReceiptId!))
+        .subscribe((response) => {
+          this.receipt = response;
+        });
+    }
     accountService.getAccounts().subscribe((response) => {
       this.accountList = response;
       if (activatedRoute.snapshot.paramMap.get('aid')) {
@@ -59,8 +70,7 @@ export class ReceiptFormComponent implements AfterViewInit {
             activatedRoute.snapshot.paramMap.get('aid')!
         );
         if (foundAccount != null) {
-          this.account = foundAccount;
-          this.openedFromAccountComponent = true;
+          this.receipt.transaction.sourceAccount = foundAccount;
         }
       }
     });
@@ -71,12 +81,11 @@ export class ReceiptFormComponent implements AfterViewInit {
   }
 
   saveReceipt() {
-    this.receipt.sourceAccount = this.account;
     this.receiptService.saveReceipt(this.receipt).subscribe((response) => {
       if (response.status == 200) {
-        if (this.openedFromAccountComponent)
-          this.router.navigate(['/accounts/details/' + this.account.id]);
-        else this.router.navigate(['/receipts/']);
+        this.router.navigate([
+          `/accounts/${this.receipt.transaction.sourceAccount!.id}/details`,
+        ]);
       }
     });
   }
@@ -129,12 +138,12 @@ export class ReceiptFormComponent implements AfterViewInit {
   calculateTotalValue() {
     let totalValue = 0;
     let totalDiscount = 0;
-    this.receiptItems.forEach((item) => {
+    this.receipt.items.forEach((item) => {
       totalValue += item.regularPrice * item.quantity - item.discount;
       totalDiscount += item.discount;
     });
 
-    this.receipt.totalValue = totalValue;
+    this.receipt.transaction.totalValue = totalValue;
     this.receipt.totalDiscount = totalDiscount;
   }
 

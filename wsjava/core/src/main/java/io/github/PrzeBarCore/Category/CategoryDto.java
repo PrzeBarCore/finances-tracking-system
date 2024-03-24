@@ -5,68 +5,61 @@ import io.github.PrzeBarCore.ValueObjects.NameString;
 
 import java.util.Set;
 
-public class CategoryDto {
-
-    private Integer id;
-    private String name;
-    private CategoryType categoryType;
+public class CategoryDto extends SimpleCategoryDto{
     private Set<CategoryDto> childCategories;
     private CategoryDto parentCategory;
     private Boolean hasAnyChild;
 
-
-    public CategoryDto(Integer id, String name, CategoryType categoryType, Set<CategoryDto> childCategories, CategoryDto parentCategory) {
-        this.id = id;
-        this.name = name;
-        this.categoryType = categoryType;
+    public CategoryDto(Integer id, NameString name, CategoryType categoryType, Set<CategoryDto> childCategories, CategoryDto parentCategory) {
+        super(id, name, categoryType);
         this.childCategories = childCategories;
         this.parentCategory = parentCategory;
         this.hasAnyChild = null != this.childCategories && !this.childCategories.isEmpty();
     }
 
     public Integer getId() {
-        return id;
+        return super.getId();
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    void setId(Integer id) {
+        super.setId(id);
     }
 
-    public String getName() {
-        return name;
+    NameString getName() {
+        return super.getName();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    void setName(NameString name) {
+        super.setName(name);
     }
 
-    public CategoryType getCategoryType() {
-        return categoryType;
+    CategoryType getCategoryType() {
+        return super.getCategoryType();
     }
 
-    public void setCategoryType(CategoryType categoryType) {
-        this.categoryType = categoryType;
+    void setCategoryType(CategoryType categoryType) {
+        super.setCategoryType(categoryType);
     }
 
-    public Set<CategoryDto> getChildCategories() {
+    Set<CategoryDto> getChildCategories() {
         return childCategories;
     }
 
-    public void setChildCategories(Set<CategoryDto> childCategories) {
+    void setChildCategories(Set<CategoryDto> childCategories) {
         this.childCategories = childCategories;
     }
-    public CategoryDto getParentCategory() {
+    CategoryDto getParentCategory() {
         return parentCategory;
     }
-    public void setParentCategory(CategoryDto parentCategory) {
+    void setParentCategory(CategoryDto parentCategory) {
         this.parentCategory = parentCategory;
     }
 
-    public Boolean getHasAnyChild() {
+    Boolean getHasAnyChild() {
         return hasAnyChild;
     }
 
-    public void setHasAnyChild(Boolean hasAnyChild) {
+    void setHasAnyChild(Boolean hasAnyChild) {
         this.hasAnyChild = hasAnyChild;
     }
 }

@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS receipt_items (
+CREATE TABLE IF NOT EXISTS Receipt_items (
 id INTEGER PRIMARY KEY,
 name TEXT,
 quantity REAL ,

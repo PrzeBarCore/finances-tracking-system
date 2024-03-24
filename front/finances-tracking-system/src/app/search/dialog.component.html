@@ -1,0 +1,17 @@
+<dialog #dialog type="modal">
+  <ng-content></ng-content>
+  <p *ngIf="this.dialogType == 1">{{ textContent }}</p>
+  <button
+    *ngIf="this.dialogType == 1"
+    class="btn btn-danger"
+    (click)="confirm()"
+  >
+    Confirm
+  </button>
+  <button *ngIf="this.dialogType == 1" class="btn btn-info" (click)="cancel()">
+    Cancel
+  </button>
+  <button *ngIf="this.dialogType == 2" class="btn btn-info" (click)="close()">
+    Close
+  </button>
+</dialog>

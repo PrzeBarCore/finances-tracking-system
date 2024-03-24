@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Category, CategoryType } from 'src/app/category/model/category';
 import { CategoryDataService } from 'src/app/category/services/category-data.service';
-import { SearchDialogComponent } from '../search-dialog.component';
+import { DialogComponent, DialogType } from '../dialog.component';
 
 @Component({
   selector: 'category-search-dialog',
@@ -22,7 +22,8 @@ export class CategorySearchDialogComponent implements OnChanges, AfterViewInit {
   @Input() categoryType: string | null = null;
   @Output() selectedCategoryChanged = new EventEmitter<Category>();
   @ViewChild('searchDialog', { static: true })
-  dialog!: SearchDialogComponent;
+  dialog!: DialogComponent;
+  dialogType: DialogType = DialogType.SEARCH;
 
   data: Category[] = [];
   isDataLoaded: boolean = false;

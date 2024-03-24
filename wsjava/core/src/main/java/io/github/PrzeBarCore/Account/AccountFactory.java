@@ -14,10 +14,10 @@ public class AccountFactory {
         return Account.restore(createSnapshot(accountDto));
     }
     private static AccountSnapshot createSnapshot(AccountDto accountDto){
-        return new AccountSnapshot(accountDto.getId(), NameString.of(accountDto.getName()), MonetaryAmount.of(BigDecimal.valueOf(accountDto.getBalance())), SimpleCurrency.valueOf(accountDto.getCurrency()));
+        return new AccountSnapshot(accountDto.getId(),accountDto.getName(), accountDto.getBalance(), SimpleCurrency.valueOf(accountDto.getCurrency()));
     }
     private static AccountDto createDto(AccountSnapshot accountSnapshot){
-        return new AccountDto(accountSnapshot.getId(), accountSnapshot.getName().getText(), accountSnapshot.getBalance().getValue().doubleValue(), accountSnapshot.getCurrency().name());
+        return new AccountDto(accountSnapshot.getId(), accountSnapshot.getName(), accountSnapshot.getBalance(), accountSnapshot.getCurrency().name());
     }
 
 }
