@@ -1,10 +1,7 @@
-package io.github.PrzeBarCore.Receipt;
+package io.github.PrzeBarCore.Transaction;
 
-import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.SimpleCategoryDto;
-import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.SimpleProductDto;
-import io.github.PrzeBarCore.Transaction.ReceiptTypeSimpleTransactionDto;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
@@ -14,14 +11,12 @@ import java.util.Optional;
 public class ReceiptDto {
     private Integer id;
     private MonetaryAmount totalDiscount;
-    private ReceiptTypeSimpleTransactionDto relatedTransaction;
     private List<DtoItem> items;
 
     ReceiptDto(){};
-    public ReceiptDto(Integer id, MonetaryAmount totalDiscount, ReceiptTypeSimpleTransactionDto relatedTransaction, List<DtoItem> items) {
+    public ReceiptDto(Integer id, MonetaryAmount totalDiscount, List<DtoItem> items) {
         this.id = id;
         this.totalDiscount = totalDiscount;
-        this.relatedTransaction = relatedTransaction;
         this.items = items;
     }
 
@@ -39,14 +34,6 @@ public class ReceiptDto {
 
     void setTotalDiscount(MonetaryAmount totalDiscount) {
         this.totalDiscount = totalDiscount;
-    }
-
-    ReceiptTypeSimpleTransactionDto getRelatedTransaction() {
-        return relatedTransaction;
-    }
-
-    void setRelatedTransaction(ReceiptTypeSimpleTransactionDto relatedTransaction) {
-        this.relatedTransaction = relatedTransaction;
     }
 
     List<DtoItem> getItems() {

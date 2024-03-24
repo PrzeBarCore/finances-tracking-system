@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
-import io.github.PrzeBarCore.Transaction.ReceiptTypeSimpleTransactionDto;
 import io.github.PrzeBarCore.ValueObjects.*;
 import org.springframework.boot.jackson.JsonComponent;
 

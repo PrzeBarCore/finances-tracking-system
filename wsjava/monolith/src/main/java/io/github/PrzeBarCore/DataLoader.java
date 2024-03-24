@@ -6,10 +6,8 @@ import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.CategoryFacade;
 import io.github.PrzeBarCore.Product.ProductDto;
 import io.github.PrzeBarCore.Product.ProductFacade;
-import io.github.PrzeBarCore.Receipt.ReceiptFacade;
-import io.github.PrzeBarCore.Transaction.IncomeTypeSimpleTransaction;
-import io.github.PrzeBarCore.Transaction.InnerTypeSimpleTransactionDto;
-import io.github.PrzeBarCore.Transaction.ReceiptTypeSimpleTransactionDto;
+import io.github.PrzeBarCore.Transaction.IncomeTypeTransaction;
+import io.github.PrzeBarCore.Transaction.InnerTypeTransaction;
 import io.github.PrzeBarCore.Transaction.TransactionFacade;
 import io.github.PrzeBarCore.ValueObjects.*;
 import org.springframework.boot.ApplicationArguments;
@@ -23,14 +21,12 @@ import java.time.LocalDateTime;
 @Profile("dev")
 public class DataLoader implements ApplicationRunner {
     final CategoryFacade categoryFacade;
-    final ReceiptFacade receiptFacade;
     final ProductFacade productFacade;
     final AccountFacade accountFacade;
     final TransactionFacade transactionFacade;
 
-    DataLoader(final CategoryFacade categoryFacade, final ReceiptFacade receiptFacade, final ProductFacade productFacade, final AccountFacade accountFacade, final TransactionFacade transactionFacade) {
+    DataLoader(final CategoryFacade categoryFacade, final ProductFacade productFacade, final AccountFacade accountFacade, final TransactionFacade transactionFacade) {
         this.categoryFacade = categoryFacade;
-        this.receiptFacade=receiptFacade;
         this.productFacade = productFacade;
         this.accountFacade = accountFacade;
         this.transactionFacade= transactionFacade;
@@ -81,13 +77,13 @@ public class DataLoader implements ApplicationRunner {
         productFacade.createProduct((new ProductDto(0,NameString.of("Mąka Żytnia 610"), Company.of("Basia"), 1.0, Unit.kg, categoryFacade.findCategoryById(11).get(), MonetaryAmount.of(5.99), categoryFacade.findCategoryById(2).get())));
         productFacade.createProduct((new ProductDto(0,NameString.of("Kozel Cerny"), Company.of("Kozel"), 0.5, Unit.l, categoryFacade.findCategoryById(14).get(), MonetaryAmount.of(5.99), categoryFacade.findCategoryById(1).get())));
 
-        transactionFacade.addTransaction(new InnerTypeSimpleTransactionDto(0,
+        transactionFacade.addTransaction(new InnerTypeTransaction(0,
                 LocalDateTime.now(),
                 MonetaryAmount.of(2137.0),
                 Description.of(""),
                 accountFacade.findAccount(1).get(),
                 accountFacade.findAccount(2).get()));
-        transactionFacade.addTransaction(new IncomeTypeSimpleTransaction(0,
+        transactionFacade.addTransaction(new IncomeTypeTransaction(0,
                 LocalDateTime.now(),
                 MonetaryAmount.of(420.0),
                 Description.of(""),

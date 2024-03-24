@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from '../app-routing.module';
 import { ReceiptFormComponent } from './receipt-form/receipt-form.component';
 import { ReceiptListComponent } from './receipt-list/receipt-list.component';
-import { ReceiptService } from './service/receipt.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
   FontAwesomeModule,
@@ -15,6 +14,7 @@ import {
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { SearchModule } from '../search/search.module';
+import { TransactionService } from '../transaction/service/transaction.service';
 
 @NgModule({
   declarations: [ReceiptFormComponent, ReceiptListComponent],
@@ -28,7 +28,7 @@ import { SearchModule } from '../search/search.module';
     ReactiveFormsModule,
     FontAwesomeModule,
   ],
-  providers: [ReceiptService],
+  providers: [TransactionService],
 })
 export class ReceiptModule {
   constructor(library: FaIconLibrary) {

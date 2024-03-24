@@ -19,7 +19,7 @@ class Transaction {
                 snapshot.getTransactionCategoryId(),
                 snapshot.getTargetAccountId(),
                 snapshot.getSourceAccountId(),
-                snapshot.getReceiptId()
+                snapshot.getReceipt() != null ? Receipt.restore(snapshot.getReceipt()) : null
         );
     }
     private Integer id;
@@ -31,11 +31,11 @@ class Transaction {
     private LocalDateTime repaymentDate;
     private Integer targetAccountId;
     private Integer sourceAccountId;
-    private Integer receiptId;
+    private Receipt receipt;
 
     private Transaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, TransactionType transactionType,
                         Description description, LocalDateTime repaymentDate, Integer transactionCategoryId, Integer targetAccountId,
-                        Integer sourceAccountId, Integer receiptId) {
+                        Integer sourceAccountId, Receipt receipt) {
         this.id = id;
         this.issuedOnDateTime = issuedOnDateTime;
         this.totalValue = totalValue;
@@ -45,7 +45,7 @@ class Transaction {
         this.transactionCategoryId = transactionCategoryId;
         this.targetAccountId = targetAccountId;
         this.sourceAccountId = sourceAccountId;
-        this.receiptId = receiptId;
+        this.receipt = receipt;
     }
 
     TransactionSnapshot getSnapshot() {
@@ -58,7 +58,7 @@ class Transaction {
                 this.transactionCategoryId,
                 this.targetAccountId,
                 this.sourceAccountId,
-                this.receiptId);
+                this.receipt != null ? this.receipt.getSnapshot() : null);
     }
 
 }

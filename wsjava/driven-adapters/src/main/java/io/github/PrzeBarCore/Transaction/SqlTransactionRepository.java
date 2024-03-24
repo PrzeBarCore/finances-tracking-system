@@ -11,20 +11,9 @@ import java.util.stream.Collectors;
 interface SqlTransactionRepository extends Repository<TransactionSnapshot, Integer> {
     boolean existsTransactionById(int id);
     Optional<TransactionSnapshot> findTransactionById(int id);
+    Optional<TransactionSnapshot> findTransactionByReceiptId(int id);
     @Query(value ="SELECT * FROM transactions where source_account_id = :id OR target_account_id = :id", nativeQuery = true)
     List<TransactionSnapshot> findTransactionsByAccountId(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'INCOME' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfIncomeType(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'OUTCOME' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfOutcomeType(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'RECEIPT' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfReceiptType(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'TAKEN_LOAN' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfTakenLoanType(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'GIVEN_LOAN' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfGivenLoanType(@Param(value = "id") int id);
-    @Query(value ="SELECT * FROM transactions where transaction_type = 'INNER_TRANSFER' AND id = :id ", nativeQuery = true)
-    Optional<TransactionSnapshot> findTransactionOfInnerTransferType(@Param(value = "id") int id);
     TransactionSnapshot save(TransactionSnapshot transaction);
     boolean deleteTransactionById(Integer id);
 
@@ -50,33 +39,8 @@ class TransactionRepositoryImpl implements TransactionRepository{
     }
 
     @Override
-    public Optional<Transaction> findTransactionOfIncomeType(int id) {
-        return repository.findTransactionOfIncomeType(id).map(Transaction::restore);
-    }
-
-    @Override
-    public Optional<Transaction> findTransactionOfOutcomeType(int id) {
-        return repository.findTransactionOfOutcomeType(id).map(Transaction::restore);
-    }
-
-    @Override
-    public Optional<Transaction> findTransactionOfReceiptType(int id) {
-        return repository.findTransactionOfReceiptType(id).map(Transaction::restore);
-    }
-
-    @Override
-    public Optional<Transaction> findTransactionOfTakenLoanType(int id) {
-        return repository.findTransactionOfTakenLoanType(id).map(Transaction::restore);
-    }
-
-    @Override
-    public Optional<Transaction> findTransactionOfGivenLoanType(int id) {
-        return repository.findTransactionOfGivenLoanType(id).map(Transaction::restore);
-    }
-
-    @Override
-    public Optional<Transaction> findTransactionOfInnerTransferType(int id) {
-        return repository.findTransactionOfInnerTransferType(id).map(Transaction::restore);
+    public Optional<Transaction> findTransactionByReceiptId(int id) {
+        return repository.findTransactionByReceiptId(id).map(Transaction::restore);
     }
 
     @Override

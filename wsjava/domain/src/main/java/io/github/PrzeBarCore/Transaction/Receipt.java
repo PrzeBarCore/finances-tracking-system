@@ -1,10 +1,8 @@
-package io.github.PrzeBarCore.Receipt;
+package io.github.PrzeBarCore.Transaction;
 
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,7 +10,6 @@ class Receipt {
     static Receipt restore(ReceiptSnapshot snapshot) {
         return new Receipt(snapshot.getId(),
                 snapshot.getTotalDiscount(),
-                snapshot.getRelatedTransactionId(),
                 snapshot.getItems()
                         .stream()
                         .map(ReceiptItem::restore)
@@ -20,20 +17,17 @@ class Receipt {
     }
     private Integer id;
     private MonetaryAmount totalDiscount;
-    private Integer relatedTransactionId;
     private List<ReceiptItem> items;
 
-    private Receipt(Integer id, MonetaryAmount totalDiscount,Integer relatedTransactionId, List<ReceiptItem> items) {
+    private Receipt(Integer id, MonetaryAmount totalDiscount, List<ReceiptItem> items) {
         this.id = id;
         this.totalDiscount = totalDiscount;
-        this.relatedTransactionId = relatedTransactionId;
         this.items = items;
     }
 
     ReceiptSnapshot getSnapshot(){
         return new ReceiptSnapshot(this.id,
                 this.totalDiscount,
-                this.relatedTransactionId,
                 this.items.stream()
                         .map(ReceiptItem::getItemSnapshot)
                         .collect(Collectors.toList()));

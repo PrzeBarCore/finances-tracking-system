@@ -2,25 +2,24 @@ package io.github.PrzeBarCore.Transaction;
 
 import io.github.PrzeBarCore.Account.AccountDto;
 import io.github.PrzeBarCore.Account.SimpleAccountDto;
-import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import java.time.LocalDateTime;
 
-public class IncomeTypeSimpleTransaction extends SimpleTransactionDto {
+ public class InnerTypeTransaction extends SimpleTransactionDto {
     private Description description;
-    private CategoryDto transactionCategory;
     private SimpleAccountDto targetAccount;
+    private SimpleAccountDto sourceAccount;
 
-     public IncomeTypeSimpleTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, CategoryDto transactionCategory, SimpleAccountDto targetAccount) {
-        super(id, issuedOnDateTime, totalValue, TransactionType.INCOME);
+    InnerTypeTransaction(){}
+     public InnerTypeTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, SimpleAccountDto targetAccount, SimpleAccountDto sourceAccount) {
+        super(id, issuedOnDateTime, totalValue, TransactionType.INNER_TRANSFER);
         this.description = description;
-        this.transactionCategory = transactionCategory;
         this.targetAccount = targetAccount;
+        this.sourceAccount = sourceAccount;
     }
-
 
      Integer getId() {
         return super.getId();
@@ -55,23 +54,23 @@ public class IncomeTypeSimpleTransaction extends SimpleTransactionDto {
         return description;
     }
 
-     void setDescription(Description description) {
+    void setDescription(Description description) {
         this.description = description;
     }
 
-     void setTransactionCategory(CategoryDto transactionCategory) {
-        this.transactionCategory = transactionCategory;
+     SimpleAccountDto getTargetAccount() {
+        return this.targetAccount;
     }
 
-     CategoryDto getTransactionCategory() {
-        return transactionCategory;
-    }
-
-      void setTargetAccount(SimpleAccountDto targetAccount) {
+     void setTargetAccount(AccountDto sourceAccount) {
         this.targetAccount = targetAccount;
     }
 
-    SimpleAccountDto getTargetAccount() {
-        return targetAccount;
+     SimpleAccountDto getSourceAccount() {
+        return this.sourceAccount;
+    }
+
+     void setSourceAccount(AccountDto sourceAccount) {
+        this.sourceAccount = sourceAccount;
     }
 }

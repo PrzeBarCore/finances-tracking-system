@@ -1,4 +1,5 @@
 import { Account, SimpleAccount } from 'src/app/account/model/account';
+import { Receipt } from 'src/app/receipt/model/receipt';
 
 export class ReceiptTransaction {
   constructor(
@@ -6,6 +7,6 @@ export class ReceiptTransaction {
     public issuedOnDateTime: Date,
     public totalValue: number,
     public sourceAccount: SimpleAccount | null,
-    public receiptId: number
+    public receipt: Receipt
   ) {}
 }

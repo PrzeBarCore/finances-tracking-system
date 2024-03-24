@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction } from '../common/model/transaction';
 import { DialogComponent, DialogType } from '../search/dialog.component';
 import { TransactionService } from '../transaction/service/transaction.service';
+import { ComponentType, GlobalRoutes } from '../common/globals/globalRoutes';
 
 @Component({
   selector: 'account',
@@ -40,8 +41,13 @@ export class AccountComponent implements AfterViewInit {
   }
 
   addNewTransaction(transactionType: string) {
-    if (transactionType == 'RECEIPT')
-      this.router.navigate(['/receipts/-1', { aid: this.accountInstance.id }]);
+    if (transactionType == 'RECEIPT') {
+      console.log(GlobalRoutes.RECEIPT_FORM);
+      this.router.navigate([
+        GlobalRoutes.getUrlForComponent(ComponentType.RECEIPT_FORM, ['-1']),
+        { aid: this.accountInstance.id },
+      ]);
+    }
   }
 
   openDialog(transaction: Transaction) {
@@ -49,7 +55,6 @@ export class AccountComponent implements AfterViewInit {
     this.dialog.confirmButtonClicked.subscribe((result) => {
       if (result)
         this.transactionService.deleteTransaction(transaction.id).subscribe();
-      else console.log('noe');
     });
   }
   deleteTransaction() {}
@@ -59,8 +64,18 @@ export class AccountComponent implements AfterViewInit {
   }
 
   navigateToTransaction(transaction: Transaction) {
-    if (transaction.transactionType == 'RECEIPT')
-      this.router.navigate(['/receipts/', transaction.receiptId]);
-    else this.router.navigate(['/transactions/', transaction.id]);
+    if (transaction.transactionType == 'RECEIPT') {
+      console.log();
+      this.router.navigate([
+        GlobalRoutes.getUrlForComponent(ComponentType.RECEIPT_FORM, [
+          transaction.receiptId.toString(),
+        ]),
+      ]);
+    } else
+      this.router.navigate([
+        GlobalRoutes.getUrlForComponent(ComponentType.TRANSACTION_FORM, [
+          transaction.id.toString(),
+        ]),
+      ]);
   }
 }

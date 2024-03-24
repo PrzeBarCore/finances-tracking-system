@@ -1,22 +1,27 @@
 package io.github.PrzeBarCore.Transaction;
-import io.github.PrzeBarCore.Account.AccountDto;
+
 import io.github.PrzeBarCore.Account.SimpleAccountDto;
+import io.github.PrzeBarCore.Category.CategoryDto;
+import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import java.time.LocalDateTime;
 
- public class ReceiptTypeSimpleTransactionDto extends SimpleTransactionDto {
+ public class OutcomeTypeTransaction extends SimpleTransactionDto {
+    private Description description;
+    private CategoryDto transactionCategory;
     private SimpleAccountDto sourceAccount;
-    private Integer receiptId;
 
-    ReceiptTypeSimpleTransactionDto(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, SimpleAccountDto sourceAccount, Integer receiptId) {
-        super(id, issuedOnDateTime, totalValue, TransactionType.RECEIPT);
+     OutcomeTypeTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, CategoryDto transactionCategory, SimpleAccountDto sourceAccount) {
+        super(id, issuedOnDateTime, totalValue, TransactionType.INCOME);
+        this.description = description;
+        this.transactionCategory = transactionCategory;
         this.sourceAccount = sourceAccount;
-        this.receiptId =receiptId;
     }
 
-     public Integer getId() {
+
+     Integer getId() {
         return super.getId();
     }
 
@@ -45,19 +50,27 @@ import java.time.LocalDateTime;
         super.setTransactionType(transactionType);
     }
 
-     SimpleAccountDto getSourceAccount() {
-        return this.sourceAccount;
+     Description getDescription() {
+        return description;
+    }
+
+     void setDescription(Description description) {
+        this.description = description;
+    }
+
+     void setTransactionCategory(CategoryDto transactionCategory) {
+        this.transactionCategory = transactionCategory;
+    }
+
+     CategoryDto getTransactionCategory() {
+        return transactionCategory;
     }
 
      void setSourceAccount(SimpleAccountDto sourceAccount) {
         this.sourceAccount = sourceAccount;
     }
 
-     Integer getReceiptId() {
-         return receiptId;
-     }
-
-     public void setReceiptId(Integer receiptId) {
-         this.receiptId = receiptId;
-     }
- }
+     SimpleAccountDto getSourceAccount() {
+        return sourceAccount;
+    }
+}

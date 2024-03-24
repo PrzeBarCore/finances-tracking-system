@@ -1,98 +1,120 @@
 package io.github.PrzeBarCore.Transaction;
 
-import io.github.PrzeBarCore.Account.AccountDto;
 import io.github.PrzeBarCore.Account.AccountFacade;
 import io.github.PrzeBarCore.Account.SimpleAccountDto;
 import io.github.PrzeBarCore.Category.CategoryDto;
 import io.github.PrzeBarCore.Category.CategoryFacade;
-import io.github.PrzeBarCore.Receipt.ReceiptFacade;
+import io.github.PrzeBarCore.Product.ProductFacade;
+import io.github.PrzeBarCore.Product.SimpleProductDto;
 import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import java.time.LocalDateTime;
 
+import static java.util.stream.Collectors.toList;
+
 public class TransactionFactory {
-
     private final AccountFacade accountFacade;
-    private final ReceiptFacade receiptFacade;
     private final CategoryFacade categoryFacade;
+    private final ProductFacade productFacade;
 
-
-    TransactionFactory(AccountFacade accountFacade, ReceiptFacade receiptFacade, CategoryFacade categoryFacade) {
+    TransactionFactory(AccountFacade accountFacade, CategoryFacade categoryFacade,ProductFacade productFacade) {
         this.accountFacade = accountFacade;
-        this.receiptFacade = receiptFacade;
         this.categoryFacade = categoryFacade;
+        this.productFacade = productFacade;
     }
 
+    Receipt createReceiptEntity(ReceiptDto dto){
+        return Receipt.restore(receiptSnapshotFromDto(dto));
+    }
 
-    Transaction createEntity(SimpleTransactionDto simpleTransactionDto) {
-        if(simpleTransactionDto instanceof ReceiptTypeSimpleTransactionDto){
-            return Transaction.restore(snapshotFromDto((ReceiptTypeSimpleTransactionDto) simpleTransactionDto));
+    ReceiptDto createReceiptDto(Receipt receipt){
+        return receiptDtoFromSnapshot(receipt.getSnapshot());
+    }
+
+    Transaction createTransactionEntity(SimpleTransactionDto simpleTransactionDto) {
+        if(simpleTransactionDto instanceof ReceiptTypeTransaction){
+            return Transaction.restore(transactionSnapshotFromDto((ReceiptTypeTransaction) simpleTransactionDto));
         }
-        if(simpleTransactionDto instanceof InnerTypeSimpleTransactionDto){
-            return Transaction.restore(snapshotFromDto((InnerTypeSimpleTransactionDto) simpleTransactionDto));
+        if(simpleTransactionDto instanceof InnerTypeTransaction){
+            return Transaction.restore(transactionSnapshotFromDto((InnerTypeTransaction) simpleTransactionDto));
         }
-        if(simpleTransactionDto instanceof LoanTypeSimpleTransaction){
-            return Transaction.restore(snapshotFromDto((LoanTypeSimpleTransaction) simpleTransactionDto));
+        if(simpleTransactionDto instanceof LoanTypeTransaction){
+            return Transaction.restore(transactionSnapshotFromDto((LoanTypeTransaction) simpleTransactionDto));
         }
-        if(simpleTransactionDto instanceof OutcomeTypeSimpleTransaction){
-            return Transaction.restore(snapshotFromDto((OutcomeTypeSimpleTransaction) simpleTransactionDto));
+        if(simpleTransactionDto instanceof OutcomeTypeTransaction){
+            return Transaction.restore(transactionSnapshotFromDto((OutcomeTypeTransaction) simpleTransactionDto));
         }
         else {
-            return Transaction.restore(snapshotFromDto((IncomeTypeSimpleTransaction) simpleTransactionDto));
+            return Transaction.restore(transactionSnapshotFromDto((IncomeTypeTransaction) simpleTransactionDto));
         }
     }
 
-    SimpleTransactionDto createDto(Transaction transaction) {
-        return dtoFromSnapshot(transaction.getSnapshot());
+    SimpleTransactionDto createTransactionDto(Transaction transaction) {
+        return transactionDtoFromSnapshot(transaction.getSnapshot());
     }
 
-    SimpleTransactionDto createSimpleDto(Transaction transaction) {
-        TransactionSnapshot snapshot = transaction.getSnapshot();
-        if(null !=snapshot) {
-            TransactionType transactionType = snapshot.getTransactionType();
-            return Builder.instance().withId(snapshot.getId())
-                    .withIssuedOnDateTime(snapshot.getIssuedOnDateTime())
-                    .withTotalValue(snapshot.getTotalValue())
-                    .withTransactionType(snapshot.getTransactionType())
-                    .buildSimpleTransaction();
-        } else {
-            return null;
-        }
+    private ReceiptSnapshot receiptSnapshotFromDto(ReceiptDto dto){
+        return new ReceiptSnapshot(dto.getId(),
+                dto.getTotalDiscount(),
+                dto.getItems().stream()
+                        .map(item -> new ReceiptItemSnapshot(item.getId(),
+                                item.getName(),
+                                item.getQuantity(),
+                                item.getRegularPrice(),
+                                item.getDiscount(),
+                                item.getProduct().map(SimpleProductDto::getId).orElse(null),
+                                item.getExpenseCategory().getId()))
+                        .collect(toList()));
     }
 
-     private SimpleTransactionDto dtoFromSnapshot(TransactionSnapshot transactionSnapshot) {
+    private ReceiptDto receiptDtoFromSnapshot(ReceiptSnapshot snapshot){
+        return new ReceiptDto(
+                snapshot.getId(),
+                snapshot.getTotalDiscount(),
+                snapshot.getItems().stream()
+                        .map(item -> new ReceiptDto.DtoItem(item.getId(),
+                                item.getName(),
+                                item.getQuantity(),
+                                item.getRegularPrice(),
+                                item.getDiscount(),
+                                productFacade.findSimpleProduct(item.getProductId()),
+                                categoryFacade.findCategoryById(item.getExpenseCategoryId()).orElseThrow(IllegalArgumentException::new)))
+                        .collect(toList()));
+    }
+
+     private SimpleTransactionDto transactionDtoFromSnapshot(TransactionSnapshot transactionSnapshot) {
         if(null !=transactionSnapshot){
             TransactionType transactionType = transactionSnapshot.getTransactionType();
-            Builder builderInstance = Builder.instance().withId(transactionSnapshot.getId())
+            TransactionBuilder transactionBuilderInstance = TransactionBuilder.instance().withId(transactionSnapshot.getId())
                    .withIssuedOnDateTime(transactionSnapshot.getIssuedOnDateTime())
                    .withTotalValue(transactionSnapshot.getTotalValue());
 
             if(transactionType.equals(TransactionType.RECEIPT)) {
-                return builderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
-                        .withReceiptId(transactionSnapshot.getReceiptId())
+                return transactionBuilderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
+                        .withReceipt(receiptDtoFromSnapshot(transactionSnapshot.getReceipt()))
                         .buildReceiptTypeTransaction();
             } else {
-                builderInstance.withDescription(transactionSnapshot.getDescription());
+                transactionBuilderInstance.withDescription(transactionSnapshot.getDescription());
                 if(transactionType.equals(TransactionType.INCOME) || transactionType.equals(TransactionType.OUTCOME)){
-                    builderInstance.withTransactionCategory(categoryFacade.findCategoryById(transactionSnapshot.getTransactionCategoryId()).orElseThrow());
+                    transactionBuilderInstance.withTransactionCategory(categoryFacade.findCategoryById(transactionSnapshot.getTransactionCategoryId()).orElseThrow());
                     if(transactionType.equals(TransactionType.INCOME))
-                        return builderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
+                        return transactionBuilderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
                                 .buildIncomeTypeTransaction();
                     else
-                        return builderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
+                        return transactionBuilderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
                                 .buildOutcomeTypeTransaction();
                 } else if(transactionType.equals(TransactionType.GIVEN_LOAN) || transactionType.equals(TransactionType.TAKEN_LOAN)){
-                    builderInstance.withRepaymentDay(transactionSnapshot.getRepaymentDate());
+                    transactionBuilderInstance.withRepaymentDay(transactionSnapshot.getRepaymentDate());
                     if(transactionType.equals(TransactionType.GIVEN_LOAN))
-                        return builderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
+                        return transactionBuilderInstance.withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
                                 .buildOutcomeTypeTransaction();
                     else
-                        return builderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
+                        return transactionBuilderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
                                 .buildIncomeTypeTransaction();
                 } else {
-                    return builderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
+                    return transactionBuilderInstance.withTargetAccount(accountFacade.findAccount(transactionSnapshot.getTargetAccountId()).orElseThrow())
                             .withSourceAccount(accountFacade.findAccount(transactionSnapshot.getSourceAccountId()).orElseThrow())
                             .withDescription(transactionSnapshot.getDescription())
                             .buildInnerTypeTransaction();
@@ -103,7 +125,7 @@ public class TransactionFactory {
             return null;
     }
 
-    private TransactionSnapshot snapshotFromDto(ReceiptTypeSimpleTransactionDto transactionDto){
+    private TransactionSnapshot transactionSnapshotFromDto(ReceiptTypeTransaction transactionDto){
         if(null!=transactionDto)
         return new TransactionSnapshot(transactionDto.getId(),
                 transactionDto.getIssuedOnDateTime(),
@@ -114,12 +136,12 @@ public class TransactionFactory {
                 null,
                 null,
                 transactionDto.getSourceAccount().getId(),
-                transactionDto.getReceiptId());
+                receiptSnapshotFromDto(transactionDto.getReceipt()));
         else
             return null;
     }
 
-    private TransactionSnapshot snapshotFromDto(InnerTypeSimpleTransactionDto transactionDto){
+    private TransactionSnapshot transactionSnapshotFromDto(InnerTypeTransaction transactionDto){
         if(null!=transactionDto)
             return new TransactionSnapshot(transactionDto.getId(),
                     transactionDto.getIssuedOnDateTime(),
@@ -133,7 +155,8 @@ public class TransactionFactory {
                     null);
         else
             return null;
-    }private TransactionSnapshot snapshotFromDto(LoanTypeSimpleTransaction transactionDto){
+    }
+    private TransactionSnapshot transactionSnapshotFromDto(LoanTypeTransaction transactionDto){
         if(null!=transactionDto)
             return new TransactionSnapshot(transactionDto.getId(),
                     transactionDto.getIssuedOnDateTime(),
@@ -148,7 +171,7 @@ public class TransactionFactory {
         else
             return null;
     }
-    private TransactionSnapshot snapshotFromDto(IncomeTypeSimpleTransaction transactionDto){
+    private TransactionSnapshot transactionSnapshotFromDto(IncomeTypeTransaction transactionDto){
         if(null!=transactionDto)
             return new TransactionSnapshot(transactionDto.getId(),
                     transactionDto.getIssuedOnDateTime(),
@@ -162,7 +185,8 @@ public class TransactionFactory {
                     null);
         else
             return null;
-    }private TransactionSnapshot snapshotFromDto(OutcomeTypeSimpleTransaction transactionDto){
+    }
+    private TransactionSnapshot transactionSnapshotFromDto(OutcomeTypeTransaction transactionDto){
         if(null!=transactionDto)
             return new TransactionSnapshot(transactionDto.getId(),
                     transactionDto.getIssuedOnDateTime(),
@@ -178,7 +202,7 @@ public class TransactionFactory {
             return null;
     }
 
-    private static class Builder{
+    private static class TransactionBuilder {
         private Integer id;
         private LocalDateTime issuedOnDateTime;
         private MonetaryAmount totalValue;
@@ -188,82 +212,82 @@ public class TransactionFactory {
         private LocalDateTime repaymentDate;
         private SimpleAccountDto targetAccount;
         private SimpleAccountDto sourceAccount;
-        private Integer receiptId;
+        private ReceiptDto receipt;
 
-        private Builder(){}
-        static Builder  instance(){
-            return new Builder();
+        private TransactionBuilder(){}
+        static TransactionBuilder instance(){
+            return new TransactionBuilder();
         }
 
-        Builder withId(Integer id){
+        TransactionBuilder withId(Integer id){
             this.id=id;
             return this;
         }
-        Builder withIssuedOnDateTime(LocalDateTime issuedOnDateTime){
+        TransactionBuilder withIssuedOnDateTime(LocalDateTime issuedOnDateTime){
             this.issuedOnDateTime=issuedOnDateTime;
             return this;
         }
 
-        Builder withTotalValue(MonetaryAmount totalValue){
+        TransactionBuilder withTotalValue(MonetaryAmount totalValue){
             this.totalValue=totalValue;
             return this;
         }
-        Builder withTransactionType(TransactionType transactionType){
+        TransactionBuilder withTransactionType(TransactionType transactionType){
             this.transactionType=transactionType;
             return this;
         }
-        Builder withTransactionCategory(CategoryDto transactionCategory){
+        TransactionBuilder withTransactionCategory(CategoryDto transactionCategory){
             this.transactionCategory=transactionCategory;
             return this;
         }
-        Builder withDescription(Description description){
+        TransactionBuilder withDescription(Description description){
             this.description=description;
             return this;
         }
-        Builder withRepaymentDay(LocalDateTime repaymentDate){
+        TransactionBuilder withRepaymentDay(LocalDateTime repaymentDate){
             this.repaymentDate=repaymentDate;
             return this;
         }
-        Builder withTargetAccount(SimpleAccountDto targetAccount){
+        TransactionBuilder withTargetAccount(SimpleAccountDto targetAccount){
             this.targetAccount=targetAccount;
             return this;
         }
-        Builder withSourceAccount(SimpleAccountDto sourceAccount){
+        TransactionBuilder withSourceAccount(SimpleAccountDto sourceAccount){
             this.sourceAccount=sourceAccount;
             return this;
         }
-        Builder withReceiptId(Integer receiptId){
-            this.receiptId = receiptId;
+        TransactionBuilder withReceipt(ReceiptDto receiptId){
+            this.receipt = receiptId;
             return this;
         }
 
-        ReceiptTypeSimpleTransactionDto buildReceiptTypeTransaction(){
+        ReceiptTypeTransaction buildReceiptTypeTransaction(){
             if(validateData(TransactionType.RECEIPT))
-                return new ReceiptTypeSimpleTransactionDto(this.id, this.issuedOnDateTime, this.totalValue, this.sourceAccount, this.receiptId);
+                return new ReceiptTypeTransaction(this.id, this.issuedOnDateTime, this.totalValue, this.sourceAccount, this.receipt);
             else
                 throw new IllegalStateException();
         }
-        InnerTypeSimpleTransactionDto buildInnerTypeTransaction(){
+        InnerTypeTransaction buildInnerTypeTransaction(){
             if(validateData(TransactionType.INNER_TRANSFER))
-                return new InnerTypeSimpleTransactionDto(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.targetAccount, this.sourceAccount);
+                return new InnerTypeTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.targetAccount, this.sourceAccount);
             else
                 throw new IllegalStateException();
         }
-        LoanTypeSimpleTransaction buildLoanTypeTransaction(){
+        LoanTypeTransaction buildLoanTypeTransaction(){
             if(validateData(TransactionType.TAKEN_LOAN) || validateData(TransactionType.GIVEN_LOAN))
-                return new LoanTypeSimpleTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.repaymentDate,this.targetAccount, this.sourceAccount);
+                return new LoanTypeTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.repaymentDate,this.targetAccount, this.sourceAccount);
             else
                 throw new IllegalStateException();
         }
-        IncomeTypeSimpleTransaction buildIncomeTypeTransaction(){
+        IncomeTypeTransaction buildIncomeTypeTransaction(){
             if(validateData(TransactionType.INCOME))
-                return new IncomeTypeSimpleTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.transactionCategory, this.targetAccount);
+                return new IncomeTypeTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.transactionCategory, this.targetAccount);
             else
                 throw new IllegalStateException();
         }
-        OutcomeTypeSimpleTransaction buildOutcomeTypeTransaction(){
+        OutcomeTypeTransaction buildOutcomeTypeTransaction(){
             if(validateData(TransactionType.OUTCOME))
-                return new OutcomeTypeSimpleTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.transactionCategory, this.sourceAccount);
+                return new OutcomeTypeTransaction(this.id, this.issuedOnDateTime, this.totalValue,this.description,this.transactionCategory, this.sourceAccount);
             else
                 throw new IllegalStateException();
         }
@@ -278,7 +302,7 @@ public class TransactionFactory {
         private boolean validateData(TransactionType transactionType){
             boolean result = validateData();
             if(transactionType.equals(TransactionType.RECEIPT)){
-                result &= this.sourceAccount != null && this.receiptId != null;
+                result &= this.sourceAccount != null && this.receipt != null;
             } else if(transactionType.equals(TransactionType.INNER_TRANSFER)){
                 result &= this.sourceAccount != null && this.targetAccount != null && this.description != null;
             } else if(transactionType.equals(TransactionType.TAKEN_LOAN)){

@@ -1,17 +1,11 @@
-package io.github.PrzeBarCore.Receipt;
+package io.github.PrzeBarCore.Transaction;
 
-
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-
-import java.nio.channels.FileChannel;
-import java.util.List;
 import java.util.Optional;
 
 interface SqlReceiptRepository extends Repository<ReceiptSnapshot, Integer> {
     ReceiptSnapshot save(ReceiptSnapshot receipt);
     Optional<ReceiptSnapshot> findById(int id);
-    Optional<ReceiptSnapshot> findByRelatedTransactionId(int id);
     boolean existsReceiptById(Integer receiptId);
     boolean deleteReceiptById(Integer receiptId);
 }
@@ -33,9 +27,6 @@ class ReceiptRepositoryImpl implements ReceiptRepository {
     public Optional<Receipt> findById(int id) {
         return repository.findById(id).map(Receipt::restore);
     }
-
-    @Override
-    public Optional<Receipt> findByRelatedTransactionId(int id) { return repository.findByRelatedTransactionId(id).map(Receipt::restore); }
 
     @Override
     public boolean existsReceiptById(Integer receiptId) {

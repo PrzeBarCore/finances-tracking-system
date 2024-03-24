@@ -1,7 +1,32 @@
-package io.github.PrzeBarCore.Receipt;
+package io.github.PrzeBarCore.Transaction;
 
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.NameString;
+
+import java.util.List;
+
+class ReceiptSnapshot {
+    private Integer id;
+    private MonetaryAmount totalDiscount;
+    private List<ReceiptItemSnapshot> items;
+
+    ReceiptSnapshot(){}
+    ReceiptSnapshot(Integer id, MonetaryAmount totalDiscount, List<ReceiptItemSnapshot> items) {
+        this.id = id;
+        this.totalDiscount = totalDiscount;
+        this.items = items;
+    }
+
+    Integer getId() {
+        return id;
+    }
+
+    MonetaryAmount getTotalDiscount() { return totalDiscount; }
+
+    List<ReceiptItemSnapshot> getItems() {
+        return items;
+    }
+}
 
 class ReceiptItemSnapshot {
     private Integer id;

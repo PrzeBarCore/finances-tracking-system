@@ -1,6 +1,5 @@
 package io.github.PrzeBarCore.Transaction;
 
-import io.github.PrzeBarCore.Account.AccountDto;
 import io.github.PrzeBarCore.Account.SimpleAccountDto;
 import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
@@ -9,13 +8,13 @@ import io.github.PrzeBarCore.ValueObjects.TransactionType;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
- public class LoanTypeSimpleTransaction extends SimpleTransactionDto {
+ public class LoanTypeTransaction extends SimpleTransactionDto {
     private Description description;
     private LocalDateTime repaymentDate;
     private Optional<SimpleAccountDto> targetAccount;
     private Optional<SimpleAccountDto> sourceAccount;
 
-     LoanTypeSimpleTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, LocalDateTime repaymentDate, SimpleAccountDto targetAccount, SimpleAccountDto sourceAccount) {
+     LoanTypeTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, LocalDateTime repaymentDate, SimpleAccountDto targetAccount, SimpleAccountDto sourceAccount) {
         super(id, issuedOnDateTime, totalValue, totalValue.compareTo(MonetaryAmount.zero()) == 1 ? TransactionType.TAKEN_LOAN : TransactionType.GIVEN_LOAN);
         this.description = description;
         this.repaymentDate = repaymentDate;

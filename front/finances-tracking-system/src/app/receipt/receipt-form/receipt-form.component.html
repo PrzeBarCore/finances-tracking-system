@@ -10,8 +10,8 @@
           class="form-control"
           type="date"
           name="issuedOnDateTime"
-          [ngModel]="receipt.transaction.issuedOnDateTime | date : 'yyyy-MM-dd'"
-          (ngModelChange)="receipt.transaction.issuedOnDateTime = $event"
+          [ngModel]="receiptTransaction.issuedOnDateTime | date : 'yyyy-MM-dd'"
+          (ngModelChange)="receiptTransaction.issuedOnDateTime = $event"
         />
       </fieldset>
       <fieldset class="form-group col-auto">
@@ -21,10 +21,10 @@
       <fieldset class="form-group col-auto">
         <label>Source Account</label>
         <select
-        #accountSelection
+          #accountSelection
           class="form-control"
           name="account"
-          [(ngModel)]="receipt.transaction.sourceAccount"
+          [(ngModel)]="receiptTransaction.sourceAccount"
         >
           <option
             *ngFor="let accountOption of accountList"
@@ -46,7 +46,12 @@
         <th style="width: 15%"></th>
       </thead>
       <tbody class="table-group-divider">
-        <tr *ngFor="let item of receipt.items; let indexOfelement = index">
+        <tr
+          *ngFor="
+            let item of receiptTransaction.receipt.items;
+            let indexOfelement = index
+          "
+        >
           <td>
             <p *ngIf="!item.isEdited">{{ item.name }}</p>
             <input
@@ -125,7 +130,7 @@
               <fa-icon [icon]="['fas', 'check']"></fa-icon>
             </button>
             <button
-              *ngIf="this.receipt.items.length > 1"
+              *ngIf="this.receiptTransaction.receipt.items.length > 1"
               class="receipt-btn btn btn-danger rounded-circle"
               (click)="removeItem(indexOfelement)"
             >
@@ -139,8 +144,10 @@
       Add Item
     </button>
     <div class="mt-5 container row">
-      <p class="col">Total value: {{ receipt.transaction.totalValue }}</p>
-      <p class="col">Total Discount: {{ receipt.totalDiscount }}</p>
+      <p class="col">Total value: {{ receiptTransaction.totalValue }}</p>
+      <p class="col">
+        Total Discount: {{ receiptTransaction.receipt.totalDiscount }}
+      </p>
     </div>
     <input class="form-control mb-5 mt-5" type="file" id="formFile" />
 

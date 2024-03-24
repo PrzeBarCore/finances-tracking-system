@@ -10,19 +10,20 @@ import { AccountListComponent } from './account/account-list/account-list.compon
 import { AccountComponent } from './account/account.component';
 import { AccountFormComponent } from './account/account-form/account-form.component';
 import { TransactionComponent } from './transaction/transaction.component';
+import { GlobalRoutes } from './common/globals/globalRoutes';
 
 const routes: Routes = [
-  { path: 'accounts', component: AccountListComponent },
-  { path: 'accounts/:id', component: AccountFormComponent },
-  { path: 'accounts/:id/details', component: AccountComponent },
-  { path: 'receipts', component: ReceiptListComponent },
-  { path: 'receipts/:id', component: ReceiptFormComponent },
+  { path: GlobalRoutes.ACCOUNT_LIST, component: AccountListComponent },
+  { path: GlobalRoutes.ACCOUNT_FORM, component: AccountFormComponent },
+  { path: GlobalRoutes.ACCOUNT_DETAILS, component: AccountComponent },
+  { path: 'transactions/receipts', component: ReceiptListComponent },
+  { path: GlobalRoutes.RECEIPT_FORM, component: ReceiptFormComponent },
   { path: 'categories', component: CategoryComponent },
-  { path: 'categories/:type', component: CategoryComponent },
-  { path: 'categories/:type/:id', component: CategoryFormComponent },
-  { path: 'products', component: ProductComponent },
-  { path: 'products/:id', component: ProductFormComponent },
-  { path: 'transactions/:id', component: TransactionComponent },
+  { path: GlobalRoutes.CATEGORY_LIST, component: CategoryComponent },
+  { path: GlobalRoutes.CATEGORY_FORM, component: CategoryFormComponent },
+  { path: GlobalRoutes.PRODUCT_LIST, component: ProductComponent },
+  { path: GlobalRoutes.PRODUCT_FORM, component: ProductFormComponent },
+  { path: GlobalRoutes.TRANSACTION_FORM, component: TransactionComponent },
 ];
 
 @NgModule({

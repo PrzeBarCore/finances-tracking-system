@@ -74,7 +74,13 @@
             <basic name="transactionCategoryId"/>
             <basic name="targetAccountId"/>
             <basic name="sourceAccountId"/>
-            <basic name="receiptId"/>
+            <one-to-one name="receipt" orphan-removal="true">
+            <join-column name="receipt_id"></join-column>
+                <cascade>
+                    <cascade-persist/>
+                    <cascade-merge/>
+                </cascade>
+            </one-to-one>
             <embedded name="totalValue">
                 <attribute-override name="value">
                     <column name="total_value" nullable="false"/>
@@ -125,7 +131,7 @@
         </attributes>
     </entity>
 
-    <entity class="io.github.PrzeBarCore.Receipt.ReceiptSnapshot" access="FIELD">
+    <entity class="io.github.PrzeBarCore.Transaction.ReceiptSnapshot" access="FIELD">
         <table name ="receipts"/>
         <attributes>
             <id name="id">
@@ -147,7 +153,7 @@
     </entity>
 
 
-    <entity class="io.github.PrzeBarCore.Receipt.ReceiptItemSnapshot" access="FIELD">
+    <entity class="io.github.PrzeBarCore.Transaction.ReceiptItemSnapshot" access="FIELD">
         <table name ="receipt_items"/>
         <attributes>
             <id  name="id">

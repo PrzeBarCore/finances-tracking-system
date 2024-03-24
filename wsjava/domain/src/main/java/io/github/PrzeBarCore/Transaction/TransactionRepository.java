@@ -7,13 +7,8 @@ interface TransactionRepository {
 
     boolean existsTransactionById(int id);
     Optional<Transaction> findTransactionById(int id);
+    Optional<Transaction> findTransactionByReceiptId(int id);
     List<Transaction> findTransactionsByAccountId(int id);
-    Optional<Transaction> findTransactionOfIncomeType(int id);
-    Optional<Transaction> findTransactionOfOutcomeType(int id);
-    Optional<Transaction> findTransactionOfReceiptType(int id);
-    Optional<Transaction> findTransactionOfTakenLoanType(int id);
-    Optional<Transaction> findTransactionOfGivenLoanType(int id);
-    Optional<Transaction> findTransactionOfInnerTransferType(int id);
     Transaction save(Transaction transaction);
     boolean deleteTransactionById(Integer id);
 }

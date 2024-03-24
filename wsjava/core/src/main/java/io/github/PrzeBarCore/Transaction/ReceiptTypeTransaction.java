@@ -1,27 +1,21 @@
 package io.github.PrzeBarCore.Transaction;
-
-import io.github.PrzeBarCore.Account.AccountDto;
 import io.github.PrzeBarCore.Account.SimpleAccountDto;
-import io.github.PrzeBarCore.ValueObjects.Description;
 import io.github.PrzeBarCore.ValueObjects.MonetaryAmount;
 import io.github.PrzeBarCore.ValueObjects.TransactionType;
 
 import java.time.LocalDateTime;
 
- public class InnerTypeSimpleTransactionDto extends SimpleTransactionDto {
-    private Description description;
-    private SimpleAccountDto targetAccount;
+ public class ReceiptTypeTransaction extends SimpleTransactionDto {
     private SimpleAccountDto sourceAccount;
+    private ReceiptDto receipt;
 
-    InnerTypeSimpleTransactionDto(){}
-     public InnerTypeSimpleTransactionDto(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, Description description, SimpleAccountDto targetAccount, SimpleAccountDto sourceAccount) {
-        super(id, issuedOnDateTime, totalValue, TransactionType.INNER_TRANSFER);
-        this.description = description;
-        this.targetAccount = targetAccount;
+    ReceiptTypeTransaction(Integer id, LocalDateTime issuedOnDateTime, MonetaryAmount totalValue, SimpleAccountDto sourceAccount, ReceiptDto receipt) {
+        super(id, issuedOnDateTime, totalValue, TransactionType.RECEIPT);
         this.sourceAccount = sourceAccount;
+        this.receipt = receipt;
     }
 
-     Integer getId() {
+     public Integer getId() {
         return super.getId();
     }
 
@@ -50,27 +44,19 @@ import java.time.LocalDateTime;
         super.setTransactionType(transactionType);
     }
 
-     Description getDescription() {
-        return description;
-    }
-
-    void setDescription(Description description) {
-        this.description = description;
-    }
-
-     SimpleAccountDto getTargetAccount() {
-        return this.targetAccount;
-    }
-
-     void setTargetAccount(AccountDto sourceAccount) {
-        this.targetAccount = targetAccount;
-    }
-
      SimpleAccountDto getSourceAccount() {
         return this.sourceAccount;
     }
 
-     void setSourceAccount(AccountDto sourceAccount) {
+     void setSourceAccount(SimpleAccountDto sourceAccount) {
         this.sourceAccount = sourceAccount;
     }
-}
+
+     ReceiptDto getReceipt() {
+         return receipt;
+     }
+
+     public void setReceipt(ReceiptDto receipt) {
+         this.receipt = receipt;
+     }
+ }
